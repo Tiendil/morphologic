@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import Groups from './modules/groups.js';
+import Items from './modules/items.js';
 
 Vue.use(Vuex)
 
@@ -15,6 +16,7 @@ export default new Vuex.Store({
     actions: {
     },
     modules: {
-        groups: Groups
+        groups: Groups,
+        items: Items
     }
 })

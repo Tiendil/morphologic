@@ -8,7 +8,7 @@
   <v-content>
     <v-container>
 
-      <v-row class="text-center">
+      <v-row>
 
         <v-col cols="1">
           <morphology-main-panel/>

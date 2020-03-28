@@ -1,6 +1,6 @@
 <template>
 <v-col cols="3">
-  <v-card>
+  <v-sheet elevation="1">
     <v-toolbar>
 
       <template v-if="nameEditMode">
@@ -30,7 +30,7 @@
             <v-icon>mdi-lead-pencil</v-icon>
           </v-btn>
 
-          <v-btn icon>
+          <v-btn icon v-on:click="createItem">
             <v-icon>mdi-plus</v-icon>
           </v-btn>
 
@@ -43,13 +43,11 @@
 
     </v-toolbar>
 
-    <v-list>
-      <v-list-item><morphology-item/></v-list-item>
-      <v-list-item><morphology-item/></v-list-item>
-      <v-list-item><morphology-item/></v-list-item>
-  </v-list>
+    <morphology-item v-for="itemId in group.items"
+                     :key="itemId"
+                     :item-id="itemId"/>
 
-  </v-card>
+  </v-sheet>
 
 </v-col>
 
@@ -95,7 +93,11 @@ export default {
 
         remove: function() {
             this.$store.commit("groups/removeGroup", {groupId: this.groupId});
-        }
+        },
+
+        createItem: function () {
+            this.$store.commit("items/createItem", {groupId: this.groupId});
+        },
     }
 }
 </script>
