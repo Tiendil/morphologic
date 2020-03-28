@@ -11,11 +11,11 @@
       <v-row class="text-center">
 
         <v-col cols="1">
-          <morphology-main-panel></morphology-main-panel>
+          <morphology-main-panel/>
         </v-col>
 
         <v-col cols="11">
-          <router-view></router-view>
+          <router-view/>
         </v-col>
       </v-row>
     </v-container>
@@ -24,18 +24,19 @@
 </template>
 
 <script>
+
 import MorphologyGroup from '@/components/MorphologyGroup';
 import MorphologyMainPanel from '@/components/MorphologyMainPanel';
 
 export default {
-  name: 'App',
+    name: 'App',
 
-  components: {
-    MorphologyMainPanel,
-    MorphologyGroup,
-  },
+    components: {
+        MorphologyMainPanel,
+        MorphologyGroup,
+    },
 
-  data: () => ({
+    data: () => ({
     //
   }),
 };

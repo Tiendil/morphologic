@@ -1,54 +1,77 @@
 <template>
 <v-col cols="3">
-  <v-toolbar>
+  <v-card>
+    <v-toolbar>
 
-    <template v-if="nameEditMode">
-      <v-text-field label="Group name"
-                    autofocus
-                    dense
-                    single-line
-                    v-on:blur="turnOffNameEditMode"
-                    v-on:change="turnOffNameEditMode"
-                    v-model="name"></v-text-field>
-    </template>
+      <template v-if="nameEditMode">
+        <v-text-field label="Group name"
+                      autofocus
+                      dense
+                      single-line
+                      :value="group.name"
+                      v-on:blur="turnOffNameEditMode"
+                      v-on:change="confirmNameChange"/>
+      </template>
 
-    <template v-else>
-      <v-toolbar-title>
-        {{name}}
-      </v-toolbar-title>
+      <template v-else>
+        <v-toolbar-title>
+          {{group.name}}
+        </v-toolbar-title>
 
-      <v-spacer></v-spacer>
+        <v-spacer/>
 
-      <v-toolbar-items>
+        <v-toolbar-items>
 
-        <v-btn icon v-on:click="turnOnNameEditMode">
-          <v-icon>mdi-lead-pencil</v-icon>
-        </v-btn>
+          <v-btn icon v-on:click="turnOnNameEditMode">
+            <v-icon>mdi-lead-pencil</v-icon>
+          </v-btn>
 
-        <v-btn icon>
-          <v-icon>mdi-plus</v-icon>
-        </v-btn>
+          <v-btn icon>
+            <v-icon>mdi-plus</v-icon>
+          </v-btn>
 
-        <v-btn icon>
-          <v-icon>mdi-delete</v-icon>
-      </v-btn>
+          <v-btn icon v-on:click="remove">
+            <v-icon>mdi-delete</v-icon>
+          </v-btn>
 
-    </v-toolbar-items>
-    </template>
+        </v-toolbar-items>
+      </template>
 
-  </v-toolbar>
+    </v-toolbar>
+
+    <v-list>
+      <v-list-item><morphology-item/></v-list-item>
+      <v-list-item><morphology-item/></v-list-item>
+      <v-list-item><morphology-item/></v-list-item>
+  </v-list>
+
+  </v-card>
+
 </v-col>
 
 </template>
 
 <script>
+import MorphologyItem from "@/components/MorphologyItem";
+
 export default {
-    name: 'MorphologyGroup',
+    name: "MorphologyGroup",
+
+    components: {
+        MorphologyItem
+    },
 
     data: () => ({
-        name: "XXX 1",
         nameEditMode: false
     }),
+
+    props: ["groupId"],
+
+    computed: {
+        group () {
+            return this.$store.getters['groups/activeGroups'][this.groupId];
+        }
+    },
 
     methods: {
         turnOnNameEditMode: function () {
@@ -57,6 +80,17 @@ export default {
 
         turnOffNameEditMode: function () {
             this.nameEditMode = false;
+        },
+
+        confirmNameChange: function (value) {
+            this.$store.commit("groups/changeGroupName", {groupId: this.groupId,
+                                                          name: value});
+
+            this.turnOffNameEditMode();
+        },
+
+        remove: function() {
+            this.$store.commit("groups/removeGroup", {groupId: this.groupId});
         }
     }
 }
