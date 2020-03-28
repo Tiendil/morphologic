@@ -1,6 +1,5 @@
 
 import Vue from 'vue'
-import { v4 as uuid4 } from 'uuid';
 
 const Items = {
     namespaced: true,
@@ -27,15 +26,10 @@ const Items = {
         },
 
         createItem: function(state, payload) {
-            let itemId = uuid4();
-
-            this.commit("groups/addtemToGroup", {groupId: payload.groupId,
-                                                 itemId: itemId});
-            Vue.set(state.items, itemId,  {'text': ''});
+            Vue.set(state.items, payload.itemId,  {'text': ''});
         },
 
         removeItem: function(state, payload) {
-            this.commit("groups/removeItemFromGroups", {itemId: payload.itemId});
             Vue.delete(state.items, payload.itemId);
         }
     },

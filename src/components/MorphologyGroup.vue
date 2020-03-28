@@ -96,7 +96,7 @@ export default {
         },
 
         createItem: function () {
-            this.$store.commit("items/createItem", {groupId: this.groupId});
+            this.$store.dispatch("createItem", {groupId: this.groupId});
         },
     }
 }

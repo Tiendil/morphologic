@@ -72,7 +72,7 @@ export default {
         },
 
         remove: function() {
-            this.$store.commit("items/removeItem", {itemId: this.itemId});
+            this.$store.dispatch("removeItem", {itemId: this.itemId});
         }
     }
 }
