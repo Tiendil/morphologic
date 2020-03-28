@@ -14,8 +14,12 @@
       </template>
 
       <template v-else>
-        <v-toolbar-title>
+        <v-toolbar-title v-if="group.name">
           {{group.name}}
+        </v-toolbar-title>
+
+        <v-toolbar-title v-else class="font-weight-light">
+          Enter name
         </v-toolbar-title>
 
         <v-spacer/>

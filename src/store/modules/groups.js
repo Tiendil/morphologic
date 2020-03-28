@@ -1,5 +1,6 @@
 
 import Vue from 'vue'
+import { v4 as uuid4 } from 'uuid';
 
 const Groups = {
     namespaced: true,
@@ -22,9 +23,9 @@ const Groups = {
             state.groups[payload.groupId].name = payload.name;
         },
 
-        // createGroup: function(state, payload) {
-        //     state.groups['???'] = {'name': '????'};
-        // },
+        createGroup: function(state, payload) {
+            Vue.set(state.groups, uuid4(),  {'name': ''});
+        },
 
         removeGroup: function(state, payload) {
             Vue.delete(state.groups, payload.groupId);
