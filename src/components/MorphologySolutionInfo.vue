@@ -2,7 +2,7 @@
 <v-card>
   <v-card-title>Solution Info</v-card-title>
 
-  <v-list two-line subheader>
+  <v-list>
     <v-list-item v-if="isTopologyChanged">
       <v-list-item-content>
         <v-alert dense
@@ -21,7 +21,7 @@
     <v-list-item>
 
       <v-list-item-content>
-        <v-list-item-title>Full decission space:</v-list-item-title>
+        <v-list-item-title>Expected solutions:</v-list-item-title>
       </v-list-item-content>
 
       <v-list-item-action>
