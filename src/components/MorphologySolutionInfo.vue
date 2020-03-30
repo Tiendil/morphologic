@@ -59,7 +59,8 @@
     <v-subheader>Best Solution</v-subheader>
 
     <template v-if="solution">
-      <v-list-item  v-for="groupInfo in solution">
+      <v-list-item  v-for="groupInfo in solution"
+                    :key="groupInfo.grupId">
 
         <v-list-item-content>
           <v-list-item-title v-if="groups[groupInfo.groupId].name">

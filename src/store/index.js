@@ -4,7 +4,7 @@ import Vuex from 'vuex'
 import * as uuid from 'uuid';
 
 import Groups from './modules/groups.js';
-import Items from './modules/items.js';
+import {Items} from './modules/items.js';
 
 Vue.use(Vuex)
 
@@ -65,6 +65,13 @@ export default new Vuex.Store({
         setSolutionCardinality (context, payload) {
             context.commit("groups/setSolutionCardinality", {groupId: payload.groupId,
                                                              solutionCardinality: payload.solutionCardinality});
+
+            context.commit("updateTopologyVersion");
+        },
+
+        changeItemMode (context, payload) {
+            context.commit("items/changeItemMode", {itemId: payload.itemId,
+                                                    mode: payload.mode});
 
             context.commit("updateTopologyVersion");
         }
