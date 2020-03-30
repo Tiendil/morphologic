@@ -70,17 +70,24 @@
             Unknown group
           </v-list-item-title>
 
-          <v-list-item-subtitle v-for="itemId in groupInfo.items"
-                                :key="itemId"
-                                :class="textClasses">
-            <span v-if="items[itemId].text">
-              {{items[itemId].text}}
-            </span>
+          <template v-if="groupInfo.items.length > 0">
+            <v-list-item-subtitle v-for="itemId in groupInfo.items"
+                                  :key="itemId"
+                                  :class="textClasses">
+              <span v-if="items[itemId].text">
+                {{items[itemId].text}}
+              </span>
 
-            <span v-else>
-              Unknown item
-            </span>
+              <span v-else>
+                Unknown item
+              </span>
+            </v-list-item-subtitle>
+          </template>
+
+          <v-list-item-subtitle v-else :class="textClasses">
+            —
           </v-list-item-subtitle>
+
         </v-list-item-content>
 
       </v-list-item>
