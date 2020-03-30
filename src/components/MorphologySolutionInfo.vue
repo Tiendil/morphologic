@@ -35,14 +35,36 @@
     <v-list-item>
 
       <v-list-item-content>
-        <v-list-item-title>Real decission space:</v-list-item-title>
+        <v-list-item-title>Checked solutions:</v-list-item-title>
       </v-list-item-content>
 
       <v-list-item-action>
 
         <v-list-item-action-text v-if="statistics">
           <span :class="textClasses">
-            {{statistics.realDecissionSpace}}
+            {{statistics.checkedSolutions}}
+          </span>
+        </v-list-item-action-text>
+
+        <v-list-item-action-text v-else>
+          —
+        </v-list-item-action-text>
+
+      </v-list-item-action>
+
+    </v-list-item>
+
+    <v-list-item>
+
+      <v-list-item-content>
+        <v-list-item-title>Rated solutions:</v-list-item-title>
+      </v-list-item-content>
+
+      <v-list-item-action>
+
+        <v-list-item-action-text v-if="statistics">
+          <span :class="textClasses">
+            {{statistics.ratedSolutions}}
           </span>
         </v-list-item-action-text>
 

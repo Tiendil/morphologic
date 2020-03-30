@@ -255,11 +255,10 @@ function getRestrictionsMetas(searcher, item, restrictions) {
 
 function search(searcher, items, restrictions, nextItemIndex, statistics) {
 
+    statistics.checkedSolutions += 1;
+
     if (checkLowerRestrictions(searcher, restrictions)) {
-        // TODO: probably wrong place to increment,
-        //       since we can skip a lot of permutations
-        // TODO: split permutations statistics and solutions statistics
-        statistics.realDecissionSpace += 1;
+        statistics.ratedSolutions += 1;
 
         searcher.acceptCurrentSolution(searcher.depth());
     }
@@ -285,7 +284,8 @@ function search(searcher, items, restrictions, nextItemIndex, statistics) {
 
 function solve(items, restrictions) {
 
-    const statistics = {realDecissionSpace: 0};
+    const statistics = {checkedSolutions: 0,
+                        ratedSolutions: 0};
 
     const searcher = new SolutionSearcher(3);
 
