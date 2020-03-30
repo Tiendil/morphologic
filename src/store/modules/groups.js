@@ -40,23 +40,23 @@ const Groups = {
 
     mutations: {
 
-        changeGroupName: function(state, payload) {
+        changeGroupName (state, payload) {
             state.groups[payload.groupId].name = payload.name;
         },
 
-        createGroup: function(state, payload) {
-            Vue.set(state.groups, uuid4(),  createGroup());
+        createGroup (state, payload) {
+            Vue.set(state.groups, payload.groupId,  createGroup());
         },
 
-        removeGroup: function(state, payload) {
+        removeGroup (state, payload) {
             Vue.delete(state.groups, payload.groupId);
         },
 
-        addtemToGroup: function(state, payload) {
+        addtemToGroup (state, payload) {
             state.groups[payload.groupId].items.push(payload.itemId);
         },
 
-        removeItemFromGroups: function(state, payload) {
+        removeItemFromGroups (state, payload) {
             let itemId = payload.itemId;
 
             for (var groupId in state.groups) {

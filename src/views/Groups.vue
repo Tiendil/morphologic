@@ -34,7 +34,7 @@ export default {
 
     methods: {
         createGroup: function () {
-            this.$store.commit("groups/createGroup");
+            this.$store.dispatch("createGroup");
         },
     }
 }

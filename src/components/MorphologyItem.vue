@@ -24,13 +24,13 @@
     </v-list-item-content>
 
     <v-list-item-action>
-      <v-btn icon v-on:click="turnOnTextEditMode">
+      <v-btn icon x-small v-on:click="turnOnTextEditMode">
         <v-icon>mdi-lead-pencil</v-icon>
       </v-btn>
     </v-list-item-action>
 
     <v-list-item-action>
-      <v-btn icon v-on:click="remove">
+      <v-btn icon x-small v-on:click="remove">
         <v-icon>mdi-close</v-icon>
       </v-btn>
     </v-list-item-action>

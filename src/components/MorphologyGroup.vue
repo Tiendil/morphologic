@@ -1,6 +1,6 @@
 <template>
 <v-col cols="3">
-  <v-sheet elevation="1">
+  <v-card elevation="1">
     <v-toolbar>
 
       <template v-if="nameEditMode">
@@ -24,21 +24,14 @@
 
         <v-spacer/>
 
-        <v-toolbar-items>
-
           <v-btn icon v-on:click="turnOnNameEditMode">
             <v-icon>mdi-lead-pencil</v-icon>
-          </v-btn>
-
-          <v-btn icon v-on:click="createItem">
-            <v-icon>mdi-plus</v-icon>
           </v-btn>
 
           <v-btn icon v-on:click="remove">
             <v-icon>mdi-delete</v-icon>
           </v-btn>
 
-        </v-toolbar-items>
       </template>
 
     </v-toolbar>
@@ -47,7 +40,14 @@
                      :key="itemId"
                      :item-id="itemId"/>
 
-  </v-sheet>
+    <v-card-actions>
+      <v-btn block
+             small
+             color="primary"
+             v-on:click="createItem">Add item</v-btn>
+    </v-card-actions>
+
+  </v-card>
 
 </v-col>
 
@@ -92,7 +92,7 @@ export default {
         },
 
         remove: function() {
-            this.$store.commit("groups/removeGroup", {groupId: this.groupId});
+            this.$store.dispatch("removeGroup", {groupId: this.groupId});
         },
 
         createItem: function () {

@@ -3,6 +3,18 @@
   <v-card-title>Solution Info</v-card-title>
 
   <v-list two-line subheader>
+    <v-list-item v-if="isTopologyChanged">
+      <v-list-item-content>
+        <v-alert dense
+                 outlined
+                 type="warning"
+                 class="body-2">
+          Data changed.<br/>
+          Solution may not satisfy new conditions.
+        </v-alert>
+      </v-list-item-content>
+    </v-list-item>
+
     <v-divider></v-divider>
     <v-subheader>General</v-subheader>
 
@@ -29,7 +41,9 @@
       <v-list-item-action>
 
         <v-list-item-action-text v-if="statistics">
-          {{statistics.realDecissionSpace}}
+          <span :class="textClasses">
+            {{statistics.realDecissionSpace}}
+          </span>
         </v-list-item-action-text>
 
         <v-list-item-action-text v-else>
@@ -45,19 +59,17 @@
     <v-subheader>Best Solution</v-subheader>
 
     <template v-if="solution">
-      <template v-for="groupInfo in solution">
-        <v-subheader :key="'group-header-' + groupInfo.groupId">{{groups[groupInfo.groupId].name}}</v-subheader>
+      <v-list-item  v-for="groupInfo in solution">
 
-        <v-list-item v-for="itemId in groupInfo.items"
-                     :key="itemId">
+        <v-list-item-content>
+          <v-list-item-title>{{groups[groupInfo.groupId].name}}</v-list-item-title>
+          <v-list-item-subtitle v-for="itemId in groupInfo.items"
+                                :key="itemId"
+                                :class="textClasses">{{items[itemId].text}}</v-list-item-subtitle>
+        </v-list-item-content>
 
-          <v-list-item-content>
-            <v-list-item-title>{{items[itemId].text}}</v-list-item-title>
-          </v-list-item-content>
+      </v-list-item>
 
-        </v-list-item>
-
-      </template>
     </template>
 
     <v-list-item v-else>
@@ -86,12 +98,12 @@ export default {
     name: "MorphologySolutionInfo",
 
     components: {
-        // MorphologyItem
     },
 
     data: () => ({
         statistics: null,
-        solution: null
+        solution: null,
+        topologyVersion: null
     }),
 
     props: [],
@@ -104,6 +116,21 @@ export default {
 
         items() {
             return this.$store.getters['items/activeItems'];
+        },
+
+        isTopologyChanged() {
+            if (this.topologyVersion == null) {
+                return false;
+            }
+            return this.$store.state.topologyVersion != this.topologyVersion;
+        },
+
+        textClasses() {
+            if (this.isTopologyChanged) {
+                return 'warning--text';
+            }
+
+            return '';
         },
 
         solutionSpaceEstimation() {
@@ -168,6 +195,8 @@ export default {
             }
 
             this.solution = solution;
+
+            this.topologyVersion = this.$store.state.topologyVersion;
         }
     }
 }

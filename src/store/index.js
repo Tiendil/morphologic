@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import { v4 as uuid4 } from 'uuid';
+import * as uuid from 'uuid';
 
 import Groups from './modules/groups.js';
 import Items from './modules/items.js';
@@ -12,22 +12,50 @@ export default new Vuex.Store({
     strict: (process.env.NODE_ENV !== 'production'),
 
     state: {
+        topologyVersion: uuid.v4()
     },
     mutations: {
+        updateTopologyVersion(state) {
+            state.topologyVersion = uuid.v4()
+        }
     },
     actions: {
 
-        createItem: function(state, payload) {
-            let itemId = uuid4();
+        createGroup (context, payload) {
+            let groupId = uuid.v4();
 
-            this.commit("items/createItem", {itemId: itemId});
-            this.commit("groups/addtemToGroup", {groupId: payload.groupId,
-                                                 itemId: itemId});
+            context.commit("groups/createGroup", {groupId: groupId});
+
+            context.commit("updateTopologyVersion");
         },
 
-        removeItem: function(state, payload) {
-            this.commit("items/removeItem", {itemId: payload.itemId});
-            this.commit("groups/removeItemFromGroups", {itemId: payload.itemId});
+        removeGroup (context, payload) {
+            const itemsToRemove = context.getters['groups/activeGroups'][payload.groupId].items.slice();
+
+            for (let i in itemsToRemove) {
+                context.commit("groups/removeItemFromGroups", {itemId: itemsToRemove[i]});
+            }
+
+            context.commit("groups/removeGroup", {groupId: payload.groupId});
+
+            context.commit("updateTopologyVersion");
+        },
+
+        createItem (context, payload) {
+            let itemId = uuid.v4();
+
+            context.commit("items/createItem", {itemId: itemId});
+            context.commit("groups/addtemToGroup", {groupId: payload.groupId,
+                                                    itemId: itemId});
+
+            context.commit("updateTopologyVersion");
+        },
+
+        removeItem (context, payload) {
+            context.commit("items/removeItem", {itemId: payload.itemId});
+            context.commit("groups/removeItemFromGroups", {itemId: payload.itemId});
+
+            context.commit("updateTopologyVersion");
         }
     },
     modules: {
