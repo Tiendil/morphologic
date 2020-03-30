@@ -209,6 +209,17 @@ export default {
 
             restrictions.push(new solver.ItemsRequiredRestriction(requiredItems));
 
+            // excluded items restrictions
+            const excludedItems = [];
+
+            for (let itemId in this.$store.getters['items/activeItems']) {
+                if (this.$store.getters['items/activeItems'][itemId].mode == ITEM_MODE.EXCLUDED) {
+                    excludedItems.push(itemId);
+                }
+            }
+
+            restrictions.push(new solver.ItemsExcludedRestriction(excludedItems));
+
             // solve
             const info = solver.solve(items,
                                       restrictions);

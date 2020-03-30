@@ -105,6 +105,25 @@ class ItemsRequiredRestriction {
     }
 }
 
+class ItemsExcludedRestriction {
+
+    constructor(items) {
+        this.items = items;
+        this.key = 'items-excluded';
+    }
+
+    nextMetaFor(searcher, item) {
+    }
+
+    checkUpper(searcher, item) {
+        return (this.items.indexOf(item) == -1);
+    }
+
+    checkLower(searcher) {
+        return true;
+    }
+}
+
 
 class SolutionSearcher {
 
@@ -280,4 +299,5 @@ function solve(items, restrictions) {
 
 export {solve,
         GroupRestriction,
-        ItemsRequiredRestriction};
+        ItemsRequiredRestriction,
+        ItemsExcludedRestriction};
