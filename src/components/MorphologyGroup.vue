@@ -24,13 +24,31 @@
 
         <v-spacer/>
 
-          <v-btn icon v-on:click="turnOnNameEditMode">
-            <v-icon>mdi-lead-pencil</v-icon>
-          </v-btn>
+        <v-menu offset-y>
+          <template v-slot:activator="{ on }">
+            <v-btn text v-on="on">
+              {{group.solutionCardinality.min}} … {{group.solutionCardinality.max}}
+            </v-btn>
+          </template>
 
-          <v-btn icon v-on:click="remove">
-            <v-icon>mdi-delete</v-icon>
-          </v-btn>
+          <v-list class="overflow-y-auto"
+                  style="max-height: 21em;">
+            <v-list-item v-for="borders in possibleSolutionCardinalities"
+                         :key="borders.min + '-' + borders.max"
+                         @click="setSolutionCardinality(borders)">
+              <v-list-item-title>{{ borders.min }} … {{ borders.max }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+
+        </v-menu>
+
+        <v-btn icon v-on:click="turnOnNameEditMode">
+          <v-icon>mdi-lead-pencil</v-icon>
+        </v-btn>
+
+        <v-btn icon v-on:click="remove">
+          <v-icon>mdi-delete</v-icon>
+        </v-btn>
 
       </template>
 
@@ -72,6 +90,21 @@ export default {
     computed: {
         group () {
             return this.$store.getters['groups/activeGroups'][this.groupId];
+        },
+
+        possibleSolutionCardinalities() {
+            const minCardinality = 0;
+            const maxCardinality = this.group.items.length;
+
+            const cardinalities = [];
+
+            for (let i=minCardinality; i <= maxCardinality; i++) {
+                for (let j=i; j <= maxCardinality; j++) {
+                    cardinalities.push({'min': i, 'max': j});
+                }
+            }
+
+            return cardinalities;
         }
     },
 
@@ -97,6 +130,11 @@ export default {
 
         createItem: function () {
             this.$store.dispatch("createItem", {groupId: this.groupId});
+        },
+
+        setSolutionCardinality: function (borders) {
+            this.$store.dispatch("setSolutionCardinality", {groupId: this.groupId,
+                                                            solutionCardinality: borders});
         },
     }
 }

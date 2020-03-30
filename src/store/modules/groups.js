@@ -3,7 +3,7 @@ import Vue from 'vue'
 import { v4 as uuid4 } from 'uuid';
 
 
-function RemoveItemFromGroup(group, itemId) {
+function removeItemFromGroup(group, itemId) {
     let itemIndex = group.items.indexOf(itemId);
 
     if (itemIndex == -1) {
@@ -11,12 +11,27 @@ function RemoveItemFromGroup(group, itemId) {
     }
 
     Vue.delete(group.items, itemIndex);
+
+    syncSolutionCardinality(group);
 }
 
 
-function createGroup(name='', items=null) {
+function syncSolutionCardinality(group) {
+    group.solutionCardinality.min = Math.min(group.solutionCardinality.min, group.items.length);
+    group.solutionCardinality.max = Math.min(group.solutionCardinality.max, group.items.length);
+}
+
+
+function createGroup(name='', items=null, cardinality=null) {
+    const groupItems = items ? items : [];
+
+    if (cardinality == null) {
+        cardinality = {'min': 1, 'max': 1};
+    }
+
     return {'name': name,
-            'items': items ? items : []}
+            'items': groupItems,
+            'solutionCardinality': cardinality};
 }
 
 
@@ -60,8 +75,13 @@ const Groups = {
             let itemId = payload.itemId;
 
             for (var groupId in state.groups) {
-                RemoveItemFromGroup(state.groups[groupId], itemId);
+                removeItemFromGroup(state.groups[groupId], itemId);
             }
+        },
+
+        setSolutionCardinality (state, payload) {
+            state.groups[payload.groupId].solutionCardinality = payload.solutionCardinality;
+            syncSolutionCardinality(state.groups[payload.groupId]);
         }
     },
 

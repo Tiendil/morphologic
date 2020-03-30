@@ -62,10 +62,25 @@
       <v-list-item  v-for="groupInfo in solution">
 
         <v-list-item-content>
-          <v-list-item-title>{{groups[groupInfo.groupId].name}}</v-list-item-title>
+          <v-list-item-title v-if="groups[groupInfo.groupId].name">
+            {{groups[groupInfo.groupId].name}}
+          </v-list-item-title>
+
+          <v-list-item-title v-else>
+            Unknown group
+          </v-list-item-title>
+
           <v-list-item-subtitle v-for="itemId in groupInfo.items"
                                 :key="itemId"
-                                :class="textClasses">{{items[itemId].text}}</v-list-item-subtitle>
+                                :class="textClasses">
+            <span v-if="items[itemId].text">
+              {{items[itemId].text}}
+            </span>
+
+            <span v-else>
+              Unknown item
+            </span>
+          </v-list-item-subtitle>
         </v-list-item-content>
 
       </v-list-item>
@@ -141,8 +156,8 @@ export default {
                 const group = this.groups[i];
 
                 space *= statistics.solutionSpaceEstimationForGroup(group.items.length,
-                                                                    1,
-                                                                    1);
+                                                                    group.solutionCardinality.min,
+                                                                    group.solutionCardinality.max);
             }
 
             return space;
@@ -163,10 +178,11 @@ export default {
             const groups = this.$store.getters['groups/activeGroups'];
 
             for (let groupId in groups) {
+                const group = groups[groupId];
                 const restriction = new solver.GroupRestriction(groupId,
-                                                                1,
-                                                                1,
-                                                                groups[groupId].items.slice());
+                                                                group.solutionCardinality.min,
+                                                                group.solutionCardinality.max,
+                                                                group.items.slice());
 
                 restrictions.push(restriction);
             }

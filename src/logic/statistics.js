@@ -15,7 +15,7 @@ function binomialCoefficient(n, k) {
 function solutionSpaceEstimationForGroup(n, kMin, kMax) {
     let total = 0;
 
-    for (let k=kMax; k <= kMax; k++) {
+    for (let k=kMin; k <= kMax; k++) {
         total += binomialCoefficient(n, k)
     }
 

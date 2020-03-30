@@ -26,6 +26,10 @@ export default new Vuex.Store({
 
             context.commit("groups/createGroup", {groupId: groupId});
 
+            context.dispatch('createItem', {groupId: groupId});
+            context.dispatch('setSolutionCardinality', {groupId: groupId,
+                                                        solutionCardinality: {min: 1, max: 1}});
+
             context.commit("updateTopologyVersion");
         },
 
@@ -54,6 +58,13 @@ export default new Vuex.Store({
         removeItem (context, payload) {
             context.commit("items/removeItem", {itemId: payload.itemId});
             context.commit("groups/removeItemFromGroups", {itemId: payload.itemId});
+
+            context.commit("updateTopologyVersion");
+        },
+
+        setSolutionCardinality (context, payload) {
+            context.commit("groups/setSolutionCardinality", {groupId: payload.groupId,
+                                                             solutionCardinality: payload.solutionCardinality});
 
             context.commit("updateTopologyVersion");
         }
