@@ -117,6 +117,8 @@
 import * as solver from "@/logic/solver";
 import * as statistics from "@/logic/statistics";
 
+import {MODE as ITEM_MODE} from '@/store/modules/items.js';
+
 export default {
     name: "MorphologySolutionInfo",
 
@@ -183,6 +185,7 @@ export default {
 
             let restrictions = [];
 
+            // groups restrictions
             const groups = this.$store.getters['groups/activeGroups'];
 
             for (let groupId in groups) {
@@ -195,6 +198,18 @@ export default {
                 restrictions.push(restriction);
             }
 
+            // required items restrictions
+            const requiredItems = [];
+
+            for (let itemId in this.$store.getters['items/activeItems']) {
+                if (this.$store.getters['items/activeItems'][itemId].mode == ITEM_MODE.REQUIRED) {
+                    requiredItems.push(itemId);
+                }
+            }
+
+            restrictions.push(new solver.ItemsRequiredRestriction(requiredItems));
+
+            // solve
             const info = solver.solve(items,
                                       restrictions);
 

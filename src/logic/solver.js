@@ -57,6 +57,55 @@ class GroupRestriction {
 }
 
 
+class ItemsRequiredRestriction {
+
+    constructor(items) {
+        this.items = items;
+
+        this.defaultMeta = {requiredItems: 0}
+
+        this.key = 'items-required';
+    }
+
+    nextMetaFor(searcher, item) {
+        const meta = searcher.getMeta(this.key, this.defaultMeta);
+
+        if (this.items.indexOf(item) == -1) {
+            return {requiredItems: meta.requiredItems};
+        }
+
+        return {requiredItems: meta.requiredItems + 1};
+    }
+
+    // TODO: we can restrict brute force by checking
+    //       if we already processed group with requred items (and do not use them)
+    checkUpper(searcher, item) {
+
+        // if (!this.isItemBelongToGroup(item)) {
+        //     return true;
+        // }
+
+        // const meta = searcher.getMeta(this.key, this.defaultMeta);
+
+        // if (this.maxItems < meta.usedItems + 1) {
+        //     return false;
+        // }
+
+        return true;
+    }
+
+    checkLower(searcher) {
+        const meta = searcher.getMeta(this.key, this.defaultMeta);
+
+        if (meta.requiredItems < this.items.length) {
+            return false;
+        }
+
+        return true;
+    }
+}
+
+
 class SolutionSearcher {
 
     constructor(bestSolutionsNumber) {
@@ -188,7 +237,11 @@ function getRestrictionsMetas(searcher, item, restrictions) {
 function search(searcher, items, restrictions, nextItemIndex, statistics) {
 
     if (checkLowerRestrictions(searcher, restrictions)) {
+        // TODO: probably wrong place to increment,
+        //       since we can skip a lot of permutations
+        // TODO: split permutations statistics and solutions statistics
         statistics.realDecissionSpace += 1;
+
         searcher.acceptCurrentSolution(searcher.depth());
     }
 
@@ -225,4 +278,6 @@ function solve(items, restrictions) {
 }
 
 
-export {solve, GroupRestriction};
+export {solve,
+        GroupRestriction,
+        ItemsRequiredRestriction};
