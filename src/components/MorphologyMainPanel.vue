@@ -1,30 +1,22 @@
 <template>
-<v-row>
-  <v-col>
-    <h2>Main Panel</h2>
-
-    <v-btn block
-           color="primary"
-           v-on:click="createGroup">
-      Create group
-    </v-btn>
-
-  </v-col>
-</v-row>
+  <morphology-solution-info/>
 </template>
 
 <script>
-  export default {
+
+import MorphologySolutionInfo from "@/components/MorphologySolutionInfo";
+
+export default {
     name: 'MorphologyMainPanel',
+
+    components: {
+        MorphologySolutionInfo
+    },
 
     data: () => ({
     }),
 
     methods: {
-        createGroup: function () {
-            this.$store.commit("groups/createGroup");
-        },
     }
-
   }
 </script>

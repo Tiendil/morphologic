@@ -10,11 +10,11 @@
 
       <v-row>
 
-        <v-col cols="1">
+        <v-col cols="2">
           <morphology-main-panel/>
         </v-col>
 
-        <v-col cols="11">
+        <v-col cols="10">
           <router-view/>
         </v-col>
       </v-row>

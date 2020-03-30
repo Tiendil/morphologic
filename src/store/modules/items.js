@@ -6,11 +6,11 @@ const Items = {
     strict: (process.env.NODE_ENV !== 'production'),
 
     state: {
-        items: {'item-uid-1': {'text': 'item x'},
-                'item-uid-2': {'text': 'item y'},
-                'item-uid-3': {'text': 'item z'},
-                'item-uid-4': {'text': 'item p'},
-                'item-uid-5': {'text': 'item q'}}
+        items: {'item-uid-1': {'text': 'item 1'},
+                'item-uid-2': {'text': 'item 2'},
+                'item-uid-3': {'text': 'item 3'},
+                'item-uid-4': {'text': 'item 4'},
+                'item-uid-5': {'text': 'item 5'}}
     },
 
     getters: {
