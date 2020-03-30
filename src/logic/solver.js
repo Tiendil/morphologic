@@ -127,11 +127,11 @@ class ItemsExcludedRestriction {
 
 class SolutionSearcher {
 
-    constructor(bestSolutionsNumber) {
+    constructor(bestSolutionsLimit) {
         this.items = [];
         this.rulesMeta = {};
         this.bestSolutions = [];
-        this.bestSolutionsNumber = bestSolutionsNumber;
+        this.bestSolutionsLimit = bestSolutionsLimit;
     }
 
     depth() {
@@ -200,7 +200,7 @@ class SolutionSearcher {
             this.bestSolutions.pop();
         }
 
-        if (this.bestSolutions.length == this.bestSolutionsNumber) {
+        if (this.bestSolutions.length == this.bestSolutionsLimit) {
             return;
         }
 
