@@ -57,74 +57,6 @@ class GroupRestriction {
 }
 
 
-class ItemsRequiredRestriction {
-
-    constructor(items) {
-        this.items = items;
-
-        this.defaultMeta = {requiredItems: 0}
-
-        this.key = 'items-required';
-    }
-
-    nextMetaFor(searcher, item) {
-        const meta = searcher.getMeta(this.key, this.defaultMeta);
-
-        if (this.items.indexOf(item) == -1) {
-            return {requiredItems: meta.requiredItems};
-        }
-
-        return {requiredItems: meta.requiredItems + 1};
-    }
-
-    // TODO: we can restrict brute force by checking
-    //       if we already processed group with requred items (and do not use them)
-    checkUpper(searcher, item) {
-
-        // if (!this.isItemBelongToGroup(item)) {
-        //     return true;
-        // }
-
-        // const meta = searcher.getMeta(this.key, this.defaultMeta);
-
-        // if (this.maxItems < meta.usedItems + 1) {
-        //     return false;
-        // }
-
-        return true;
-    }
-
-    checkLower(searcher) {
-        const meta = searcher.getMeta(this.key, this.defaultMeta);
-
-        if (meta.requiredItems < this.items.length) {
-            return false;
-        }
-
-        return true;
-    }
-}
-
-class ItemsExcludedRestriction {
-
-    constructor(items) {
-        this.items = items;
-        this.key = 'items-excluded';
-    }
-
-    nextMetaFor(searcher, item) {
-    }
-
-    checkUpper(searcher, item) {
-        return (this.items.indexOf(item) == -1);
-    }
-
-    checkLower(searcher) {
-        return true;
-    }
-}
-
-
 class SolutionSearcher {
 
     constructor(bestSolutionsLimit) {
@@ -282,22 +214,22 @@ function search(searcher, items, restrictions, nextItemIndex, statistics) {
 
 
 
-function solve(items, restrictions) {
+function solve(items, checkers) {
 
     const statistics = {checkedSolutions: 0,
                         ratedSolutions: 0};
 
     const searcher = new SolutionSearcher(3);
 
-    search(searcher, items, restrictions, 0, statistics);
+    search(searcher, items, checkers, 0, statistics);
 
-    return {'bestSolution': searcher.bestSolution().items,
+    const bestSolution = searcher.bestSolution();
+
+    return {'bestSolution': bestSolution ? bestSolution.items : null,
             'statistics': statistics};
 
 }
 
 
 export {solve,
-        GroupRestriction,
-        ItemsRequiredRestriction,
-        ItemsExcludedRestriction};
+        GroupRestriction};

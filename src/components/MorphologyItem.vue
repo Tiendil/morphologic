@@ -24,26 +24,8 @@
     </v-list-item-content>
 
     <v-list-item-action>
-      <v-menu offset-y>
-        <template v-slot:activator="{ on }">
-          <v-btn icon x-small v-on="on">
-            <v-icon>mdi-state-machine</v-icon>
-          </v-btn>
-        </template>
-
-        <v-list>
-
-          <v-list-item v-for="mode in itemModes"
-                       :key="mode"
-                       @click="changeMode(mode)">
-            <v-list-item-content>
-              <v-list-item-title class="text-capitalize">{{mode}}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-
-        </v-list>
-
-      </v-menu>
+      <morphology-restriction-item-mode :item-id="itemId"
+                                        :restriction-id="itemModeRestrictionId"/>
     </v-list-item-action>
 
     <v-list-item-action>
@@ -64,10 +46,18 @@
 </template>
 
 <script>
-import {MODE} from '@/store/modules/items.js';
+
+import * as ItemMode from '@/logic/restrictions/ItemMode.js';
+
+import MorphologyRestrictionItemMode from "@/components/restrictions/MorphologyRestrictionItemMode";
+
 
 export default {
     name: 'MorphologyItem',
+
+    components: {
+        MorphologyRestrictionItemMode
+    },
 
     data: () => ({
         textEditMode: false
@@ -80,22 +70,27 @@ export default {
             return this.$store.getters['items/activeItems'][this.itemId];
         },
 
-        itemModes () {
-            let keys = Object.keys(MODE);
-            keys.sort();
-            return keys;
+        itemModeRestrictionId() {
+            return this.$store.getters['restrictions/restrictionIdForItem'](ItemMode.TYPE,
+                                                                            this.itemId);
         },
 
         itemTextClasses() {
-            if (this.item.mode == MODE.OPTIONAL) {
+            if (this.itemModeRestrictionId == null) {
                 return '';
             }
 
-            if (this.item.mode == MODE.REQUIRED) {
+            const restriction = this.$store.getters['restrictions/restrictionById'](this.itemModeRestrictionId);
+
+            if (ItemMode.ITEM_MODE.OPTIONAL.is(restriction.mode)) {
+                return '';
+            }
+
+            if (ItemMode.ITEM_MODE.REQUIRED.is(restriction.mode)) {
                 return 'success--text font-weight-medium';
             }
 
-            if (this.item.mode == MODE.EXCLUDED) {
+            if (ItemMode.ITEM_MODE.EXCLUDED.is(restriction.mode)) {
                 return 'warning--text font-weight-medium';
             }
         }
@@ -118,11 +113,6 @@ export default {
 
         remove: function() {
             this.$store.dispatch("removeItem", {itemId: this.itemId});
-        },
-
-        changeMode: function(mode) {
-            this.$store.dispatch("changeItemMode", {itemId: this.itemId,
-                                                    mode: mode});
         }
     }
 }

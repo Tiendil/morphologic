@@ -2,16 +2,8 @@
 import Vue from 'vue'
 
 
-const MODE = {
-    OPTIONAL: 'OPTIONAL',
-    REQUIRED: 'REQUIRED',
-    EXCLUDED: 'EXCLUDED'
-};
-
-
-function createItem(text='', mode=MODE.OPTIONAL) {
-    return {'text': text,
-            'mode': mode};
+function createItem(text='') {
+    return {'text': text};
 }
 
 
@@ -39,10 +31,6 @@ const Items = {
             state.items[payload.itemId].text = payload.text;
         },
 
-        changeItemMode: function(state, payload) {
-            state.items[payload.itemId].mode = payload.mode;
-        },
-
         createItem: function(state, payload) {
             Vue.set(state.items, payload.itemId,  createItem());
         },
@@ -59,4 +47,4 @@ const Items = {
     }
 }
 
-export {Items, MODE};
+export {Items};

@@ -5,6 +5,7 @@ import * as uuid from 'uuid';
 
 import Groups from './modules/groups.js';
 import {Items} from './modules/items.js';
+import {Restrictions} from './modules/restrictions.js';
 
 Vue.use(Vuex)
 
@@ -69,15 +70,16 @@ export default new Vuex.Store({
             context.commit("updateTopologyVersion");
         },
 
-        changeItemMode (context, payload) {
-            context.commit("items/changeItemMode", {itemId: payload.itemId,
-                                                    mode: payload.mode});
+        setRestriction (context, payload) {
+            context.commit("restrictions/setRestriction", {restrictionId: payload.restrictionId,
+                                                           restriction: payload.restriction});
 
             context.commit("updateTopologyVersion");
         }
     },
     modules: {
         groups: Groups,
-        items: Items
+        items: Items,
+        restrictions: Restrictions
     }
 })

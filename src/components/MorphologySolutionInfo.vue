@@ -139,7 +139,7 @@
 import * as solver from "@/logic/solver";
 import * as statistics from "@/logic/statistics";
 
-import {MODE as ITEM_MODE} from '@/store/modules/items.js';
+// import {MODE as ITEM_MODE} from '@/store/modules/items.js';
 
 export default {
     name: "MorphologySolutionInfo",
@@ -205,46 +205,26 @@ export default {
                 items.push(itemId);
             }
 
-            let restrictions = [];
+            let checkers = [];
 
             // groups restrictions
             const groups = this.$store.getters['groups/activeGroups'];
 
             for (let groupId in groups) {
                 const group = groups[groupId];
-                const restriction = new solver.GroupRestriction(groupId,
-                                                                group.solutionCardinality.min,
-                                                                group.solutionCardinality.max,
-                                                                group.items.slice());
+                const checker = new solver.GroupRestriction(groupId,
+                                                            group.solutionCardinality.min,
+                                                            group.solutionCardinality.max,
+                                                            group.items.slice());
 
-                restrictions.push(restriction);
+                checkers.push(checker);
             }
 
-            // required items restrictions
-            const requiredItems = [];
-
-            for (let itemId in this.$store.getters['items/activeItems']) {
-                if (this.$store.getters['items/activeItems'][itemId].mode == ITEM_MODE.REQUIRED) {
-                    requiredItems.push(itemId);
-                }
-            }
-
-            restrictions.push(new solver.ItemsRequiredRestriction(requiredItems));
-
-            // excluded items restrictions
-            const excludedItems = [];
-
-            for (let itemId in this.$store.getters['items/activeItems']) {
-                if (this.$store.getters['items/activeItems'][itemId].mode == ITEM_MODE.EXCLUDED) {
-                    excludedItems.push(itemId);
-                }
-            }
-
-            restrictions.push(new solver.ItemsExcludedRestriction(excludedItems));
+            checkers.push(...this.$store.getters['restrictions/allCheckers']);
 
             // solve
             const info = solver.solve(items,
-                                      restrictions);
+                                      checkers);
 
             this.statistics = info.statistics;
 
