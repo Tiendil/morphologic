@@ -139,6 +139,8 @@
 import * as solver from "@/logic/solver";
 import * as statistics from "@/logic/statistics";
 
+import * as GroupCardinaltiy from '@/logic/restrictions/GroupCardinality.js';
+
 // import {MODE as ITEM_MODE} from '@/store/modules/items.js';
 
 export default {
@@ -184,12 +186,16 @@ export default {
 
             let space = 1;
 
-            for (let i in this.groups) {
-                const group = this.groups[i];
+            for (let groupId in this.groups) {
+                const group = this.groups[groupId];
+
+                const restrictionId = this.$store.getters["restrictions/restrictionIdForGroup"](GroupCardinaltiy.TYPE,
+                                                                                                groupId);
+                const restriction = this.$store.getters["restrictions/restrictionById"](restrictionId);
 
                 space *= statistics.solutionSpaceEstimationForGroup(group.items.length,
-                                                                    group.solutionCardinality.min,
-                                                                    group.solutionCardinality.max);
+                                                                    restriction.minCardinality,
+                                                                    restriction.maxCardinality);
             }
 
             return space;
@@ -198,6 +204,7 @@ export default {
     },
 
     methods: {
+
         runSolver() {
             const items = [];
 
@@ -207,20 +214,14 @@ export default {
 
             let checkers = [];
 
-            // groups restrictions
-            const groups = this.$store.getters['groups/activeGroups'];
+            const allRestrictions = this.$store.getters['restrictions/allRestrictions'];
 
-            for (let groupId in groups) {
-                const group = groups[groupId];
-                const checker = new solver.GroupRestriction(groupId,
-                                                            group.solutionCardinality.min,
-                                                            group.solutionCardinality.max,
-                                                            group.items.slice());
+            for (let i in allRestrictions) {
+                const restriction = allRestrictions[i];
 
-                checkers.push(checker);
+                checkers.push(...restriction.getChekes(this.$store.getters['groups/activeGroups'],
+                                                       this.$store.getters['items/activeItems']));
             }
-
-            checkers.push(...this.$store.getters['restrictions/allCheckers']);
 
             // solve
             const info = solver.solve(items,

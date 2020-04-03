@@ -45,17 +45,6 @@ class ModeRequiredChecker {
     // TODO: we can restrict brute force by checking
     //       if we already processed group with requred items (and do not use them)
     checkUpper(searcher, item) {
-
-        // if (!this.isItemBelongToGroup(item)) {
-        //     return true;
-        // }
-
-        // const meta = searcher.getMeta(this.key, this.defaultMeta);
-
-        // if (this.maxItems < meta.usedItems + 1) {
-        //     return false;
-        // }
-
         return true;
     }
 
@@ -114,7 +103,15 @@ class Restriction {
         return this.itemId == itemId;
     }
 
-    getChekes() {
+    isForGroup(groupId) {
+        return false;
+    }
+
+    syncWithGroup(group) {
+        return false;
+    }
+
+    getChekes(groups, items) {
         if (ITEM_MODE.REQUIRED.is(this.mode)) {
             return [new ModeRequiredChecker(this.itemId)];
         }
@@ -127,8 +124,6 @@ class Restriction {
     }
 
 }
-
-console.log('imported')
 
 
 export {TYPE, ITEM_MODE, ITEM_MODE_INFO, Restriction};

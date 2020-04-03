@@ -16,17 +16,14 @@ const Restrictions = {
 
     getters: {
 
-        allCheckers (state) {
-            const checkers = [];
+        allRestrictions (state, getters) {
+            const restrictions = [];
 
             for (let restrictionId in state.restrictions) {
-                const restrictionData = state.restrictions[restrictionId];
-                const restriction = restrictions.deserialize(restrictionData.type, restrictionData.data);
-
-                checkers.push(...restriction.getChekes());
+                restrictions.push(getters.restrictionById(restrictionId));
             }
 
-            return checkers;
+            return restrictions;
         },
 
         restrictionById: (state) => (restrictionId) => {
@@ -52,8 +49,25 @@ const Restrictions = {
             }
 
             return null;
-        }
+        },
 
+        restrictionIdForGroup: (state) => (type, groupId) => {
+            for (var restrictionId in state.restrictions) {
+                const restrictionData = state.restrictions[restrictionId];
+
+                if (restrictionData.type != type) {
+                    continue;
+                }
+
+                const restriction = restrictions.deserialize(type, restrictionData.data);
+
+                if (restriction.isForGroup(groupId)) {
+                    return restrictionId;
+                }
+            }
+
+            return null;
+        }
     },
 
     mutations: {
@@ -71,6 +85,21 @@ const Restrictions = {
     },
 
     actions: {
+
+        syncWithGroups: function(context, payload) {
+            for (let restrictionId in context.store.restrictions) {
+                let restriction = context.store.restrictionById(restrictionId);
+
+                for (let groupId in payload.groups) {
+                    let group = payload.groups[groupId];
+
+                    if (restriction.syncWithGroup(group)) {
+                        context.commit("restrictions/setRestriction", {restrictionId: restrictionId,
+                                                                       restriction: restriction});
+                    }
+                }
+            }
+        }
     },
 
     modules: {

@@ -1,5 +1,6 @@
 
 import * as ItemMode from '@/logic/restrictions/ItemMode.js';
+import * as GroupCardinality from '@/logic/restrictions/GroupCardinality.js';
 
 
 function buildClasses(classes) {
@@ -12,7 +13,8 @@ function buildClasses(classes) {
     return result;
 }
 
-const TYPES = buildClasses([ItemMode]);
+const TYPES = buildClasses([ItemMode,
+                            GroupCardinality]);
 
 
 function getClass(type) {

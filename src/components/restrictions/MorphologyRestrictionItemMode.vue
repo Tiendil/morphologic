@@ -1,29 +1,25 @@
 <template>
 
-<v-list-item>
+<v-menu offset-y>
+  <template v-slot:activator="{ on }">
+    <v-btn icon x-small v-on="on">
+      <v-icon>mdi-state-machine</v-icon>
+    </v-btn>
+  </template>
 
-  <v-menu offset-y>
-    <template v-slot:activator="{ on }">
-      <v-btn icon x-small v-on="on">
-        <v-icon>mdi-state-machine</v-icon>
-      </v-btn>
-    </template>
+  <v-list>
 
-    <v-list>
+    <v-list-item v-for="mode in itemModes"
+                 :key="mode.key"
+                 @click="changeMode(mode)">
+      <v-list-item-content>
+        <v-list-item-title class="text-capitalize">{{mode}}</v-list-item-title>
+      </v-list-item-content>
+    </v-list-item>
 
-      <v-list-item v-for="mode in itemModes"
-                   :key="mode.key"
-                   @click="changeMode(mode)">
-        <v-list-item-content>
-          <v-list-item-title class="text-capitalize">{{mode}}</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
+  </v-list>
 
-    </v-list>
-
-  </v-menu>
-
-</v-list-item>
+</v-menu>
 
 </template>
 

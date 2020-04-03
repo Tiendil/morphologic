@@ -3,60 +3,6 @@
 ///////////////////////////////////////////
 
 
-class GroupRestriction {
-
-    constructor(groupId, minItems, maxItems, items) {
-        this.groupId = groupId;
-        this.minItems = minItems;
-        this.maxItems = maxItems;
-        this.items = items;
-
-        this.defaultMeta = {usedItems: 0}
-
-        this.key = 'group-' + this.groupId;
-    }
-
-    isItemBelongToGroup(item) {
-        return (this.items.indexOf(item) != -1);
-    }
-
-    nextMetaFor(searcher, item) {
-        if (!this.isItemBelongToGroup(item)) {
-            return null;
-        }
-
-        const meta = searcher.getMeta(this.key, this.defaultMeta);
-
-        return {usedItems: meta.usedItems + 1};
-    }
-
-    checkUpper(searcher, item) {
-
-        if (!this.isItemBelongToGroup(item)) {
-            return true;
-        }
-
-        const meta = searcher.getMeta(this.key, this.defaultMeta);
-
-        if (this.maxItems < meta.usedItems + 1) {
-            return false;
-        }
-
-        return true;
-    }
-
-    checkLower(searcher) {
-        const meta = searcher.getMeta(this.key, this.defaultMeta);
-
-        if (meta.usedItems < this.minItems) {
-            return false;
-        }
-
-        return true;
-    }
-}
-
-
 class SolutionSearcher {
 
     constructor(bestSolutionsLimit) {
@@ -231,5 +177,4 @@ function solve(items, checkers) {
 }
 
 
-export {solve,
-        GroupRestriction};
+export {solve};

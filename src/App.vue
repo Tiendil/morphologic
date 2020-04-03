@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import * as uuid from 'uuid';
 
 import MorphologyGroup from '@/components/MorphologyGroup';
 import MorphologyMainPanel from '@/components/MorphologyMainPanel';
@@ -37,7 +38,20 @@ export default {
     },
 
     data: () => ({
-    //
-  }),
+    }),
+
+    created: function() {
+        const group1Id = uuid.v4();
+        this.$store.dispatch("createGroup", {"groupId": group1Id, "name": "XYZ", "createFirstItem": false});
+
+        const group2Id = uuid.v4();
+        this.$store.dispatch("createGroup", {"groupId": group2Id, "name": "P Q R S", "createFirstItem": false});
+
+        this.$store.dispatch("createItem", {groupId: group1Id, text: "item 1"});
+        this.$store.dispatch("createItem", {groupId: group1Id, text: "item 2"});
+        this.$store.dispatch("createItem", {groupId: group2Id, text: "item 3"});
+        this.$store.dispatch("createItem", {groupId: group2Id, text: "item 4"});
+        this.$store.dispatch("createItem", {groupId: group1Id, text: "item 5"});
+    }
 };
 </script>

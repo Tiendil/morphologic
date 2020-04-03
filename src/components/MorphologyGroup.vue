@@ -24,23 +24,8 @@
 
         <v-spacer/>
 
-        <v-menu offset-y>
-          <template v-slot:activator="{ on }">
-            <v-btn text v-on="on">
-              {{group.solutionCardinality.min}} … {{group.solutionCardinality.max}}
-            </v-btn>
-          </template>
-
-          <v-list class="overflow-y-auto"
-                  style="max-height: 21em;">
-            <v-list-item v-for="borders in possibleSolutionCardinalities"
-                         :key="borders.min + '-' + borders.max"
-                         @click="setSolutionCardinality(borders)">
-              <v-list-item-title>{{ borders.min }} … {{ borders.max }}</v-list-item-title>
-            </v-list-item>
-          </v-list>
-
-        </v-menu>
+        <morphology-restriction-group-cardinality :group-id="groupId"
+                                                  :restriction-id="groupCardinalityRestrictionId"/>
 
         <v-btn icon v-on:click="turnOnNameEditMode">
           <v-icon>mdi-lead-pencil</v-icon>
@@ -72,13 +57,19 @@
 </template>
 
 <script>
+import * as GroupCardinality from '@/logic/restrictions/GroupCardinality.js';
+
+
 import MorphologyItem from "@/components/MorphologyItem";
+import MorphologyRestrictionGroupCardinality from "@/components/restrictions/MorphologyRestrictionGroupCardinality";
+
 
 export default {
     name: "MorphologyGroup",
 
     components: {
-        MorphologyItem
+        MorphologyItem,
+        MorphologyRestrictionGroupCardinality
     },
 
     data: () => ({
@@ -92,19 +83,9 @@ export default {
             return this.$store.getters['groups/activeGroups'][this.groupId];
         },
 
-        possibleSolutionCardinalities() {
-            const minCardinality = 0;
-            const maxCardinality = this.group.items.length;
-
-            const cardinalities = [];
-
-            for (let i=minCardinality; i <= maxCardinality; i++) {
-                for (let j=i; j <= maxCardinality; j++) {
-                    cardinalities.push({'min': i, 'max': j});
-                }
-            }
-
-            return cardinalities;
+        groupCardinalityRestrictionId() {
+            return this.$store.getters['restrictions/restrictionIdForGroup'](GroupCardinality.TYPE,
+                                                                             this.groupId);
         }
     },
 
@@ -130,11 +111,6 @@ export default {
 
         createItem: function () {
             this.$store.dispatch("createItem", {groupId: this.groupId});
-        },
-
-        setSolutionCardinality: function (borders) {
-            this.$store.dispatch("setSolutionCardinality", {groupId: this.groupId,
-                                                            solutionCardinality: borders});
         },
     }
 }

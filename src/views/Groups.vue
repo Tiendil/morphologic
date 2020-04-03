@@ -34,7 +34,7 @@ export default {
 
     methods: {
         createGroup: function () {
-            this.$store.dispatch("createGroup");
+            this.$store.dispatch("createGroup", {"createFirstItem": true});
         },
     }
 }
