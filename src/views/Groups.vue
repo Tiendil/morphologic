@@ -1,19 +1,17 @@
 <template>
-<v-container>
-  <v-row>
-    <morphology-group v-for="(_, groupId) in activeGroups"
-                      :group-id="groupId"
-                      :key="groupId"/>
+<v-row>
+  <morphology-group v-for="(_, groupId) in activeGroups"
+                    :group-id="groupId"
+                    :key="groupId"/>
 
-    <v-col cols="1">
-      <v-btn block
-             color="primary"
-             v-on:click="createGroup">
-        Create group
-      </v-btn>
-    </v-col>
-  </v-row>
-</v-container>
+  <v-col cols="1">
+    <v-btn block
+           color="primary"
+           v-on:click="createGroup">
+      Create group
+    </v-btn>
+  </v-col>
+</v-row>
 </template>
 
 <script>
