@@ -1,13 +1,13 @@
 <template>
 <v-row>
-  <morphology-group v-for="(_, groupId) in activeGroups"
-                    :group-id="groupId"
-                    :key="groupId"/>
+  <morphology-group v-for="ruleId in groupRulesIds"
+                    :rule-id="ruleId"
+                    :key="ruleId"/>
 
   <v-col cols="1">
     <v-btn block
            color="primary"
-           v-on:click="createGroup">
+           v-on:click="createGroupRule">
       Create group
     </v-btn>
   </v-col>
@@ -25,14 +25,14 @@ export default {
     },
 
     computed: {
-        activeGroups () {
-            return this.$store.getters['groups/activeGroups'];
+        groupRulesIds () {
+            return this.$store.getters['rules/groupRulesIds'];
         }
     },
 
     methods: {
-        createGroup: function () {
-            this.$store.dispatch("createGroup", {"createFirstItem": true});
+        createGroupRule: function () {
+            this.$store.dispatch("createGroupRule", {"createFirstItem": true});
         },
     }
 }

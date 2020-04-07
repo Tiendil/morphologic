@@ -18,63 +18,21 @@
     <v-divider></v-divider>
     <v-subheader>General</v-subheader>
 
-    <v-list-item>
+    <morphology-solution-statistics-record caption="Possible solutions"
+                                           :is-changed="isTopologyChanged"
+                                           :value="fullSolutionsSpace"/>
 
-      <v-list-item-content>
-        <v-list-item-title>Expected solutions:</v-list-item-title>
-      </v-list-item-content>
+    <morphology-solution-statistics-record caption="Expected solutions"
+                                           :is-changed="isTopologyChanged"
+                                           :value="solutionsSpaceEstimation"/>
 
-      <v-list-item-action>
-        <v-list-item-action-text>
-          {{solutionSpaceEstimation}}
-        </v-list-item-action-text>
-      </v-list-item-action>
+    <morphology-solution-statistics-record caption="Checked solutions"
+                                           :is-changed="isTopologyChanged"
+                                           :value="statistics && statistics.checkedSolutions"/>
 
-    </v-list-item>
-
-    <v-list-item>
-
-      <v-list-item-content>
-        <v-list-item-title>Checked solutions:</v-list-item-title>
-      </v-list-item-content>
-
-      <v-list-item-action>
-
-        <v-list-item-action-text v-if="statistics">
-          <span :class="textClasses">
-            {{statistics.checkedSolutions}}
-          </span>
-        </v-list-item-action-text>
-
-        <v-list-item-action-text v-else>
-          —
-        </v-list-item-action-text>
-
-      </v-list-item-action>
-
-    </v-list-item>
-
-    <v-list-item>
-
-      <v-list-item-content>
-        <v-list-item-title>Rated solutions:</v-list-item-title>
-      </v-list-item-content>
-
-      <v-list-item-action>
-
-        <v-list-item-action-text v-if="statistics">
-          <span :class="textClasses">
-            {{statistics.ratedSolutions}}
-          </span>
-        </v-list-item-action-text>
-
-        <v-list-item-action-text v-else>
-          —
-        </v-list-item-action-text>
-
-      </v-list-item-action>
-
-    </v-list-item>
+    <morphology-solution-statistics-record caption="Rated solutions"
+                                           :is-changed="isTopologyChanged"
+                                           :value="statistics && statistics.ratedSolutions"/>
 
     <v-divider></v-divider>
 
@@ -85,8 +43,8 @@
                     :key="groupInfo.grupId">
 
         <v-list-item-content>
-          <v-list-item-title v-if="groups[groupInfo.groupId].name">
-            {{groups[groupInfo.groupId].name}}
+          <v-list-item-title v-if="rules[groupInfo.ruleId].name">
+            {{rules[groupInfo.ruleId].name}}
           </v-list-item-title>
 
           <v-list-item-title v-else>
@@ -136,17 +94,18 @@
 </template>
 
 <script>
+import * as rules from "@/logic/rules";
 import * as solver from "@/logic/solver";
 import * as statistics from "@/logic/statistics";
 
-import * as GroupCardinaltiy from '@/logic/restrictions/GroupCardinality.js';
+import MorphologySolutionStatisticsRecord from "@/components/MorphologySolutionStatisticsRecord";
 
-// import {MODE as ITEM_MODE} from '@/store/modules/items.js';
 
 export default {
     name: "MorphologySolutionInfo",
 
     components: {
+        MorphologySolutionStatisticsRecord
     },
 
     data: () => ({
@@ -159,12 +118,12 @@ export default {
 
     computed: {
 
-        groups() {
-            return this.$store.getters['groups/activeGroups'];
-        },
-
         items() {
             return this.$store.getters['items/activeItems'];
+        },
+
+        rules() {
+            return this.$store.getters['rules/activeRules'];
         },
 
         isTopologyChanged() {
@@ -175,27 +134,29 @@ export default {
         },
 
         textClasses() {
-            if (this.isTopologyChanged) {
+            if (this.isChanged) {
                 return 'warning--text';
             }
 
             return '';
         },
 
-        solutionSpaceEstimation() {
+        fullSolutionsSpace() {
+            return statistics.factorial(Object.keys(this.items).length);
+        },
+
+        solutionsSpaceEstimation() {
+
+            const rulesIds = this.$store.getters['rules/groupRulesIds'];
 
             let space = 1;
 
-            for (let groupId in this.groups) {
-                const group = this.groups[groupId];
+            for (let i in rulesIds) {
+                const rule = this.$store.getters['rules/ruleById'](rulesIds[i]);
 
-                const restrictionId = this.$store.getters["restrictions/restrictionIdForGroup"](GroupCardinaltiy.TYPE,
-                                                                                                groupId);
-                const restriction = this.$store.getters["restrictions/restrictionById"](restrictionId);
-
-                space *= statistics.solutionSpaceEstimationForGroup(group.items.length,
-                                                                    restriction.minCardinality,
-                                                                    restriction.maxCardinality);
+                space *= statistics.solutionSpaceEstimationForGroup(rule.template.items.length,
+                                                                    rule.condition.args.nOf.min,
+                                                                    rule.condition.args.nOf.max);
             }
 
             return space;
@@ -206,40 +167,39 @@ export default {
     methods: {
 
         runSolver() {
-            const items = [];
-
-            for (let itemId in this.$store.getters['items/activeItems']) {
-                items.push(itemId);
-            }
+            // get checkers
+            const items = Object.keys(this.$store.getters['items/activeItems']);
 
             let checkers = [];
 
-            const allRestrictions = this.$store.getters['restrictions/allRestrictions'];
+            for (let ruleId in this.rules) {
+                const rule = this.rules[ruleId];
 
-            for (let i in allRestrictions) {
-                const restriction = allRestrictions[i];
-
-                checkers.push(...restriction.getChekes(this.$store.getters['groups/activeGroups'],
-                                                       this.$store.getters['items/activeItems']));
+                checkers.push(...rules.getCheckers(rule));
             }
 
             // solve
-            const info = solver.solve(items,
-                                      checkers);
+            const info = solver.solve(items, checkers);
 
+            // process result
             this.statistics = info.statistics;
 
             let solution = [];
 
-            for (let groupId in this.groups) {
+            const groupRulesIds = this.$store.getters['rules/groupRulesIds'];
 
-                const groupInfo = {'groupId': groupId,
+            for (let i in groupRulesIds) {
+                const ruleId = groupRulesIds[i];
+
+                const groupRule = this.rules[ruleId];
+
+                const groupInfo = {'ruleId': ruleId,
                                    'items': []};
 
                 for (let i in info.bestSolution) {
                     const itemId = info.bestSolution[i];
 
-                    if (this.groups[groupId].items.indexOf(itemId) != -1) {
+                    if (groupRule.template.items.indexOf(itemId) != -1) {
                         groupInfo.items.push(itemId);
                     }
                 }

@@ -19,10 +19,10 @@
             <v-col>
               <v-btn-toggle>
                 <v-btn color="primary" outlined to="/">Groups</v-btn>
-                <v-btn color="primary" outlined to="/restrictions">
-                  Restrictions
+                <v-btn color="primary" outlined to="/rules">
+                  Rules
                   —
-                  {{totalRestrictions}}
+                  {{totalRules}}
                 </v-btn>
               </v-btn-toggle>
             </v-col>
@@ -39,6 +39,8 @@
 <script>
 import * as uuid from 'uuid';
 
+import * as rules from '@/logic/rules.js';
+
 import MorphologyGroup from '@/components/MorphologyGroup';
 import MorphologyMainPanel from '@/components/MorphologyMainPanel';
 
@@ -54,32 +56,28 @@ export default {
     }),
 
     computed: {
-        totalRestrictions () {
-            return Object.keys(this.$store.getters['restrictions/allRestrictions']).length;
+        totalRules () {
+            return this.$store.getters['rules/rulesNumber'];
         }
     },
 
     created: function() {
-        const group1Id = uuid.v4();
-        this.$store.dispatch("createGroup", {"groupId": group1Id, "name": "XYZ", "createFirstItem": false});
+        const itemsIds = [];
 
-        const group2Id = uuid.v4();
-        this.$store.dispatch("createGroup", {"groupId": group2Id, "name": "P Q R S", "createFirstItem": false});
+        for (let i=0; i<8; i++) {
+            const itemId = uuid.v4();
+            this.$store.dispatch("createItem", {itemId: itemId, text: `item ${i}`});
+            itemsIds.push(itemId);
+        }
 
-        const group3Id = uuid.v4();
-        this.$store.dispatch("createGroup", {"groupId": group3Id, "name": "third group", "createFirstItem": false});
+        this.$store.dispatch("createGroupRule", {name: "XYZ",
+                                                 items: [itemsIds[0], itemsIds[1], itemsIds[4]]});
 
-        this.$store.dispatch("createItem", {groupId: group1Id, text: "item 1"});
-        this.$store.dispatch("createItem", {groupId: group1Id, text: "item 2"});
+        this.$store.dispatch("createGroupRule", {name: "P Q R S",
+                                                 items: [itemsIds[2], itemsIds[3]]});
 
-        this.$store.dispatch("createItem", {groupId: group2Id, text: "item 3"});
-        this.$store.dispatch("createItem", {groupId: group2Id, text: "item 4"});
-
-        this.$store.dispatch("createItem", {groupId: group1Id, text: "item 5"});
-
-        this.$store.dispatch("createItem", {groupId: group3Id, text: "item 6"});
-        this.$store.dispatch("createItem", {groupId: group3Id, text: "item 7"});
-        this.$store.dispatch("createItem", {groupId: group3Id, text: "item 8"});
+        this.$store.dispatch("createGroupRule", {name: "third group",
+                                                 items: [itemsIds[5], itemsIds[6], itemsIds[7]]});
     }
 };
 </script>

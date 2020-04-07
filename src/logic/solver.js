@@ -7,7 +7,6 @@ class SolutionSearcher {
 
     constructor(bestSolutionsLimit) {
         this.items = [];
-        this.rulesMeta = {};
         this.bestSolutions = [];
         this.bestSolutionsLimit = bestSolutionsLimit;
     }
@@ -16,51 +15,11 @@ class SolutionSearcher {
         return this.items.length;
     }
 
-    getMeta(key, defaultValue) {
-        if (!(key in this.rulesMeta)) {
-            return defaultValue;
-        }
-
-        if (this.rulesMeta[key].length == 0) {
-            return defaultValue;
-        }
-
-        return this.rulesMeta[key][this.rulesMeta[key].length - 1].data;
-    }
-
-    setMeta(key, data) {
-        if (!(key in this.rulesMeta)) {
-            this.rulesMeta[key] = [];
-        }
-        this.rulesMeta[key].push({'depth': this.depth(),
-                                  'data': data});
-    }
-
-    forward(item, metas) {
+    forward(item) {
         this.items.push(item)
-
-        for (let key in metas) {
-            this.setMeta(key, metas[key]);
-        }
     }
 
     backward() {
-        for (let key in this.rulesMeta) {
-            const metas = this.rulesMeta[key];
-
-            if (!metas || metas.length == 0) {
-                continue;
-            }
-
-            const lastMeta = metas[metas.length - 1];
-
-            if (lastMeta.depth != this.depth()) {
-                continue;
-            }
-
-            metas.pop();
-        }
-
         this.items.pop();
     }
 
@@ -113,24 +72,6 @@ function checkLowerRestrictions(searcher, restrictions) {
 }
 
 
-function getRestrictionsMetas(searcher, item, restrictions) {
-
-    let metas = {};
-
-    for (let i in restrictions) {
-        const meta = restrictions[i].nextMetaFor(searcher, item);
-
-        if (!meta) {
-            continue;
-        }
-
-        metas[restrictions[i].key] = meta;
-    }
-
-    return metas;
-}
-
-
 function search(searcher, items, restrictions, nextItemIndex, statistics) {
 
     statistics.checkedSolutions += 1;
@@ -148,9 +89,7 @@ function search(searcher, items, restrictions, nextItemIndex, statistics) {
             continue;
         }
 
-        const metas = getRestrictionsMetas(searcher, item, restrictions);
-
-        searcher.forward(item, metas);
+        searcher.forward(item);
 
         search(searcher, items, restrictions, i + 1, statistics);
 

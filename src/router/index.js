@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import Groups from '@/views/Groups.vue'
-import Restrictions from '@/views/Restrictions.vue'
+import Rules from '@/views/Rules.vue'
 
 Vue.use(VueRouter)
 
@@ -14,9 +14,9 @@ const routes = [
   },
 
   {
-    path: '/restrictions',
-    name: 'Restrictions',
-    component: Restrictions
+    path: '/rules',
+    name: 'Rules',
+    component: Rules
   }
 ]
 

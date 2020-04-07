@@ -23,7 +23,7 @@ const Items = {
         },
 
         createItem: function(state, payload) {
-            Vue.set(state.items, payload.itemId,  {"text": ""});
+            Vue.set(state.items, payload.itemId,  {"text": payload.text || ""});
         },
 
         removeItem: function(state, payload) {
