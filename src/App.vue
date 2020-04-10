@@ -24,6 +24,11 @@
                   —
                   {{totalRules}}
                 </v-btn>
+                <v-btn color="primary" outlined to="/solutions">
+                  Solutions
+                  —
+                  {{totalSolutions}}
+                </v-btn>
               </v-btn-toggle>
             </v-col>
           </v-row>
@@ -58,6 +63,10 @@ export default {
     computed: {
         totalRules () {
             return this.$store.getters['rules/rulesNumber'];
+        },
+
+        totalSolutions () {
+            return this.$store.getters['solutions/solutionsNumber'];
         }
     },
 

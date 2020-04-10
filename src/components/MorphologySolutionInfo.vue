@@ -38,8 +38,8 @@
 
     <v-subheader>Best Solution</v-subheader>
 
-    <template v-if="solution">
-      <v-list-item  v-for="groupInfo in solution"
+    <template v-if="solutionDescription">
+      <v-list-item  v-for="groupInfo in solutionDescription"
                     :key="groupInfo.grupId">
 
         <v-list-item-content>
@@ -110,7 +110,6 @@ export default {
 
     data: () => ({
         statistics: null,
-        solution: null,
         topologyVersion: null
     }),
 
@@ -134,7 +133,7 @@ export default {
         },
 
         textClasses() {
-            if (this.isChanged) {
+            if (this.isTopologyChanged) {
                 return 'warning--text';
             }
 
@@ -160,6 +159,35 @@ export default {
             }
 
             return space;
+        },
+
+        solutionDescription() {
+            const bestSolutionItems = this.$store.getters['solutions/bestSolutionItems'];
+
+            const solutionDescription = [];
+
+            const groupRulesIds = this.$store.getters['rules/groupRulesIds'];
+
+            for (let i in groupRulesIds) {
+                const ruleId = groupRulesIds[i];
+
+                const groupRule = this.rules[ruleId];
+
+                const groupInfo = {'ruleId': ruleId,
+                                   'items': []};
+
+                for (let i in bestSolutionItems) {
+                    const itemId = bestSolutionItems[i];
+
+                    if (groupRule.template.items.indexOf(itemId) != -1) {
+                        groupInfo.items.push(itemId);
+                    }
+                }
+
+                solutionDescription.push(groupInfo);
+            }
+
+            return solutionDescription;
         }
 
     },
@@ -179,35 +207,12 @@ export default {
             }
 
             // solve
-            const info = solver.solve(items, checkers);
+            const info = solver.solve(items, checkers, 100);
 
             // process result
             this.statistics = info.statistics;
 
-            let solution = [];
-
-            const groupRulesIds = this.$store.getters['rules/groupRulesIds'];
-
-            for (let i in groupRulesIds) {
-                const ruleId = groupRulesIds[i];
-
-                const groupRule = this.rules[ruleId];
-
-                const groupInfo = {'ruleId': ruleId,
-                                   'items': []};
-
-                for (let i in info.bestSolution) {
-                    const itemId = info.bestSolution[i];
-
-                    if (groupRule.template.items.indexOf(itemId) != -1) {
-                        groupInfo.items.push(itemId);
-                    }
-                }
-
-                solution.push(groupInfo);
-            }
-
-            this.solution = solution;
+            this.$store.commit("solutions/rewriteSolutions", {solutions: info.solutions.solutions});
 
             this.topologyVersion = this.$store.state.topologyVersion;
         }

@@ -7,6 +7,7 @@ import * as rules from '@/logic/rules.js';
 
 import {Items} from './modules/items.js';
 import {Rules} from './modules/rules.js';
+import {Solutions} from './modules/solutions.js';
 
 
 Vue.use(Vuex)
@@ -89,6 +90,7 @@ export default new Vuex.Store({
 
     modules: {
         items: Items,
-        rules: Rules
+        rules: Rules,
+        solutions: Solutions
     }
 })

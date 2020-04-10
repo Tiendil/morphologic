@@ -1,14 +1,68 @@
+
+
+class Solution {
+
+    constructor(items, score) {
+        this.items = items;
+        this.score = score;
+    }
+}
+
+
+function solutionSorter(a, b) {
+    if (a.score > b.score) {
+        return -1;
+    }
+
+    if (a.score < b.score) {
+        return 1;
+    }
+
+    return 0;
+}
+
+
+class Solutions {
+    constructor(size) {
+        this.size = size;
+        this.solutions = [];
+    }
+
+    registerSolution(items, score) {
+
+        if (this.solutions.length >= this.size && this.solutions[-1].score > score) {
+            return false;
+        }
+
+        this.solutions.push(new Solution(items, score));
+
+        this.solutions.sort(solutionSorter);
+
+        if (this.solutions.length >= this.size) {
+            this.solutions.pop();
+        }
+    }
+
+    bestSolution() {
+        if (this.solutions.length == 0) {
+            return null;
+        }
+
+        return this.solutions[0];
+    }
+}
+
+
+
 ///////////////////////////////////////////
 // Ideomatic, but highly unoptimised solver
 ///////////////////////////////////////////
-
 
 class SolutionSearcher {
 
     constructor(bestSolutionsLimit) {
         this.items = [];
-        this.bestSolutions = [];
-        this.bestSolutionsLimit = bestSolutionsLimit;
+        this.solutions = new Solutions(bestSolutionsLimit)
     }
 
     depth() {
@@ -23,26 +77,8 @@ class SolutionSearcher {
         this.items.pop();
     }
 
-    worstBestSolution() {
-        return this.bestSolutions[this.bestSolutions.length-1];
-    }
-
-    bestSolution() {
-        return this.bestSolutions[0];
-    }
-
     acceptCurrentSolution(cost) {
-
-        while (this.bestSolutions.length && this.worstBestSolution().cost < cost) {
-            this.bestSolutions.pop();
-        }
-
-        if (this.bestSolutions.length == this.bestSolutionsLimit) {
-            return;
-        }
-
-        this.bestSolutions.push({'cost': cost,
-                                 'items': this.items.slice()});
+        this.solutions.registerSolution(this.items.slice(), cost);
     }
 
 }
@@ -99,18 +135,16 @@ function search(searcher, items, restrictions, nextItemIndex, statistics) {
 
 
 
-function solve(items, checkers) {
+function solve(items, checkers, bestSolutionsLimit) {
 
     const statistics = {checkedSolutions: 0,
                         ratedSolutions: 0};
 
-    const searcher = new SolutionSearcher(3);
+    const searcher = new SolutionSearcher(bestSolutionsLimit);
 
     search(searcher, items, checkers, 0, statistics);
 
-    const bestSolution = searcher.bestSolution();
-
-    return {'bestSolution': bestSolution ? bestSolution.items : null,
+    return {'solutions': searcher.solutions,
             'statistics': statistics};
 
 }

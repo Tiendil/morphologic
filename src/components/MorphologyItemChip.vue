@@ -1,6 +1,7 @@
 <template>
 
 <v-chip :close="canBeClosed"
+        :color="color"
         @click:close="onCloseEvent(itemId)">
   <morphology-rule-avatar :avatar="avatar"/>
   {{ item.text }}
@@ -25,12 +26,11 @@ export default {
     data: () => ({
     }),
 
-    props: ["itemId", "onClose"],
+    props: ["itemId", "onClose", "color"],
 
     computed: {
 
         canBeClosed() {
-            console.log(this.onClose)
             return !!this.onClose;
         },
 
