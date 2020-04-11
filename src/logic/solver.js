@@ -84,10 +84,10 @@ class SolutionSearcher {
 }
 
 
-function checkUpperRestrictions(searcher, restrictions, item) {
+function checkUpperRestrictions(searcher, checkers, item) {
 
-    for (let i in restrictions) {
-        if (!restrictions[i].checkUpper(searcher, item)) {
+    for (let i in checkers) {
+        if (!checkers[i].checkUpper(searcher, item)) {
             return false;
         }
     }
@@ -96,10 +96,10 @@ function checkUpperRestrictions(searcher, restrictions, item) {
 }
 
 
-function checkLowerRestrictions(searcher, restrictions) {
+function checkLowerRestrictions(searcher, checkers) {
 
-    for (let i in restrictions) {
-        if (!restrictions[i].checkLower(searcher)) {
+    for (let i in checkers) {
+        if (!checkers[i].checkLower(searcher)) {
             return false;
         }
     }
@@ -108,26 +108,38 @@ function checkLowerRestrictions(searcher, restrictions) {
 }
 
 
-function search(searcher, items, restrictions, nextItemIndex, statistics) {
+function scoreSolution(searcher, checkers) {
+
+    let score = 0;
+
+    for (let i in checkers) {
+        score += checkers[i].score(searcher);
+    }
+
+    return score;
+}
+
+
+function search(searcher, items, checkers, nextItemIndex, statistics) {
 
     statistics.checkedSolutions += 1;
 
-    if (checkLowerRestrictions(searcher, restrictions)) {
+    if (checkLowerRestrictions(searcher, checkers)) {
         statistics.scoredSolutions += 1;
 
-        searcher.acceptCurrentSolution(searcher.depth());
+        searcher.acceptCurrentSolution(scoreSolution(searcher, checkers));
     }
 
     for (let i=nextItemIndex; i<items.length; i++) {
         const item = items[i];
 
-        if (!checkUpperRestrictions(searcher, restrictions, item)) {
+        if (!checkUpperRestrictions(searcher, checkers, item)) {
             continue;
         }
 
         searcher.forward(item);
 
-        search(searcher, items, restrictions, i + 1, statistics);
+        search(searcher, items, checkers, i + 1, statistics);
 
         searcher.backward();
     }

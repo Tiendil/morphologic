@@ -25,11 +25,8 @@
 
     <template v-slot:CARDINALITY>
 
-      <v-text-field dense
-                    type="number"
-                    v-model="condition.args.nOf.min"
-                    class="flex-grow-0 morphology-cardinality-input"
-                    placeholder="Min"/>
+      <morphology-number-input v-model="condition.args.nOf.min"
+                               placeholder="Min"/>
 
       <v-sheet class="text-no-wrap ml-2 mr-2">
         &le;
@@ -37,11 +34,8 @@
         &le;
       </v-sheet>
 
-      <v-text-field dense
-                    type="number"
-                    v-model="condition.args.nOf.max"
-                    class="flex-grow-0 morphology-cardinality-input"
-                    placeholder="Max"/>
+      <morphology-number-input v-model="condition.args.nOf.max"
+                               placeholder="Max"/>
 
       <morphology-simple-alert type="info">
         Apply rule if solution contains between <strong>min</strong> and <strong>max</strong> items inclusively.
@@ -60,6 +54,7 @@
 import * as rules from '@/logic/rules.js';
 
 import MorphologySwitch from "@/components/MorphologySwitch";
+import MorphologyNumberInput from "@/components/MorphologyNumberInput";
 import MorphologySimpleAlert from "@/components/MorphologySimpleAlert";
 
 export default {
@@ -67,6 +62,7 @@ export default {
 
     components: {
         MorphologySwitch,
+        MorphologyNumberInput,
         MorphologySimpleAlert
     },
 

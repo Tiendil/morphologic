@@ -38,13 +38,12 @@
       <template v-slot:item="props">
         <v-sheet class="d-flex flex-row align-center mt-4 pl-1">
 
-          <v-chip>
+          <strong>
             {{ props.item.index + 1 }}
-          </v-chip>
+          </strong>
 
           <v-sheet class="ml-4 flex-grow-0">
-            score: {{ props.item.score }} <br/>
-            size: {{props.item.items.length}}
+            score: {{ props.item.score }}
           </v-sheet>
 
           <v-sheet class="ml-4 flex-grow-1">

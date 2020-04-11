@@ -17,7 +17,8 @@ RULE_TYPE_INFO[RULE_TYPE.GROUP] = {text: 'Group'};
 
 
 const ACTION_TYPE = new Enum({ACCEPT: 0,
-                              REJECT: 1},
+                              REJECT: 1,
+                              SCORE: 2},
                              {name: "ACTION_TYPE",
                               freeze: true });
 
@@ -26,6 +27,7 @@ let ACTION_TYPE_INFO = {};
 
 ACTION_TYPE_INFO[ACTION_TYPE.ACCEPT] = {text: "Accept solution"};
 ACTION_TYPE_INFO[ACTION_TYPE.REJECT] = {text: "Reject solution"};
+ACTION_TYPE_INFO[ACTION_TYPE.SCORE] = {text: "Score solution"};
 
 
 const CONDITION_TYPE = new Enum({ALL_OF: 0,
@@ -85,7 +87,7 @@ function rawCreateRule(data) {
     }
 
     const action = {type: ACTION_TYPE.ACCEPT.key,
-                    args: {}}
+                    args: {score: {amount: 0}}};
 
     const rule = {name: name,
                   type: data.type.key,
@@ -144,6 +146,10 @@ class Checker {
     }
 
     checkUpper(searcher, item) {
+        if (ACTION_TYPE.SCORE.is(this.action.type)) {
+            return true;
+        }
+
         if (ACTION_TYPE.ACCEPT.is(this.action.type)) {
             return true;
         }
@@ -156,6 +162,10 @@ class Checker {
     }
 
     checkLower(searcher) {
+        if (ACTION_TYPE.SCORE.is(this.action.type)) {
+            return true;
+        }
+
         const intersection = intersect(searcher.items.slice(), this.items);
 
         if (ACTION_TYPE.ACCEPT.is(this.action.type)) {
@@ -165,6 +175,20 @@ class Checker {
         if (ACTION_TYPE.REJECT.is(this.action.type)) {
             return !this.conditionAnswer(intersection);
         }
+    }
+
+    score(searcher) {
+        if (!ACTION_TYPE.SCORE.is(this.action.type)) {
+            return 0;
+        }
+
+        const intersection = intersect(searcher.items.slice(), this.items);
+
+        if (!this.conditionAnswer(intersection)) {
+            return 0;
+        }
+
+        return this.action.args.score.amount;
     }
 }
 

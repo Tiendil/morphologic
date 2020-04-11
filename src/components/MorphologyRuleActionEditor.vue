@@ -17,6 +17,12 @@
     <template v-slot:REJECT>
     </template>
 
+    <template v-slot:SCORE>
+      <morphology-number-input v-model="action.args.score.amount"
+                               label="Score"
+                               placeholder="Score"/>
+    </template>
+
   </morphology-switch>
 
 </v-sheet>
@@ -28,6 +34,7 @@
 import * as rules from '@/logic/rules.js';
 
 import MorphologySwitch from "@/components/MorphologySwitch";
+import MorphologyNumberInput from "@/components/MorphologyNumberInput";
 import MorphologySimpleAlert from "@/components/MorphologySimpleAlert";
 
 export default {
@@ -35,6 +42,7 @@ export default {
 
     components: {
         MorphologySwitch,
+        MorphologyNumberInput,
         MorphologySimpleAlert
     },
 
