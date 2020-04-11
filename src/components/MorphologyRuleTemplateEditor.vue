@@ -58,7 +58,7 @@ export default {
 
     methods: {
         remove (item) {
-            this.template.splice(this.template.indexOf(item), 1);
+            this.template.items.splice(this.template.items.indexOf(item), 1);
         },
     }
 }
