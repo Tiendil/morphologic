@@ -106,9 +106,7 @@ export default {
     },
 
     data: () => ({
-        search: '',
-        sortDesc: false,
-        filter: {}
+        search: ''
     }),
 
     computed: {
@@ -153,7 +151,7 @@ export default {
 
     methods: {
 
-        itemsFilter(solutions, search) {
+        itemsFilter (solutions, search) {
             const result = [];
 
             const template = search.toLowerCase();
