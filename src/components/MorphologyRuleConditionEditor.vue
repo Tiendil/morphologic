@@ -5,6 +5,7 @@
   <v-select :items="conditions"
             dense
             v-model="condition.type"
+            :menu-props="{ 'offset-y': true }"
             class="flex-grow-0 morphology-select pr-2"/>
 
   <morphology-switch :modes="conditionTypes"

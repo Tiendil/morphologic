@@ -154,7 +154,7 @@ export default {
         itemsFilter (solutions, search) {
             const result = [];
 
-            const template = search.toLowerCase();
+            const template = search ? search.toLowerCase() : '';
 
             for (let i in solutions) {
                 const solution = solutions[i];

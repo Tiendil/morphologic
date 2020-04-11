@@ -9,6 +9,13 @@ const RULE_TYPE = new Enum({CUSTOM: 0,
                             freeze: true });
 
 
+let RULE_TYPE_INFO = {};
+
+RULE_TYPE_INFO[RULE_TYPE.CUSTOM] = {text: 'Custom'};
+RULE_TYPE_INFO[RULE_TYPE.ITEM_MODE] = {text: 'Item Mode'};
+RULE_TYPE_INFO[RULE_TYPE.GROUP] = {text: 'Group'};
+
+
 const ACTION_TYPE = new Enum({ACCEPT: 0,
                               REJECT: 1},
                              {name: "ACTION_TYPE",
@@ -170,6 +177,7 @@ function getCheckers(rule) {
 
 
 export {RULE_TYPE,
+        RULE_TYPE_INFO,
         ACTION_TYPE,
         ACTION_TYPE_INFO,
         CONDITION_TYPE,

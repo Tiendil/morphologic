@@ -5,6 +5,7 @@
   <v-select :items="actions"
             dense
             v-model="action.type"
+            :menu-props="{ 'offset-y': true }"
             class="flex-grow-0 morphology-select pr-2"/>
 
   <morphology-switch :modes="actionTypes"

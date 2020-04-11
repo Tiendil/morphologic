@@ -113,7 +113,7 @@ function search(searcher, items, restrictions, nextItemIndex, statistics) {
     statistics.checkedSolutions += 1;
 
     if (checkLowerRestrictions(searcher, restrictions)) {
-        statistics.ratedSolutions += 1;
+        statistics.scoredSolutions += 1;
 
         searcher.acceptCurrentSolution(searcher.depth());
     }
@@ -138,7 +138,7 @@ function search(searcher, items, restrictions, nextItemIndex, statistics) {
 function solve(items, checkers, bestSolutionsLimit) {
 
     const statistics = {checkedSolutions: 0,
-                        ratedSolutions: 0};
+                        scoredSolutions: 0};
 
     const searcher = new SolutionSearcher(bestSolutionsLimit);
 

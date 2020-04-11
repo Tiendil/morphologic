@@ -30,9 +30,9 @@
                                            :is-changed="isTopologyChanged"
                                            :value="statistics && statistics.checkedSolutions"/>
 
-    <morphology-solution-statistics-record caption="Rated solutions"
+    <morphology-solution-statistics-record caption="Scored solutions"
                                            :is-changed="isTopologyChanged"
-                                           :value="statistics && statistics.ratedSolutions"/>
+                                           :value="statistics && statistics.scoredSolutions"/>
 
     <v-divider></v-divider>
 
