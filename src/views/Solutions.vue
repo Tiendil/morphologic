@@ -42,9 +42,8 @@
             {{ props.item.index + 1 }}
           </strong>
 
-          <v-sheet class="ml-4 flex-grow-0">
-            score: {{ props.item.score }}
-          </v-sheet>
+          <morphology-solution-score :items="props.item.items"
+                                     class="ml-4 flex-grow-0"/>
 
           <v-sheet class="ml-4 flex-grow-1">
             <morphology-item-chip v-for="itemId in props.item.items"
@@ -67,12 +66,13 @@
 </template>
 
 <script>
-//     <!-- item-key, sort-by, :sort-desc="sortDesc" :search="search"-->
+
 import * as uuid from 'uuid';
 
 import * as rules from '@/logic/rules.js';
 
 import MorphologyItemChip from "@/components/MorphologyItemChip";
+import MorphologySolutionScore from "@/components/MorphologySolutionScore";
 
 
 function sortItemsByGroup (store, items) {
@@ -101,7 +101,8 @@ export default {
     name: 'Rules',
 
     components: {
-        MorphologyItemChip
+        MorphologyItemChip,
+        MorphologySolutionScore
     },
 
     data: () => ({

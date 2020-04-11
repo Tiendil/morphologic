@@ -108,15 +108,33 @@ function checkLowerRestrictions(searcher, checkers) {
 }
 
 
-function scoreSolution(searcher, checkers) {
+function scoreSolution(items, checkers) {
 
     let score = 0;
 
     for (let i in checkers) {
-        score += checkers[i].score(searcher);
+        score += checkers[i].score(items);
     }
 
     return score;
+}
+
+
+function detailedSolutionScore(items, checkers) {
+
+    let scores = [];
+
+    for (let i in checkers) {
+        const checker = checkers[i];
+        const score = checker.score(items);
+
+        if (score != 0) {
+            scores.push({ruleId: checker.ruleId,
+                         score: score});
+        }
+    }
+
+    return scores;
 }
 
 
@@ -127,7 +145,7 @@ function search(searcher, items, checkers, nextItemIndex, statistics) {
     if (checkLowerRestrictions(searcher, checkers)) {
         statistics.scoredSolutions += 1;
 
-        searcher.acceptCurrentSolution(scoreSolution(searcher, checkers));
+        searcher.acceptCurrentSolution(scoreSolution(searcher.items, checkers));
     }
 
     for (let i=nextItemIndex; i<items.length; i++) {
@@ -162,4 +180,5 @@ function solve(items, checkers, bestSolutionsLimit) {
 }
 
 
-export {solve};
+export {solve,
+        detailedSolutionScore};

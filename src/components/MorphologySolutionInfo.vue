@@ -203,7 +203,7 @@ export default {
             for (let ruleId in this.rules) {
                 const rule = this.rules[ruleId];
 
-                checkers.push(...rules.getCheckers(rule));
+                checkers.push(...rules.getCheckers(ruleId, rule));
             }
 
             // solve

@@ -126,7 +126,8 @@ function intersect(itemsA, itemsB) {
 
 class Checker {
 
-    constructor(items, condition, action) {
+    constructor(ruleId, items, condition, action) {
+        this.ruleId = ruleId;
         this.items = items;
         this.condition = condition;
         this.action = action;
@@ -179,12 +180,12 @@ class Checker {
         }
     }
 
-    score(searcher) {
+    score(items) {
         if (!ACTION_TYPE.SCORE.is(this.action.type)) {
             return 0;
         }
 
-        const intersection = intersect(searcher.items.slice(), this.items);
+        const intersection = intersect(items.slice(), this.items);
 
         if (!this.conditionAnswer(intersection)) {
             return 0;
@@ -195,8 +196,9 @@ class Checker {
 }
 
 
-function getCheckers(rule) {
-    return [new Checker(rule.template.items,
+function getCheckers(ruleId, rule) {
+    return [new Checker(ruleId,
+                        rule.template.items,
                         rule.condition,
                         rule.action)];
 }

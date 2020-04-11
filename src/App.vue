@@ -44,6 +44,7 @@
 <script>
 import * as uuid from 'uuid';
 
+import * as items from '@/logic/items.js';
 import * as rules from '@/logic/rules.js';
 
 import MorphologyGroup from '@/components/MorphologyGroup';
@@ -87,6 +88,24 @@ export default {
 
         this.$store.dispatch("createGroupRule", {name: "third group",
                                                  items: [itemsIds[5], itemsIds[6], itemsIds[7]]});
+
+        const scoreRule1 = rules.rawCreateRule({type: rules.RULE_TYPE.ITEM_SCORE,
+                                                name: items.ruleNameForItemScore(this.$store.getters['items/activeItems'][itemsIds[1]])});
+        scoreRule1.action.type = rules.ACTION_TYPE.SCORE.key;
+        scoreRule1.action.args.score.amount = 10;
+        scoreRule1.template.items.push(itemsIds[1]);
+
+        this.$store.dispatch("setRule", {ruleId: uuid.v4(),
+                                         rule: scoreRule1});
+
+        const scoreRule2 = rules.rawCreateRule({type: rules.RULE_TYPE.ITEM_SCORE,
+                                                name: items.ruleNameForItemScore(this.$store.getters['items/activeItems'][itemsIds[5]])});
+        scoreRule2.action.type = rules.ACTION_TYPE.SCORE.key;
+        scoreRule2.action.args.score.amount = 3;
+        scoreRule2.template.items.push(itemsIds[5]);
+
+        this.$store.dispatch("setRule", {ruleId: uuid.v4(),
+                                         rule: scoreRule2});
     }
 };
 </script>
