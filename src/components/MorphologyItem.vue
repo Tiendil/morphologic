@@ -1,6 +1,6 @@
 <template>
 
-<v-list-item>
+<v-list-item  :class="itemClasses">
   <morphology-switch :modes="['edit', 'show']"
                      v-model="captionMode">
 
@@ -21,6 +21,10 @@
 
         <v-list-item-title  v-if="item.text"
                             :class="itemTextClasses">
+
+          <!-- <v-icon v-if="partOfBestSolution" -->
+          <!--         style="color: blue;">mdi-star-outline</v-icon> -->
+
           {{item.text}}
         </v-list-item-title>
 
@@ -117,6 +121,24 @@ export default {
             }
 
             return '';
+        },
+
+        partOfBestSolution () {
+            const items = this.$store.getters['solutions/bestSolutionItems'];
+
+            if (items == null) {
+                return false;
+            }
+
+            return items.indexOf(this.itemId) != -1;
+        },
+
+        itemClasses () {
+            if (!this.partOfBestSolution) {
+                return '';
+            }
+
+            return 'light-blue lighten-5'
         }
     },
 
