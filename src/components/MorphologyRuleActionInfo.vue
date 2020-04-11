@@ -1,14 +1,14 @@
 <template>
 
-<v-sheet>
+<strong>
 
   {{actionName}}
 
   <template v-if="isScore">
-    {{action.args.score.amount}}
+    as <code>{{action.args.score.amount}}</code>
   </template>
 
-</v-sheet>
+</strong>
 
 </template>
 

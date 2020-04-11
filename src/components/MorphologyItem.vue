@@ -26,8 +26,9 @@
 
         <v-list-item-title v-else>Enter description</v-list-item-title>
 
-        <v-list-item-subtitle :class="itemTextClasses">
-          <morphology-item-score :item-id="itemId"/>
+        <v-list-item-subtitle>
+          <morphology-item-score :item-id="itemId"
+                                 :textClasses="itemTextClasses"/>
         </v-list-item-subtitle>
 
       </v-list-item-content>

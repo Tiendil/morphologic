@@ -15,6 +15,7 @@
   <template v-slot:show>
     <v-btn text
            x-small
+           :class="textClasses"
            v-on:click="scoreMode = 'x'">
       <template v-if="score == 0">no score</template>
       <template v-else>score {{score}}</template>
@@ -48,7 +49,7 @@ export default {
         scoreMode: "show"
     }),
 
-    props: ["itemId"],
+    props: ["itemId", "textClasses"],
 
     computed: {
 

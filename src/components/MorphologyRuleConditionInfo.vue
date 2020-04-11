@@ -1,40 +1,29 @@
 <template>
 
-<v-sheet class="d-flex align-baseline">
+<strong>
 
   {{conditionName}}
 
-
   <template v-if="conditionType.is('ALL_OF')">
-    <morphology-simple-alert type="info">
-      Apply rule if solution contains all of choosen items
-    </morphology-simple-alert>
   </template>
 
   <template v-if="conditionType.is('NONE_OF')">
-    <morphology-simple-alert type="info">
-      Apply rule if solution contains none of choosen items
-    </morphology-simple-alert>
   </template>
 
   <template v-if="conditionType.is('CARDINALITY')">
 
-    <v-sheet class="text-no-wrap ml-2 mr-2">
-      (where:
+    <code>
+      where
       {{condition.args.nOf.min}}
       &le;
       <var>N</var>
       &le;
-      {{condition.args.nOf.max}})
-    </v-sheet>
-
-    <morphology-simple-alert type="info">
-      Apply rule if solution contains between <strong>min</strong> and <strong>max</strong> items inclusively.
-    </morphology-simple-alert>
+      {{condition.args.nOf.max}}
+    </code>
 
   </template>
 
-</v-sheet>
+</strong>
 
 </template>
 

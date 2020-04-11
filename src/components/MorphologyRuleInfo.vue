@@ -4,13 +4,12 @@
 
   <morphology-rule-action-info :action="rule.action"/>
 
-  <v-subheader>If it contains</v-subheader>
+  if it contains
 
   <morphology-rule-condition-info :condition="rule.condition"/>
 
-  <v-subheader>Items</v-subheader>
-
-  <morphology-rule-template-info :template="rule.template"/>
+  <morphology-rule-template-info :template="rule.template"
+                                 class="mt-4"/>
 
 </v-sheet>
 

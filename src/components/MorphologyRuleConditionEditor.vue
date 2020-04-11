@@ -1,6 +1,6 @@
 <template>
 
-<v-sheet class="d-flex align-baseline">
+<v-sheet class="d-inline-flex align-baseline">
 
   <v-select :items="conditions"
             dense
@@ -12,20 +12,17 @@
                      v-model="condition.type">
 
     <template v-slot:ALL_OF>
-      <morphology-simple-alert type="info">
-        Apply rule if solution contains all of choosen items
-      </morphology-simple-alert>
     </template>
 
     <template v-slot:NONE_OF>
-      <morphology-simple-alert type="info">
-        Apply rule if solution contains none of choosen items
-      </morphology-simple-alert>
     </template>
 
     <template v-slot:CARDINALITY>
 
+      where
+
       <morphology-number-input v-model="condition.args.nOf.min"
+                               class="ml-1"
                                placeholder="Min"/>
 
       <v-sheet class="text-no-wrap ml-2 mr-2">
@@ -36,10 +33,6 @@
 
       <morphology-number-input v-model="condition.args.nOf.max"
                                placeholder="Max"/>
-
-      <morphology-simple-alert type="info">
-        Apply rule if solution contains between <strong>min</strong> and <strong>max</strong> items inclusively.
-      </morphology-simple-alert>
 
     </template>
 

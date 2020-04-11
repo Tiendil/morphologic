@@ -1,10 +1,18 @@
 <template>
 
-<fragment>
-  <morphology-item-chip v-for="itemId in template.items"
-                        :item-id="itemId"
-                        :key="itemId"/>
-</fragment>
+<v-sheet>
+  <template v-if="template.items.length > 0">
+    <morphology-item-chip v-for="itemId in template.items"
+                          :item-id="itemId"
+                          :key="itemId"
+                          class="mr-1"/>
+  </template>
+
+  <span v-else
+        class="font-italic">
+    no items
+  </span>
+</v-sheet>
 
 </template>
 

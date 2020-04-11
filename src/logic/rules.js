@@ -41,9 +41,9 @@ const CONDITION_TYPE = new Enum({ALL_OF: 0,
 
 let CONDITION_TYPE_INFO = {};
 
-CONDITION_TYPE_INFO[CONDITION_TYPE.ALL_OF] = {text: "All of"};
-CONDITION_TYPE_INFO[CONDITION_TYPE.NONE_OF] = {text: "None of"};
-CONDITION_TYPE_INFO[CONDITION_TYPE.CARDINALITY] = {text: "N of"};
+CONDITION_TYPE_INFO[CONDITION_TYPE.ALL_OF] = {text: "All of items"};
+CONDITION_TYPE_INFO[CONDITION_TYPE.NONE_OF] = {text: "None of items"};
+CONDITION_TYPE_INFO[CONDITION_TYPE.CARDINALITY] = {text: "N of items"};
 
 
 function getEnumSelectInfo(enumObject, enumInfos) {

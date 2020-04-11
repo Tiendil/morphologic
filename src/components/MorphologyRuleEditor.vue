@@ -4,11 +4,9 @@
 
   <morphology-rule-action-editor :action="rule.action"/>
 
-  <v-subheader>If it contains</v-subheader>
+  if it contains
 
   <morphology-rule-condition-editor :condition="rule.condition"/>
-
-  <v-subheader>Items</v-subheader>
 
   <morphology-rule-template-editor :template="rule.template"/>
 

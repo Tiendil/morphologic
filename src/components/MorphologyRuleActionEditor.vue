@@ -1,6 +1,6 @@
 <template>
 
-<v-sheet class="d-flex align-baseline">
+<v-sheet class="d-inline-flex align-baseline">
 
   <v-select :items="actions"
             dense
@@ -18,7 +18,9 @@
     </template>
 
     <template v-slot:SCORE>
+      as
       <morphology-number-input v-model="action.args.score.amount"
+                               class="ml-1"
                                label="Score"
                                placeholder="Score"/>
     </template>
