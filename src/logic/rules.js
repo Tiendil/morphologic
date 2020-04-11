@@ -4,7 +4,8 @@ import Enum from 'enum';
 
 const RULE_TYPE = new Enum({CUSTOM: 0,
                             ITEM_MODE: 1,
-                            GROUP: 2},
+                            GROUP: 2,
+                            ITEM_SCORE: 1,},
                            {name: "RULE_TYPE",
                             freeze: true });
 
@@ -14,6 +15,7 @@ let RULE_TYPE_INFO = {};
 RULE_TYPE_INFO[RULE_TYPE.CUSTOM] = {text: 'Custom'};
 RULE_TYPE_INFO[RULE_TYPE.ITEM_MODE] = {text: 'Item Mode'};
 RULE_TYPE_INFO[RULE_TYPE.GROUP] = {text: 'Group'};
+RULE_TYPE_INFO[RULE_TYPE.ITEM_SCORE] = {text: 'Item Score'};
 
 
 const ACTION_TYPE = new Enum({ACCEPT: 0,

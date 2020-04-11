@@ -41,26 +41,12 @@ const Rules = {
             return JSON.parse(JSON.stringify(state.rules[ruleId]));
         },
 
-        itemModeRuleIdForItem: (state) => (itemId) => {
-            for (let ruleId in state.rules) {
-                const rule = state.rules[ruleId];
-
-                if (rule.template.items.length == 1 &&
-                    rule.template.items.indexOf(itemId) != -1 &&
-                    rules.RULE_TYPE.ITEM_MODE.is(rule.type)) {
-                    return ruleId;
-                }
-            }
-
-            return null;
-        },
-
-        groupRuleIdForItem: (state) => (itemId) => {
+        ruleIdForTypeAndItem: (state) => (type, itemId) => {
             for (let ruleId in state.rules) {
                 const rule = state.rules[ruleId];
 
                 if (rule.template.items.indexOf(itemId) != -1 &&
-                    rules.RULE_TYPE.GROUP.is(rule.type)) {
+                    type.is(rule.type)) {
                     return ruleId;
                 }
             }

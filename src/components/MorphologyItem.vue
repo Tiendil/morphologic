@@ -12,17 +12,24 @@
                       single-line
                       :value="item.text"
                       v-on:blur="captionMode = 'show'"
-                      v-on:change="confirmTextChange"/>
+                      v-on:change="confirmCaptionChange"/>
       </v-list-item-content>
     </template>
 
     <template v-slot:show>
-      <v-list-item-content v-if="item.text">
-        <v-list-item-title :class="itemTextClasses">{{item.text}}</v-list-item-title>
-      </v-list-item-content>
+      <v-list-item-content>
 
-      <v-list-item-content v-else class="font-weight-light">
-        <v-list-item-title>Enter description</v-list-item-title>
+        <v-list-item-title  v-if="item.text"
+                            :class="itemTextClasses">
+          {{item.text}}
+        </v-list-item-title>
+
+        <v-list-item-title v-else>Enter description</v-list-item-title>
+
+        <v-list-item-subtitle :class="itemTextClasses">
+          <morphology-item-score :item-id="itemId"/>
+        </v-list-item-subtitle>
+
       </v-list-item-content>
 
       <v-list-item-action>
@@ -51,10 +58,12 @@
 <script>
 
 import * as items from '@/logic/items.js';
+import * as rules from '@/logic/rules.js';
 
 import MorphologySwitch from "@/components/MorphologySwitch";
 
 import MorphologyItemMode from "@/components/MorphologyItemMode";
+import MorphologyItemScore from "@/components/MorphologyItemScore";
 
 
 export default {
@@ -62,7 +71,8 @@ export default {
 
     components: {
         MorphologySwitch,
-        MorphologyItemMode
+        MorphologyItemMode,
+        MorphologyItemScore
     },
 
     data: () => ({
@@ -76,16 +86,20 @@ export default {
             return this.$store.getters['items/activeItems'][this.itemId];
         },
 
-        ruleId() {
-            return this.$store.getters['rules/itemModeRuleIdForItem'](this.itemId);
+        itemModeRuleId() {
+            return this.$store.getters['rules/ruleIdForTypeAndItem'](rules.RULE_TYPE.ITEM_MODE, this.itemId);
+        },
+
+        itemScoreRuleId() {
+            return this.$store.getters['rules/ruleIdForTypeAndItem'](rules.RULE_TYPE.ITEM_SCORE, this.itemId);
         },
 
         itemTextClasses() {
-            if (this.ruleId == null) {
+            if (this.itemModeRuleId == null) {
                 return '';
             }
 
-            const rule = this.$store.getters['rules/ruleById'](this.ruleId);
+            const rule = this.$store.getters['rules/ruleById'](this.itemModeRuleId);
 
             const itemMode = items.itemModeByRule(rule);
 
@@ -107,17 +121,24 @@ export default {
 
     methods: {
 
-        confirmTextChange: function (value) {
+        confirmCaptionChange: function (value) {
             this.$store.commit("items/changeItemText", {itemId: this.itemId,
                                                         text: value});
 
-            if (this.ruleId) {
-                const rule = this.$store.getters['rules/ruleById'](this.ruleId);
+            if (this.itemModeRuleId) {
+                const rule = this.$store.getters['rules/ruleById'](this.itemModeRuleId);
 
                 const itemMode = items.itemModeByRule(rule)
 
-                this.$store.commit("rules/changeRuleName", {ruleId: this.ruleId,
+                this.$store.commit("rules/changeRuleName", {ruleId: this.itemModeRuleId,
                                                             name: items.ruleNameForItemMode(this.item, itemMode)});
+            }
+
+            if (this.itemScoreRuleId) {
+                const rule = this.$store.getters['rules/ruleById'](this.itemScoreRuleId);
+
+                this.$store.commit("rules/changeRuleName", {ruleId: this.itemScoreRuleId,
+                                                            name: items.ruleNameForItemScore(this.item)});
             }
 
             this.captionMode = 'show';

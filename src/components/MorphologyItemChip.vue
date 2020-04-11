@@ -11,8 +11,9 @@
 
 <script>
 
-
+import * as rules from "@/logic/rules";
 import * as avatars from "@/logic/avatars";
+
 import MorphologyRuleAvatar from "@/components/MorphologyRuleAvatar";
 
 
@@ -39,7 +40,7 @@ export default {
         },
 
         avatar () {
-            const ruleId = this.$store.getters['rules/groupRuleIdForItem'](this.itemId);
+            const ruleId = this.$store.getters['rules/ruleIdForTypeAndItem'](rules.RULE_TYPE.GROUP, this.itemId);;
             const rule = this.$store.getters['rules/ruleById'](ruleId);
 
             return avatars.constructAvatar(rule.avatarIndex);

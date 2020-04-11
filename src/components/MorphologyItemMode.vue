@@ -46,7 +46,7 @@ export default {
         },
 
         ruleId() {
-            return this.$store.getters['rules/itemModeRuleIdForItem'](this.itemId);
+            return this.$store.getters['rules/ruleIdForTypeAndItem'](rules.RULE_TYPE.ITEM_MODE, this.itemId);
         },
 
         itemModes () {

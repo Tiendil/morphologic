@@ -44,4 +44,13 @@ function ruleNameForItemMode(item, mode) {
 }
 
 
-export {ITEM_MODE, ITEM_MODE_INFO, itemModeByRule, ruleNameForItemMode};
+function ruleNameForItemScore(item) {
+    return `Score for ${item.text}`;
+}
+
+
+export {ITEM_MODE,
+        ITEM_MODE_INFO,
+        itemModeByRule,
+        ruleNameForItemMode,
+        ruleNameForItemScore};
