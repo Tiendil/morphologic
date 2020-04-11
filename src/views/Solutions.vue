@@ -51,7 +51,7 @@
             <morphology-item-chip v-for="itemId in props.item.items"
                                   :key="itemId"
                                   :item-id="itemId"
-                                  :color="itemChipColor(itemId)"
+                                  :color="itemsColors[itemId]"
                                   class="mr-1"/>
           </v-sheet>
 
@@ -128,19 +128,30 @@ export default {
 
         bestSolution () {
             return this.solutions[0];
+        },
+
+        itemsColors () {
+            let colors = {};
+
+            const items = this.$store.getters['items/activeItems']
+
+            for (let itemId in items) {
+                const item = items[itemId];
+
+                let color = null;
+
+                if (this.bestSolution.items.indexOf(itemId) != -1) {
+                    color = 'green lighten-4';
+                }
+
+                colors[itemId] = color;
+            }
+
+            return colors;
         }
     },
 
     methods: {
-
-        // TODO: move to "computed" or to vuex storage
-        itemChipColor(itemId) {
-            if (this.bestSolution.items.indexOf(itemId) == -1 ) {
-                return null;
-            }
-
-            return 'green lighten-4';
-        },
 
         itemsFilter(solutions, search) {
             const result = [];
