@@ -1,6 +1,6 @@
 <template>
 
-<v-alert class="flex-grow-1"
+<v-alert class="mb-0"
          icon="mdi-information-outline"
          :type="type"
          outlined

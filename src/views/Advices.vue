@@ -21,6 +21,12 @@
                     label="Show hidden advices"
                     class="ml-4"/>
 
+          <v-spacer/>
+
+          <morphology-simple-alert type="info">
+            List of advices refreshed every time after solutions recalculating.
+          </morphology-simple-alert>
+
         </v-toolbar>
 
       </template>
@@ -61,6 +67,7 @@
 
 import * as advices from '@/logic/advices.js';
 
+import MorphologySimpleAlert from "@/components/MorphologySimpleAlert";
 import MorphologyAdviceGroupHasNoScoredItems from "@/components/MorphologyAdviceGroupHasNoScoredItems";
 import MorphologyAdviceBestSolutionsDifferences from "@/components/MorphologyAdviceBestSolutionsDifferences";
 
@@ -69,6 +76,7 @@ export default {
     name: 'Advices',
 
     components: {
+        MorphologySimpleAlert,
         MorphologyAdviceGroupHasNoScoredItems,
         MorphologyAdviceBestSolutionsDifferences
     },
