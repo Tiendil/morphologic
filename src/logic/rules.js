@@ -109,6 +109,20 @@ function rawUpdateRule(rule, newData) {
 }
 
 
+function ruleIdForTypeAndItem(rules, type, itemId) {
+    for (let ruleId in rules) {
+        const rule = rules[ruleId];
+
+        if (rule.template.items.indexOf(itemId) != -1 &&
+            type.is(rule.type)) {
+            return ruleId;
+        }
+    }
+
+    return null;
+}
+
+
 // intersect sets implemented in arrays
 // bad solution, whatever, it will be implemented in normal language on server side
 function intersect(itemsA, itemsB) {
@@ -214,4 +228,6 @@ export {RULE_TYPE,
         rawCreateRule,
         rawUpdateRule,
         getCheckers,
-        syncCardinality};
+        syncCardinality,
+        ruleIdForTypeAndItem,
+        intersect};

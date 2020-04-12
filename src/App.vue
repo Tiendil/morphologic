@@ -29,6 +29,14 @@
                   —
                   {{totalSolutions}}
                 </v-btn>
+
+                <v-btn color="primary" outlined to="/advices">
+                  Advices
+                  —
+                  {{visibleAdvices}}
+                  /
+                  {{totalAdvices}}
+                </v-btn>
               </v-btn-toggle>
             </v-col>
           </v-row>
@@ -68,6 +76,14 @@ export default {
 
         totalSolutions () {
             return this.$store.getters['solutions/solutionsNumber'];
+        },
+
+        visibleAdvices () {
+            return this.$store.getters['advices/visibleAdvicesNumber'];
+        },
+
+        totalAdvices () {
+            return this.$store.getters['advices/advicesNumber'];
         }
     },
 

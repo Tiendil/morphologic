@@ -45,14 +45,9 @@
           <morphology-solution-score :items="props.item.items"
                                      class="ml-4 flex-grow-0"/>
 
-          <v-sheet class="ml-4 flex-grow-1">
-            <morphology-item-chip v-for="itemId in props.item.items"
-                                  :key="itemId"
-                                  :item-id="itemId"
-                                  :color="itemsColors[itemId]"
-                                  class="mr-1"/>
-          </v-sheet>
-
+          <morphology-items-set :items="props.item.items"
+                                :itemsColors="itemsColors"
+                                class="ml-4 flex-grow-1"/>
         </v-sheet>
       </template>
 
@@ -71,7 +66,7 @@ import * as uuid from 'uuid';
 
 import * as rules from '@/logic/rules.js';
 
-import MorphologyItemChip from "@/components/MorphologyItemChip";
+import MorphologyItemsSet from "@/components/MorphologyItemsSet";
 import MorphologySolutionScore from "@/components/MorphologySolutionScore";
 
 
@@ -101,7 +96,7 @@ export default {
     name: 'Rules',
 
     components: {
-        MorphologyItemChip,
+        MorphologyItemsSet,
         MorphologySolutionScore
     },
 

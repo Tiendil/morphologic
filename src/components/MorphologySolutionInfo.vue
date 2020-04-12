@@ -97,6 +97,7 @@
 import * as rules from "@/logic/rules";
 import * as solver from "@/logic/solver";
 import * as statistics from "@/logic/statistics";
+import * as advices from "@/logic/advices";
 
 import MorphologySolutionStatisticsRecord from "@/components/MorphologySolutionStatisticsRecord";
 
@@ -213,6 +214,13 @@ export default {
             this.statistics = info.statistics;
 
             this.$store.commit("solutions/rewriteSolutions", {solutions: info.solutions.solutions});
+
+            // genereate advices
+
+            const newAdvices = advices.generateAdvices({currentRules: this.$store.getters['rules/activeRules'],
+                                                        solutions: this.$store.getters['solutions/currentSolutions']})
+
+            this.$store.commit("advices/refreshAdvices", {advices: newAdvices});
 
             this.topologyVersion = this.$store.state.topologyVersion;
         }

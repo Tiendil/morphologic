@@ -2,10 +2,8 @@
 
 <v-sheet>
   <template v-if="template.items.length > 0">
-    <morphology-item-chip v-for="itemId in template.items"
-                          :item-id="itemId"
-                          :key="itemId"
-                          class="mr-1"/>
+    <morphology-items-set :items="template.items"
+                          class="ml-4 flex-grow-1"/>
   </template>
 
   <span v-else
@@ -20,7 +18,7 @@
 
 import { Fragment } from 'vue-fragment'
 
-import MorphologyItemChip from "@/components/MorphologyItemChip";
+import MorphologyItemsSet from "@/components/MorphologyItemsSet";
 
 
 export default {
@@ -28,7 +26,7 @@ export default {
 
     components: {
         Fragment,
-        MorphologyItemChip
+        MorphologyItemsSet
     },
 
     data: () => ({}),

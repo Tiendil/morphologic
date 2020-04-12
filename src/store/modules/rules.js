@@ -42,16 +42,7 @@ const Rules = {
         },
 
         ruleIdForTypeAndItem: (state) => (type, itemId) => {
-            for (let ruleId in state.rules) {
-                const rule = state.rules[ruleId];
-
-                if (rule.template.items.indexOf(itemId) != -1 &&
-                    type.is(rule.type)) {
-                    return ruleId;
-                }
-            }
-
-            return null;
+            return rules.ruleIdForTypeAndItem(state.rules, type, itemId);
         },
 
         groupRulesIds: (state) => {
