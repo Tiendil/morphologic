@@ -18,7 +18,6 @@
     </template>
 
     <template v-slot:SCORE>
-      as
       <morphology-number-input v-model="action.args.score.amount"
                                class="ml-1"
                                label="Score"

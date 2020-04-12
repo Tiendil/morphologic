@@ -29,7 +29,7 @@ let ACTION_TYPE_INFO = {};
 
 ACTION_TYPE_INFO[ACTION_TYPE.ACCEPT] = {text: "Accept solution"};
 ACTION_TYPE_INFO[ACTION_TYPE.REJECT] = {text: "Reject solution"};
-ACTION_TYPE_INFO[ACTION_TYPE.SCORE] = {text: "Score solution"};
+ACTION_TYPE_INFO[ACTION_TYPE.SCORE] = {text: "Change solution score at"};
 
 
 const CONDITION_TYPE = new Enum({ALL_OF: 0,

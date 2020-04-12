@@ -5,7 +5,7 @@
   {{actionName}}
 
   <template v-if="isScore">
-    as <code>{{action.args.score.amount}}</code>
+    <code>{{action.args.score.amount}}</code>
   </template>
 
 </strong>
