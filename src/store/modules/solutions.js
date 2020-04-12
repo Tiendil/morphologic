@@ -2,13 +2,16 @@
 import Vue from 'vue'
 
 
+function defaultState() {
+    return {solutions: []};
+}
+
+
 const Solutions = {
     namespaced: true,
     strict: (process.env.NODE_ENV !== 'production'),
 
-    state: {
-        solutions: []
-    },
+    state: defaultState,
 
     getters: {
         currentSolutions (state) {
@@ -43,6 +46,10 @@ const Solutions = {
                 state.solutions.push({'items': solution.items,
                                       'score': solution.score});
             }
+        },
+
+        clearAll: function(state, payload) {
+            Object.assign(state, defaultState());
         }
     },
 

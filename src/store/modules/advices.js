@@ -2,14 +2,17 @@
 import Vue from 'vue'
 
 
+function defaultState() {
+    return {advices: [],
+            hiddenAdvices: []};
+}
+
+
 const Advices = {
     namespaced: true,
     strict: (process.env.NODE_ENV !== 'production'),
 
-    state: {
-        advices: [],
-        hiddenAdvices: []
-    },
+    state: defaultState,
 
     getters: {
         currentAdvices (state) {
@@ -61,6 +64,10 @@ const Advices = {
 
         showAllAdvices: function(state, payload) {
             state.hiddenAdvices = [];
+        },
+
+        clearAll: function(state, payload) {
+            Object.assign(state, defaultState());
         }
 
     },

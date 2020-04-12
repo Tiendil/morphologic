@@ -17,27 +17,44 @@
         <v-col cols="10">
           <v-row>
             <v-col>
-              <v-btn-toggle>
-                <v-btn color="primary" outlined to="/">Groups</v-btn>
-                <v-btn color="primary" outlined to="/rules">
-                  Rules
-                  —
-                  {{totalRules}}
-                </v-btn>
-                <v-btn color="primary" outlined to="/solutions">
-                  Solutions
-                  —
-                  {{totalSolutions}}
-                </v-btn>
+              <v-toolbar flat>
+                <v-btn-toggle>
+                  <v-btn color="primary" outlined to="/">Groups</v-btn>
+                  <v-btn color="primary" outlined to="/rules">
+                    Rules
+                    —
+                    {{totalRules}}
+                  </v-btn>
+                  <v-btn color="primary" outlined to="/solutions">
+                    Solutions
+                    —
+                    {{totalSolutions}}
+                  </v-btn>
 
-                <v-btn color="primary" outlined to="/advices">
-                  Advices
-                  —
-                  {{visibleAdvices}}
-                  /
-                  {{totalAdvices}}
-                </v-btn>
-              </v-btn-toggle>
+                  <v-btn color="primary" outlined to="/advices">
+                    Advices
+                    —
+                    {{visibleAdvices}}
+                    /
+                    {{totalAdvices}}
+                  </v-btn>
+                </v-btn-toggle>
+
+                <v-spacer/>
+
+                <v-btn color="success" @click="onExport">Export</v-btn>
+
+                <input type="file"
+                       id="morphology-import-file"
+                       class="d-none"
+                       @change="onImportFileSelect"/>
+
+                <v-btn color="primary" @click="onImport" class="ml-1">Import</v-btn>
+
+                <v-btn color="error" @click="onClear" class="ml-1">Clear</v-btn>
+
+              </v-toolbar>
+
             </v-col>
           </v-row>
 
@@ -51,6 +68,8 @@
 
 <script>
 import * as uuid from 'uuid';
+
+import * as FileSaver from 'file-saver';
 
 import * as items from '@/logic/items.js';
 import * as rules from '@/logic/rules.js';
@@ -84,6 +103,42 @@ export default {
 
         totalAdvices () {
             return this.$store.getters['advices/advicesNumber'];
+        }
+    },
+
+    methods: {
+        onClear() {
+            this.$store.dispatch('clearAll');
+        },
+
+        onImport() {
+            const file = document.getElementById('morphology-import-file');
+
+            file.click();
+        },
+
+        onExport() {
+
+            const data = JSON.stringify(this.$store.getters['serialize'], null, 2);
+
+            var file = new File([data], "morphology.json", {type: "application/json;charset=utf-8"});
+
+            FileSaver.saveAs(file);
+        },
+
+        onImportFileSelect(event) {
+
+            const file = event.target.files[0];
+
+            var reader = new FileReader();
+
+            const store = this.$store;
+
+            reader.onload = function (e) {
+                store.dispatch('importAll', {data: JSON.parse(e.target.result)})
+            };
+
+            reader.readAsText(file);
         }
     },
 

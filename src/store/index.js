@@ -20,11 +20,21 @@ export default new Vuex.Store({
     state: {
         topologyVersion: uuid.v4()
     },
+
+    getters: {
+        serialize(state, getters) {
+            return {varsion: 1,
+                    items: getters['items/serialize'],
+                    rules: getters['rules/serialize']};
+        }
+    },
+
     mutations: {
         updateTopologyVersion(state) {
             state.topologyVersion = uuid.v4()
         }
     },
+
     actions: {
 
         createGroupRule (context, payload) {
@@ -87,6 +97,24 @@ export default new Vuex.Store({
             context.commit("rules/removeRule", {ruleId: payload.ruleId});
             context.commit("updateTopologyVersion");
         },
+
+        clearAll (context) {
+            context.commit('items/clearAll');
+            context.commit('rules/clearAll');
+            context.commit('solutions/clearAll');
+            context.commit('advices/clearAll');
+
+            context.commit("updateTopologyVersion");
+        },
+
+        importAll (context, payload) {
+            context.dispatch('clearAll');
+
+            context.commit('items/importAll', {data: payload.data.items});
+            context.commit('rules/importAll', {data: payload.data.rules});
+
+            context.commit("updateTopologyVersion");
+        }
     },
 
     modules: {

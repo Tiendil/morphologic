@@ -4,6 +4,13 @@ import Vue from 'vue'
 import * as rules from '@/logic/rules.js';
 
 
+function defaultState() {
+    return {rules: {},
+            creationOrder: [],
+            groupsCounter: 0};
+}
+
+
 function RemoveRule(state, ruleId) {
     state.creationOrder.splice(state.creationOrder.indexOf(ruleId), 1);
     Vue.delete(state.rules, ruleId);
@@ -14,11 +21,7 @@ const Rules = {
     namespaced: true,
     strict: (process.env.NODE_ENV !== 'production'),
 
-    state: {
-        rules: {},
-        creationOrder: [],
-        groupsCounter: 0
-    },
+    state: defaultState,
 
     getters: {
         rulesNumber: (state) => {
@@ -58,6 +61,12 @@ const Rules = {
 
             return groupRules;
         },
+
+        serialize(state) {
+            return {rules: state.rules,
+                    creationOrder: state.creationOrder,
+                    groupsCounter: state.groupsCounter};
+        }
     },
 
     mutations: {
@@ -112,6 +121,16 @@ const Rules = {
             for (let i in rulesToDelete) {
                 RemoveRule(state, rulesToDelete[i]);
             }
+        },
+
+        clearAll: function(state, payload) {
+            Object.assign(state, defaultState());
+        },
+
+        importAll: function(state, payload) {
+            state.rules = payload.data.rules;
+            state.creationOrder = payload.data.creationOrder;
+            state.groupsCounter = payload.data.groupsCounter;
         }
     },
 
