@@ -1,0 +1,399 @@
+{
+  "varsion": 1,
+  "items": {
+    "items": {
+      "adc5860b-de1e-4272-8a48-c919264ccc48": {
+        "text": "Майка"
+      },
+      "7e59751f-6a18-4f7e-886e-fd84b36c7912": {
+        "text": "Штаны"
+      },
+      "c418f98d-14c6-4228-bb68-d094ca7ea537": {
+        "text": "Ботинки"
+      },
+      "1cc0ac02-0d7f-49a2-b8e1-6891ef152c7f": {
+        "text": "Клатч"
+      },
+      "4d2e49f6-692c-4c7f-84c0-a992fb633a94": {
+        "text": "серебряное с камнем"
+      },
+      "a18ab349-9fa1-492f-a180-e8755ccc8d82": {
+        "text": "Кофта"
+      },
+      "d346c5b7-6a7c-401a-8380-4f0d9472b402": {
+        "text": "Блузка"
+      },
+      "e715479a-0157-4be3-90b7-f98b63088db1": {
+        "text": "Кардиган"
+      },
+      "38e1012f-bbe5-4167-a832-884b053d978c": {
+        "text": "Пиджак"
+      },
+      "4fe526dc-ae2c-4181-ac7d-e8ec6c982906": {
+        "text": "Шорты"
+      },
+      "16c70359-ffdb-4c5f-a234-a3486ea7c954": {
+        "text": "Джинсы"
+      },
+      "0ba8b631-9a7c-4943-ac61-6a8eba69cc41": {
+        "text": "Спортивки"
+      },
+      "628a94b9-6383-4814-9ef5-988f1fb41585": {
+        "text": "Юбка"
+      },
+      "629eeb40-dbc6-4ecb-8467-82f78e1c8863": {
+        "text": "Длинная юбка"
+      },
+      "48756475-4481-4189-8ced-919a6b11e9b7": {
+        "text": "Платье в пол"
+      },
+      "01f78d7a-218f-4470-9f4a-c4ead65a91ff": {
+        "text": "Кроссовки"
+      },
+      "031d8dfb-8f36-4875-96cd-0b039ea80278": {
+        "text": "Туфли на низком каблуке"
+      },
+      "75f4cfd4-7883-495b-a8a9-b8b43c61e844": {
+        "text": "Туфли на высоком каблуке"
+      },
+      "eaa80337-0376-4a8f-b825-a4b9b572e52b": {
+        "text": "Балетки"
+      },
+      "c72f4d7a-5573-4021-9a5a-2e74c7f277ac": {
+        "text": "Рюкзак"
+      },
+      "2f3a0dd7-2c77-4620-b849-9425051072b0": {
+        "text": "Барсетка"
+      },
+      "725dfd5c-3897-43a2-9d2f-016a4acd244d": {
+        "text": "серебряное без камня"
+      },
+      "a3825a86-d641-4d93-99b2-96c3d7d63a7a": {
+        "text": "Сумочка"
+      },
+      "90995039-8380-428a-8c89-4674f8e0e855": {
+        "text": "из белого золота с камнем"
+      },
+      "527a27a0-c9cb-44c6-b043-9afaa2434084": {
+        "text": "из красного золота без камня"
+      }
+    }
+  },
+  "rules": {
+    "rules": {
+      "62475b57-9745-4327-a1c3-4ec4b8acb7e7": {
+        "name": "Верх",
+        "type": "GROUP",
+        "template": {
+          "items": [
+            "adc5860b-de1e-4272-8a48-c919264ccc48",
+            "a18ab349-9fa1-492f-a180-e8755ccc8d82",
+            "d346c5b7-6a7c-401a-8380-4f0d9472b402",
+            "e715479a-0157-4be3-90b7-f98b63088db1",
+            "38e1012f-bbe5-4167-a832-884b053d978c",
+            "48756475-4481-4189-8ced-919a6b11e9b7"
+          ]
+        },
+        "condition": {
+          "type": "CARDINALITY",
+          "args": {
+            "nOf": {
+              "min": 1,
+              "max": 2
+            }
+          }
+        },
+        "action": {
+          "type": "ACCEPT",
+          "args": {
+            "score": {
+              "amount": 0
+            }
+          }
+        },
+        "avatarIndex": 6
+      },
+      "6ea2f31d-444f-4287-bbe6-2fcc73dec22b": {
+        "name": "Низ",
+        "type": "GROUP",
+        "template": {
+          "items": [
+            "7e59751f-6a18-4f7e-886e-fd84b36c7912",
+            "4fe526dc-ae2c-4181-ac7d-e8ec6c982906",
+            "16c70359-ffdb-4c5f-a234-a3486ea7c954",
+            "0ba8b631-9a7c-4943-ac61-6a8eba69cc41",
+            "628a94b9-6383-4814-9ef5-988f1fb41585",
+            "629eeb40-dbc6-4ecb-8467-82f78e1c8863"
+          ]
+        },
+        "condition": {
+          "type": "CARDINALITY",
+          "args": {
+            "nOf": {
+              "min": 0,
+              "max": 1
+            }
+          }
+        },
+        "action": {
+          "type": "ACCEPT",
+          "args": {
+            "score": {
+              "amount": 0
+            }
+          }
+        },
+        "avatarIndex": 7
+      },
+      "1f819ab2-d81b-4536-bc06-83334926b4b2": {
+        "name": "Обувь",
+        "type": "GROUP",
+        "template": {
+          "items": [
+            "c418f98d-14c6-4228-bb68-d094ca7ea537",
+            "01f78d7a-218f-4470-9f4a-c4ead65a91ff",
+            "031d8dfb-8f36-4875-96cd-0b039ea80278",
+            "75f4cfd4-7883-495b-a8a9-b8b43c61e844",
+            "eaa80337-0376-4a8f-b825-a4b9b572e52b"
+          ]
+        },
+        "condition": {
+          "type": "CARDINALITY",
+          "args": {
+            "nOf": {
+              "min": 1,
+              "max": 1
+            }
+          }
+        },
+        "action": {
+          "type": "ACCEPT",
+          "args": {
+            "score": {
+              "amount": 0
+            }
+          }
+        },
+        "avatarIndex": 3
+      },
+      "be60dc3a-97b8-4677-a3a0-66bb903ba60d": {
+        "name": "Сумка",
+        "type": "GROUP",
+        "template": {
+          "items": [
+            "1cc0ac02-0d7f-49a2-b8e1-6891ef152c7f",
+            "c72f4d7a-5573-4021-9a5a-2e74c7f277ac",
+            "2f3a0dd7-2c77-4620-b849-9425051072b0",
+            "a3825a86-d641-4d93-99b2-96c3d7d63a7a"
+          ]
+        },
+        "condition": {
+          "type": "CARDINALITY",
+          "args": {
+            "nOf": {
+              "min": 1,
+              "max": 1
+            }
+          }
+        },
+        "action": {
+          "type": "ACCEPT",
+          "args": {
+            "score": {
+              "amount": 0
+            }
+          }
+        },
+        "avatarIndex": 4
+      },
+      "0c40a72d-9519-4d1e-81d2-3b9575f110cd": {
+        "name": "Кольца",
+        "type": "GROUP",
+        "template": {
+          "items": [
+            "4d2e49f6-692c-4c7f-84c0-a992fb633a94",
+            "725dfd5c-3897-43a2-9d2f-016a4acd244d",
+            "90995039-8380-428a-8c89-4674f8e0e855",
+            "527a27a0-c9cb-44c6-b043-9afaa2434084"
+          ]
+        },
+        "condition": {
+          "type": "CARDINALITY",
+          "args": {
+            "nOf": {
+              "min": 1,
+              "max": 1
+            }
+          }
+        },
+        "action": {
+          "type": "ACCEPT",
+          "args": {
+            "score": {
+              "amount": 0
+            }
+          }
+        },
+        "avatarIndex": 5
+      },
+      "221ecf2d-b6b5-4b98-a9aa-7cc257aec63c": {
+        "name": "Score for Блузка",
+        "type": "ITEM_SCORE",
+        "template": {
+          "items": [
+            "d346c5b7-6a7c-401a-8380-4f0d9472b402"
+          ]
+        },
+        "condition": {
+          "type": "ALL_OF",
+          "args": {
+            "nOf": {
+              "min": 1,
+              "max": 1
+            }
+          }
+        },
+        "action": {
+          "type": "SCORE",
+          "args": {
+            "score": {
+              "amount": 10
+            }
+          }
+        },
+        "avatarIndex": null
+      },
+      "42bc2db4-e214-4c8d-bc92-ddafe6277750": {
+        "name": "Пиджак нельзя одеть с кофтой",
+        "type": "CUSTOM",
+        "template": {
+          "items": [
+            "38e1012f-bbe5-4167-a832-884b053d978c",
+            "a18ab349-9fa1-492f-a180-e8755ccc8d82"
+          ]
+        },
+        "condition": {
+          "type": "ALL_OF",
+          "args": {
+            "nOf": {
+              "min": 1,
+              "max": 1
+            }
+          }
+        },
+        "action": {
+          "type": "REJECT",
+          "args": {
+            "score": {
+              "amount": 0
+            }
+          }
+        },
+        "avatarIndex": null
+      },
+      "80ad0f25-beb3-49a7-9b15-0cf6167697ef": {
+        "name": "Пиджак нельзя надеть с кардиганом",
+        "type": "CUSTOM",
+        "template": {
+          "items": [
+            "38e1012f-bbe5-4167-a832-884b053d978c",
+            "e715479a-0157-4be3-90b7-f98b63088db1"
+          ]
+        },
+        "condition": {
+          "type": "ALL_OF",
+          "args": {
+            "nOf": {
+              "min": 1,
+              "max": 1
+            }
+          }
+        },
+        "action": {
+          "type": "REJECT",
+          "args": {
+            "score": {
+              "amount": 0
+            }
+          }
+        },
+        "avatarIndex": null
+      },
+      "1828256e-1785-42dc-b0ee-e1e380a8cf3a": {
+        "name": "Нельзя носить 2 из платья, майки, блузки",
+        "type": "CUSTOM",
+        "template": {
+          "items": [
+            "adc5860b-de1e-4272-8a48-c919264ccc48",
+            "48756475-4481-4189-8ced-919a6b11e9b7",
+            "d346c5b7-6a7c-401a-8380-4f0d9472b402"
+          ]
+        },
+        "condition": {
+          "type": "CARDINALITY",
+          "args": {
+            "nOf": {
+              "min": 2,
+              "max": 3
+            }
+          }
+        },
+        "action": {
+          "type": "REJECT",
+          "args": {
+            "score": {
+              "amount": 0
+            }
+          }
+        },
+        "avatarIndex": null
+      },
+      "131a5f0e-864a-4e01-9f1c-017324182409": {
+        "name": "Под платье нельзя надевать ничего из указанного низа",
+        "type": "CUSTOM",
+        "template": {
+          "items": [
+            "48756475-4481-4189-8ced-919a6b11e9b7",
+            "7e59751f-6a18-4f7e-886e-fd84b36c7912",
+            "4fe526dc-ae2c-4181-ac7d-e8ec6c982906",
+            "16c70359-ffdb-4c5f-a234-a3486ea7c954",
+            "0ba8b631-9a7c-4943-ac61-6a8eba69cc41",
+            "628a94b9-6383-4814-9ef5-988f1fb41585",
+            "629eeb40-dbc6-4ecb-8467-82f78e1c8863"
+          ]
+        },
+        "condition": {
+          "type": "CARDINALITY",
+          "args": {
+            "nOf": {
+              "min": 2,
+              "max": 10
+            }
+          }
+        },
+        "action": {
+          "type": "REJECT",
+          "args": {
+            "score": {
+              "amount": 0
+            }
+          }
+        },
+        "avatarIndex": null
+      }
+    },
+    "creationOrder": [
+      "62475b57-9745-4327-a1c3-4ec4b8acb7e7",
+      "6ea2f31d-444f-4287-bbe6-2fcc73dec22b",
+      "1f819ab2-d81b-4536-bc06-83334926b4b2",
+      "be60dc3a-97b8-4677-a3a0-66bb903ba60d",
+      "0c40a72d-9519-4d1e-81d2-3b9575f110cd",
+      "221ecf2d-b6b5-4b98-a9aa-7cc257aec63c",
+      "42bc2db4-e214-4c8d-bc92-ddafe6277750",
+      "80ad0f25-beb3-49a7-9b15-0cf6167697ef",
+      "1828256e-1785-42dc-b0ee-e1e380a8cf3a",
+      "131a5f0e-864a-4e01-9f1c-017324182409"
+    ],
+    "groupsCounter": 7
+  }
+}
