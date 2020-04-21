@@ -206,7 +206,7 @@ export default {
             let checkers = [];
 
             for (let ruleId in this.rules) {
-                const rule = this.rules[ruleId];
+                const rule = JSON.parse(JSON.stringify(this.rules[ruleId]));
 
                 checkers.push(...rules.getCheckers(ruleId, rule));
             }
@@ -225,7 +225,7 @@ export default {
                                                 items: items,
                                                 checkers: checkers,
                                                 statistics: this.currentStatistics,
-                                                breakEvery: 1000});
+                                                breakEvery: 10000});
         },
 
         onSearchComplete () {

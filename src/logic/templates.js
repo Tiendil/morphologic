@@ -364,113 +364,41 @@ function combinationsNumber({expression}) {
 }
 
 
-function* setsIterator(expressions) {
+function setsGenerator(expression) {
 
-    const expression = expressions[0];
+    if (EXPRESSION_TYPE.ITEM.is(expression.type)) {
+        return [new Set([expression.data.itemId])];
+    }
 
-    if (expressions.length > 1) {
-        for (const head of setsIterator([expressions[0]])) {
-            for (const tail of setsIterator(expressions.slice(1))) {
-                for (const item of tail.values()) {
-                    head.add(item)
+    if (EXPRESSION_TYPE.SET.is(expression.type)) {
+        let sets = [new Set()];
+
+        for (let i in expression.data.expressions) {
+            let expressionSets = setsGenerator(expression.data.expressions[i]);
+
+            let newSets = [];
+
+            for (let j in sets) {
+                for (let k in expressionSets) {
+                    newSets.push(new Set([...sets[j], ...expressionSets[k]]));
                 }
-                yield head;
             }
-        }
-        return;
-    }
 
-    if (EXPRESSION_TYPE.ITEM.is(expression.type)) {
-        yield new Set([expression.data.itemId]);
-    }
-
-    if (EXPRESSION_TYPE.SET.is(expression.type)) {
-        for (const items of setsIterator(expression.data.expressions)) {
-            yield items;
+            sets = newSets;
         }
-        return;
+
+        return sets;n
     }
 
     if (EXPRESSION_TYPE.ALTERNATIVE.is(expression.type)) {
-        for (let i in expression.data.expressions) {
-            for (const items of setsIterator([expression.data.expressions[i]])) {
-                yield items;
-            }
-        }
-        return;
-    }
-}
-
-
-function checkAllOf(expression, items) {
-
-    if (EXPRESSION_TYPE.ITEM.is(expression.type)) {
-        return items.indexOf(expression.data.itemId) != -1;
-    }
-
-    if (EXPRESSION_TYPE.SET.is(expression.type)) {
-        for (let i in expression.data.expressions) {
-            if (!checkAllOf(expression.data.expressions[i], items)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    if (EXPRESSION_TYPE.ALTERNATIVE.is(expression.type)) {
+        let sets = [];
 
         for (let i in expression.data.expressions) {
-            if (checkAllOf(expression.data.expressions[i], items)) {
-                return true;
-            }
+            sets.push(...setsGenerator(expression.data.expressions[i]));
         }
 
-        return false;
+        return sets;
     }
-}
-
-
-function checkNoneOf(expression, items) {
-
-    if (EXPRESSION_TYPE.ITEM.is(expression.type)) {
-        return items.indexOf(expression.data.itemId) == -1;
-    }
-
-    if (EXPRESSION_TYPE.SET.is(expression.type)) {
-        for (let i in expression.data.expressions) {
-            if (!checkNoneOf(expression.data.expressions[i], items)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    if (EXPRESSION_TYPE.ALTERNATIVE.is(expression.type)) {
-
-        for (let i in expression.data.expressions) {
-            if (checkNoneOf(expression.data.expressions[i], items)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-}
-
-
-function checkCardinality(expression, items, min, max) {
-
-    for (const candidate of setsIterator([expression])) {
-        const count = items.filter(x => candidate.has(x)).length;
-
-        if (min <= count && count <= max) {
-            return true;
-        }
-    }
-
-    return false;
 }
 
 
@@ -488,7 +416,5 @@ export {EXPRESSION_TYPE,
         removeExpressionFull,
         createItemsSet,
         combinationsNumber,
-        checkAllOf,
-        checkNoneOf,
-        checkCardinality,
-        getItemExpressionUID};
+        getItemExpressionUID,
+        setsGenerator};

@@ -148,6 +148,79 @@ function intersect(itemsA, itemsB) {
 }
 
 
+function checkCardinality(items, min, max, setsCache) {
+
+    for (const i in setsCache) {
+        const candidate = setsCache[i];
+
+        let count = 0;
+
+        const length = items.length;
+
+        for (let i=0; i < length; i++) {
+            if (candidate.indexOf(items[i]) != -1) {
+                count++;
+            }
+        }
+
+        if (min <= count && count <= max) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+
+function checkNoneOf(items, setsCache) {
+
+    for (const i in setsCache) {
+        const candidate = setsCache[i];
+
+        const length = candidate.length;
+
+        let ok = true;
+
+        for (let i=0; i < length; i++) {
+            if (items.indexOf(candidate[i]) != -1) {
+                ok = false;
+                break;
+            }
+        }
+
+        if (ok) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+
+function checkAllOf(items, setsCache) {
+    for (const i in setsCache) {
+        const candidate = setsCache[i];
+
+        const length = candidate.length;
+
+        let ok = true;
+
+        for (let i=0; i < length; i++) {
+            if (items.indexOf(candidate[i]) == -1) {
+                ok = false;
+                break;
+            }
+        }
+
+        if (ok) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+
 class Checker {
 
     constructor(ruleId, template, condition, action) {
@@ -155,20 +228,30 @@ class Checker {
         this.template = template;
         this.condition = condition;
         this.action = action;
+
+        this.setsCache = [];
+
+        for (const candidate of templates.setsGenerator(this.template)) {
+            const itemsSet = [...candidate];
+            itemsSet.sort();
+
+            this.setsCache.push(itemsSet);
+        }
     }
 
     conditionAnswer(currentItems) {
+
         if (CONDITION_TYPE.ALL_OF.is(this.condition.type)) {
-            return templates.checkAllOf(this.template, currentItems);
+            return checkAllOf(currentItems, this.setsCache);
         }
 
         if (CONDITION_TYPE.NONE_OF.is(this.condition.type)) {
-            return templates.checkNoneOf(this.template, currentItems);
+            return checkNoneOf(currentItems, this.setsCache);
         }
 
         if (CONDITION_TYPE.CARDINALITY.is(this.condition.type)) {
             const border = this.condition.args.nOf;
-            return templates.checkCardinality(this.template, currentItems, border.min, border.max);
+            return checkCardinality(currentItems, border.min, border.max, this.setsCache);
         }
     }
 
