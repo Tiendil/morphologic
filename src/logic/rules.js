@@ -158,19 +158,17 @@ class Checker {
     }
 
     conditionAnswer(currentItems) {
-        const itemsSet = new Set(currentItems);
-
         if (CONDITION_TYPE.ALL_OF.is(this.condition.type)) {
-            return templates.checkAllOf(this.template, itemsSet);
+            return templates.checkAllOf(this.template, currentItems);
         }
 
         if (CONDITION_TYPE.NONE_OF.is(this.condition.type)) {
-            return templates.checkNoneOf(this.template, itemsSet);
+            return templates.checkNoneOf(this.template, currentItems);
         }
 
         if (CONDITION_TYPE.CARDINALITY.is(this.condition.type)) {
             const border = this.condition.args.nOf;
-            return templates.checkCardinality(this.template, itemsSet, border.min, border.max);
+            return templates.checkCardinality(this.template, currentItems, border.min, border.max);
         }
     }
 

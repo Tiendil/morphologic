@@ -405,7 +405,7 @@ function* setsIterator(expressions) {
 function checkAllOf(expression, items) {
 
     if (EXPRESSION_TYPE.ITEM.is(expression.type)) {
-        return items.has(expression.data.itemId);
+        return items.indexOf(expression.data.itemId) != -1;
     }
 
     if (EXPRESSION_TYPE.SET.is(expression.type)) {
@@ -434,7 +434,7 @@ function checkAllOf(expression, items) {
 function checkNoneOf(expression, items) {
 
     if (EXPRESSION_TYPE.ITEM.is(expression.type)) {
-        return !items.has(expression.data.itemId);
+        return items.indexOf(expression.data.itemId) == -1;
     }
 
     if (EXPRESSION_TYPE.SET.is(expression.type)) {
@@ -462,10 +462,8 @@ function checkNoneOf(expression, items) {
 
 function checkCardinality(expression, items, min, max) {
 
-    const baseItems = [...items];
-
     for (const candidate of setsIterator([expression])) {
-        const count = baseItems.filter(x => candidate.has(x)).length;
+        const count = items.filter(x => candidate.has(x)).length;
 
         if (min <= count && count <= max) {
             return true;
