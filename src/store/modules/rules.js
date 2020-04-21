@@ -1,7 +1,8 @@
 
 import Vue from 'vue'
 
-import * as rules from '@/logic/rules.js';
+import * as rules from '@/logic/rules';
+import * as templates from '@/logic/templates';
 
 
 function defaultState() {
@@ -94,7 +95,8 @@ const Rules = {
 
         addItemToRule: function(state, payload) {
             const rule = state.rules[payload.ruleId];
-            rule.template.items.push(payload.itemId);
+            templates.addExpression({root: rule.template,
+                                     child: templates.exprItem({itemId: payload.itemId})});
         },
 
         removeItemFromRules: function(state, payload) {
@@ -102,18 +104,20 @@ const Rules = {
 
             for (let ruleId in state.rules) {
                 const rule = state.rules[ruleId];
-                const templateItems = rule.template.items;
-                const itemIndex = templateItems.indexOf(payload.itemId);
 
-                if (itemIndex == -1) {
+                let template = rule.template;
+
+                const expressionUID = templates.getItemExpressionUID({expression: template, itemId: payload.itemId});
+
+                if (expressionUID == null) {
                     continue;
                 }
 
-                Vue.delete(templateItems, itemIndex);
+                templates.removeExpressionFull({expression: template, uid: expressionUID});
 
                 rules.syncCardinality(rule);
 
-                if (templateItems.length == 0 && !rules.RULE_TYPE.GROUP.is(rule.type)) {
+                if (templates.isExpressionEmpty(template) && !rules.RULE_TYPE.GROUP.is(rule.type)) {
                     rulesToDelete.push(ruleId);
                 }
             }

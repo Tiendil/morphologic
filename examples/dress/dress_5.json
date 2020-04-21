@@ -1,0 +1,1374 @@
+{
+  "version": 2,
+  "items": {
+    "items": {
+      "adc5860b-de1e-4272-8a48-c919264ccc48": {
+        "text": "Майка"
+      },
+      "7e59751f-6a18-4f7e-886e-fd84b36c7912": {
+        "text": "Штаны"
+      },
+      "c418f98d-14c6-4228-bb68-d094ca7ea537": {
+        "text": "Ботинки"
+      },
+      "1cc0ac02-0d7f-49a2-b8e1-6891ef152c7f": {
+        "text": "Клатч"
+      },
+      "4d2e49f6-692c-4c7f-84c0-a992fb633a94": {
+        "text": "серебряное с камнем"
+      },
+      "a18ab349-9fa1-492f-a180-e8755ccc8d82": {
+        "text": "Кофта"
+      },
+      "d346c5b7-6a7c-401a-8380-4f0d9472b402": {
+        "text": "Блузка"
+      },
+      "e715479a-0157-4be3-90b7-f98b63088db1": {
+        "text": "Кардиган"
+      },
+      "38e1012f-bbe5-4167-a832-884b053d978c": {
+        "text": "Пиджак"
+      },
+      "4fe526dc-ae2c-4181-ac7d-e8ec6c982906": {
+        "text": "Шорты"
+      },
+      "16c70359-ffdb-4c5f-a234-a3486ea7c954": {
+        "text": "Джинсы"
+      },
+      "0ba8b631-9a7c-4943-ac61-6a8eba69cc41": {
+        "text": "Спортивки"
+      },
+      "628a94b9-6383-4814-9ef5-988f1fb41585": {
+        "text": "Юбка"
+      },
+      "629eeb40-dbc6-4ecb-8467-82f78e1c8863": {
+        "text": "Длинная юбка"
+      },
+      "48756475-4481-4189-8ced-919a6b11e9b7": {
+        "text": "Платье в пол"
+      },
+      "01f78d7a-218f-4470-9f4a-c4ead65a91ff": {
+        "text": "Кроссовки"
+      },
+      "031d8dfb-8f36-4875-96cd-0b039ea80278": {
+        "text": "Туфли на низком каблуке"
+      },
+      "75f4cfd4-7883-495b-a8a9-b8b43c61e844": {
+        "text": "Туфли на высоком каблуке"
+      },
+      "eaa80337-0376-4a8f-b825-a4b9b572e52b": {
+        "text": "Балетки"
+      },
+      "c72f4d7a-5573-4021-9a5a-2e74c7f277ac": {
+        "text": "Рюкзак"
+      },
+      "2f3a0dd7-2c77-4620-b849-9425051072b0": {
+        "text": "Барсетка"
+      },
+      "725dfd5c-3897-43a2-9d2f-016a4acd244d": {
+        "text": "серебряное без камня"
+      },
+      "a3825a86-d641-4d93-99b2-96c3d7d63a7a": {
+        "text": "Сумочка"
+      },
+      "90995039-8380-428a-8c89-4674f8e0e855": {
+        "text": "из белого золота с камнем"
+      },
+      "527a27a0-c9cb-44c6-b043-9afaa2434084": {
+        "text": "из красного золота без камня"
+      }
+    }
+  },
+  "rules": {
+    "rules": {
+      "62475b57-9745-4327-a1c3-4ec4b8acb7e7": {
+        "name": "Верх",
+        "type": "GROUP",
+        "template": {
+          "type": "SET",
+          "uid": "bbbdcb7b-1f10-4250-970a-4951242fd0e3",
+          "data": {
+            "expressions": [
+              {
+                "type": "ITEM",
+                "uid": "7f2db1ae-48c4-44c2-8147-6c4ee0fca81b",
+                "data": {
+                  "itemId": "adc5860b-de1e-4272-8a48-c919264ccc48"
+                }
+              },
+              {
+                "type": "ITEM",
+                "uid": "1bb52fbf-172b-4936-a939-69e5842de39a",
+                "data": {
+                  "itemId": "a18ab349-9fa1-492f-a180-e8755ccc8d82"
+                }
+              },
+              {
+                "type": "ITEM",
+                "uid": "ef1dafdf-351e-451e-a610-c3963b62bd96",
+                "data": {
+                  "itemId": "d346c5b7-6a7c-401a-8380-4f0d9472b402"
+                }
+              },
+              {
+                "type": "ITEM",
+                "uid": "fadd40ad-e142-48ef-80b5-aeceb26455e0",
+                "data": {
+                  "itemId": "e715479a-0157-4be3-90b7-f98b63088db1"
+                }
+              },
+              {
+                "type": "ITEM",
+                "uid": "23384960-57ab-47ac-81e2-86c9a40e1541",
+                "data": {
+                  "itemId": "38e1012f-bbe5-4167-a832-884b053d978c"
+                }
+              },
+              {
+                "type": "ITEM",
+                "uid": "6e93bea2-cf74-4ebd-9e16-05c705a7a3bf",
+                "data": {
+                  "itemId": "48756475-4481-4189-8ced-919a6b11e9b7"
+                }
+              }
+            ]
+          }
+        },
+        "condition": {
+          "type": "CARDINALITY",
+          "args": {
+            "nOf": {
+              "min": 1,
+              "max": 2
+            }
+          }
+        },
+        "action": {
+          "type": "ACCEPT",
+          "args": {
+            "score": {
+              "amount": 0
+            }
+          }
+        },
+        "avatarIndex": 6
+      },
+      "6ea2f31d-444f-4287-bbe6-2fcc73dec22b": {
+        "name": "Низ",
+        "type": "GROUP",
+        "template": {
+          "type": "SET",
+          "uid": "1a32af8a-e9b6-4f05-8351-0b34929b5a0a",
+          "data": {
+            "expressions": [
+              {
+                "type": "ITEM",
+                "uid": "4ccc1ef9-5881-4cf4-b2e1-a5c274b33af8",
+                "data": {
+                  "itemId": "7e59751f-6a18-4f7e-886e-fd84b36c7912"
+                }
+              },
+              {
+                "type": "ITEM",
+                "uid": "6cccddf5-f322-4ec6-b2bf-359375dcd3da",
+                "data": {
+                  "itemId": "4fe526dc-ae2c-4181-ac7d-e8ec6c982906"
+                }
+              },
+              {
+                "type": "ITEM",
+                "uid": "0535c363-6868-4db0-bb86-316ad4f67a25",
+                "data": {
+                  "itemId": "16c70359-ffdb-4c5f-a234-a3486ea7c954"
+                }
+              },
+              {
+                "type": "ITEM",
+                "uid": "7d8216c2-1fb4-4e9c-afd1-6e0b25b17c53",
+                "data": {
+                  "itemId": "0ba8b631-9a7c-4943-ac61-6a8eba69cc41"
+                }
+              },
+              {
+                "type": "ITEM",
+                "uid": "54c15c02-e699-401c-aad3-5cc9a4844654",
+                "data": {
+                  "itemId": "628a94b9-6383-4814-9ef5-988f1fb41585"
+                }
+              },
+              {
+                "type": "ITEM",
+                "uid": "c3429f8a-0bb3-4e60-8fdf-14c9a05e1617",
+                "data": {
+                  "itemId": "629eeb40-dbc6-4ecb-8467-82f78e1c8863"
+                }
+              }
+            ]
+          }
+        },
+        "condition": {
+          "type": "CARDINALITY",
+          "args": {
+            "nOf": {
+              "min": 0,
+              "max": 1
+            }
+          }
+        },
+        "action": {
+          "type": "ACCEPT",
+          "args": {
+            "score": {
+              "amount": 0
+            }
+          }
+        },
+        "avatarIndex": 7
+      },
+      "1f819ab2-d81b-4536-bc06-83334926b4b2": {
+        "name": "Обувь",
+        "type": "GROUP",
+        "template": {
+          "type": "SET",
+          "uid": "f8d51531-4524-4dbc-b4b0-499ccc6bf28e",
+          "data": {
+            "expressions": [
+              {
+                "type": "ITEM",
+                "uid": "cbe52ca8-cc0b-43a8-8af5-d7fd7adec60f",
+                "data": {
+                  "itemId": "c418f98d-14c6-4228-bb68-d094ca7ea537"
+                }
+              },
+              {
+                "type": "ITEM",
+                "uid": "f15ec481-be21-49c9-b6fe-9be5538c3c5a",
+                "data": {
+                  "itemId": "01f78d7a-218f-4470-9f4a-c4ead65a91ff"
+                }
+              },
+              {
+                "type": "ITEM",
+                "uid": "bffe2596-c217-4996-9695-7ce5a8bf6bbd",
+                "data": {
+                  "itemId": "031d8dfb-8f36-4875-96cd-0b039ea80278"
+                }
+              },
+              {
+                "type": "ITEM",
+                "uid": "18e3dec4-6ff2-4df6-9d58-855e7c6bd244",
+                "data": {
+                  "itemId": "75f4cfd4-7883-495b-a8a9-b8b43c61e844"
+                }
+              },
+              {
+                "type": "ITEM",
+                "uid": "97ec1485-2534-4cb7-ac0c-7d5c2fa8a68d",
+                "data": {
+                  "itemId": "eaa80337-0376-4a8f-b825-a4b9b572e52b"
+                }
+              }
+            ]
+          }
+        },
+        "condition": {
+          "type": "CARDINALITY",
+          "args": {
+            "nOf": {
+              "min": 1,
+              "max": 1
+            }
+          }
+        },
+        "action": {
+          "type": "ACCEPT",
+          "args": {
+            "score": {
+              "amount": 0
+            }
+          }
+        },
+        "avatarIndex": 3
+      },
+      "be60dc3a-97b8-4677-a3a0-66bb903ba60d": {
+        "name": "Сумка",
+        "type": "GROUP",
+        "template": {
+          "type": "SET",
+          "uid": "f1cb232a-d678-4fd1-b7ea-a4e4baa5b389",
+          "data": {
+            "expressions": [
+              {
+                "type": "ITEM",
+                "uid": "22a3dba8-671e-4c04-9d9c-f139df27eda9",
+                "data": {
+                  "itemId": "1cc0ac02-0d7f-49a2-b8e1-6891ef152c7f"
+                }
+              },
+              {
+                "type": "ITEM",
+                "uid": "e7252496-ddf5-410e-ab2f-85e56de11b12",
+                "data": {
+                  "itemId": "c72f4d7a-5573-4021-9a5a-2e74c7f277ac"
+                }
+              },
+              {
+                "type": "ITEM",
+                "uid": "502ba54f-a8d9-4673-ad78-09fdd9667818",
+                "data": {
+                  "itemId": "2f3a0dd7-2c77-4620-b849-9425051072b0"
+                }
+              },
+              {
+                "type": "ITEM",
+                "uid": "a109d74d-13a7-40fa-bc8b-51ff5c945771",
+                "data": {
+                  "itemId": "a3825a86-d641-4d93-99b2-96c3d7d63a7a"
+                }
+              }
+            ]
+          }
+        },
+        "condition": {
+          "type": "CARDINALITY",
+          "args": {
+            "nOf": {
+              "min": 1,
+              "max": 1
+            }
+          }
+        },
+        "action": {
+          "type": "ACCEPT",
+          "args": {
+            "score": {
+              "amount": 0
+            }
+          }
+        },
+        "avatarIndex": 4
+      },
+      "0c40a72d-9519-4d1e-81d2-3b9575f110cd": {
+        "name": "Кольца",
+        "type": "GROUP",
+        "template": {
+          "type": "SET",
+          "uid": "d3b6cf02-2f20-4195-809d-5d4dd68d4586",
+          "data": {
+            "expressions": [
+              {
+                "type": "ITEM",
+                "uid": "8074283b-af29-4241-8873-5fa551c8160c",
+                "data": {
+                  "itemId": "4d2e49f6-692c-4c7f-84c0-a992fb633a94"
+                }
+              },
+              {
+                "type": "ITEM",
+                "uid": "4b9f83d8-52ea-4082-b3ea-fad8a3d4b3bc",
+                "data": {
+                  "itemId": "725dfd5c-3897-43a2-9d2f-016a4acd244d"
+                }
+              },
+              {
+                "type": "ITEM",
+                "uid": "a6518d85-77c8-426a-9884-fe086588e5ca",
+                "data": {
+                  "itemId": "90995039-8380-428a-8c89-4674f8e0e855"
+                }
+              },
+              {
+                "type": "ITEM",
+                "uid": "8eda2c85-2fd8-4d3b-88fb-b8f4080cf2df",
+                "data": {
+                  "itemId": "527a27a0-c9cb-44c6-b043-9afaa2434084"
+                }
+              }
+            ]
+          }
+        },
+        "condition": {
+          "type": "CARDINALITY",
+          "args": {
+            "nOf": {
+              "min": 1,
+              "max": 2
+            }
+          }
+        },
+        "action": {
+          "type": "ACCEPT",
+          "args": {
+            "score": {
+              "amount": 0
+            }
+          }
+        },
+        "avatarIndex": 9
+      },
+      "221ecf2d-b6b5-4b98-a9aa-7cc257aec63c": {
+        "name": "Score for Блузка",
+        "type": "ITEM_SCORE",
+        "template": {
+          "type": "SET",
+          "uid": "6579eec9-2d84-40ee-846a-deb76287d8ba",
+          "data": {
+            "expressions": [
+              {
+                "type": "ITEM",
+                "uid": "6b19769f-2c64-48e1-af28-a9262bd8d03e",
+                "data": {
+                  "itemId": "d346c5b7-6a7c-401a-8380-4f0d9472b402"
+                }
+              }
+            ]
+          }
+        },
+        "condition": {
+          "type": "ALL_OF",
+          "args": {
+            "nOf": {
+              "min": 1,
+              "max": 1
+            }
+          }
+        },
+        "action": {
+          "type": "SCORE",
+          "args": {
+            "score": {
+              "amount": 10
+            }
+          }
+        },
+        "avatarIndex": null
+      },
+      "80ad0f25-beb3-49a7-9b15-0cf6167697ef": {
+        "name": "Пиджак нельзя надеть с кардиганом или кофтой",
+        "type": "CUSTOM",
+        "template": {
+          "type": "SET",
+          "uid": "853ab07e-6f4c-40b7-87d8-f2c788fb3ba6",
+          "data": {
+            "expressions": [
+              {
+                "type": "ITEM",
+                "uid": "80e6e364-5407-4bc6-9c9a-ad33369df80b",
+                "data": {
+                  "itemId": "38e1012f-bbe5-4167-a832-884b053d978c"
+                }
+              },
+              {
+                "type": "ALTERNATIVE",
+                "uid": "f47ee841-ef43-4cc3-921d-c56d325814eb",
+                "data": {
+                  "expressions": [
+                    {
+                      "type": "SET",
+                      "uid": "00bcc636-1a3f-40e2-854c-d35948b0c895",
+                      "data": {
+                        "expressions": [
+                          {
+                            "type": "ITEM",
+                            "uid": "af0508ab-4760-4e68-ad0e-62262494c578",
+                            "data": {
+                              "itemId": "e715479a-0157-4be3-90b7-f98b63088db1"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "SET",
+                      "uid": "adc3d134-f3ab-404d-a23e-f8969718f2b8",
+                      "data": {
+                        "expressions": [
+                          {
+                            "type": "ITEM",
+                            "uid": "6ce4b1c7-4bb6-47b5-9650-40c4a4d1ebb0",
+                            "data": {
+                              "itemId": "a18ab349-9fa1-492f-a180-e8755ccc8d82"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "condition": {
+          "type": "ALL_OF",
+          "args": {
+            "nOf": {
+              "min": 1,
+              "max": 1
+            }
+          }
+        },
+        "action": {
+          "type": "REJECT",
+          "args": {
+            "score": {
+              "amount": 0
+            }
+          }
+        },
+        "avatarIndex": null
+      },
+      "1828256e-1785-42dc-b0ee-e1e380a8cf3a": {
+        "name": "Нельзя носить 2 из платья, майки, блузки",
+        "type": "CUSTOM",
+        "template": {
+          "type": "SET",
+          "uid": "37c530ec-cd5e-4dcf-aa98-5e5752bcb7e3",
+          "data": {
+            "expressions": [
+              {
+                "type": "ITEM",
+                "uid": "fa65852f-8969-42ca-8b48-bdddd2cb37a9",
+                "data": {
+                  "itemId": "adc5860b-de1e-4272-8a48-c919264ccc48"
+                }
+              },
+              {
+                "type": "ITEM",
+                "uid": "b53b25f3-4309-4c0e-9d9d-07ca7549d566",
+                "data": {
+                  "itemId": "48756475-4481-4189-8ced-919a6b11e9b7"
+                }
+              },
+              {
+                "type": "ITEM",
+                "uid": "2c5b0756-d6a2-4e38-b0c2-db46cbbec86c",
+                "data": {
+                  "itemId": "d346c5b7-6a7c-401a-8380-4f0d9472b402"
+                }
+              }
+            ]
+          }
+        },
+        "condition": {
+          "type": "CARDINALITY",
+          "args": {
+            "nOf": {
+              "min": 2,
+              "max": 3
+            }
+          }
+        },
+        "action": {
+          "type": "REJECT",
+          "args": {
+            "score": {
+              "amount": 0
+            }
+          }
+        },
+        "avatarIndex": null
+      },
+      "131a5f0e-864a-4e01-9f1c-017324182409": {
+        "name": "Под платье нельзя надевать ничего из указанного низа",
+        "type": "CUSTOM",
+        "template": {
+          "type": "SET",
+          "uid": "95db58bd-100e-4750-92da-f2d8d482bf7e",
+          "data": {
+            "expressions": [
+              {
+                "type": "ITEM",
+                "uid": "aacb6f03-58cc-4d82-9ea4-cafd59163a25",
+                "data": {
+                  "itemId": "48756475-4481-4189-8ced-919a6b11e9b7"
+                }
+              },
+              {
+                "type": "ALTERNATIVE",
+                "uid": "e925694b-fb97-4487-b7a6-6c2a04118f5e",
+                "data": {
+                  "expressions": [
+                    {
+                      "type": "SET",
+                      "uid": "a3073cc1-2d75-46aa-a2a3-1e4cace48654",
+                      "data": {
+                        "expressions": [
+                          {
+                            "type": "ITEM",
+                            "uid": "40b0753d-5a17-4ca7-b1d7-039b8d1da462",
+                            "data": {
+                              "itemId": "7e59751f-6a18-4f7e-886e-fd84b36c7912"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "SET",
+                      "uid": "e0ec3bd7-7062-4038-9569-0a6359df9314",
+                      "data": {
+                        "expressions": [
+                          {
+                            "type": "ITEM",
+                            "uid": "0f7acec4-336e-4de7-9ba8-91f592c1f67e",
+                            "data": {
+                              "itemId": "4fe526dc-ae2c-4181-ac7d-e8ec6c982906"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "SET",
+                      "uid": "f1d1578c-8907-4a39-b7f1-c4d08be17e20",
+                      "data": {
+                        "expressions": [
+                          {
+                            "type": "ITEM",
+                            "uid": "abe439d3-6b89-4a5e-a92d-49158616a665",
+                            "data": {
+                              "itemId": "16c70359-ffdb-4c5f-a234-a3486ea7c954"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "SET",
+                      "uid": "dab9b811-d563-45b5-9c98-acff0925eafa",
+                      "data": {
+                        "expressions": [
+                          {
+                            "type": "ITEM",
+                            "uid": "d15421f3-cdbc-42d8-b729-1fdda930b446",
+                            "data": {
+                              "itemId": "0ba8b631-9a7c-4943-ac61-6a8eba69cc41"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "SET",
+                      "uid": "c93c69b9-1d1d-4d35-84d8-687957cc1388",
+                      "data": {
+                        "expressions": [
+                          {
+                            "type": "ITEM",
+                            "uid": "88fd205f-81ac-4a9e-969d-9a47d4e6d017",
+                            "data": {
+                              "itemId": "628a94b9-6383-4814-9ef5-988f1fb41585"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "SET",
+                      "uid": "fcab7fd2-6152-41af-b451-edd1403bedb6",
+                      "data": {
+                        "expressions": [
+                          {
+                            "type": "ITEM",
+                            "uid": "cdd4cc71-0ff4-49f2-b41d-405f6cbb9175",
+                            "data": {
+                              "itemId": "629eeb40-dbc6-4ecb-8467-82f78e1c8863"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "condition": {
+          "type": "ALL_OF",
+          "args": {
+            "nOf": {
+              "min": 2,
+              "max": 10
+            }
+          }
+        },
+        "action": {
+          "type": "REJECT",
+          "args": {
+            "score": {
+              "amount": 0
+            }
+          }
+        },
+        "avatarIndex": null
+      },
+      "de8c642c-77e0-4e09-ab79-22e2408b7449": {
+        "name": "Нельзя сочетать разное золото",
+        "type": "CUSTOM",
+        "template": {
+          "type": "SET",
+          "uid": "8d4b7dc0-70bf-43bc-bad6-99d887f5ec1c",
+          "data": {
+            "expressions": [
+              {
+                "type": "ITEM",
+                "uid": "2609cefe-8d32-4517-8fcb-e21b2538897a",
+                "data": {
+                  "itemId": "90995039-8380-428a-8c89-4674f8e0e855"
+                }
+              },
+              {
+                "type": "ITEM",
+                "uid": "e6d70baa-164d-459d-890c-153c5f251bbf",
+                "data": {
+                  "itemId": "527a27a0-c9cb-44c6-b043-9afaa2434084"
+                }
+              }
+            ]
+          }
+        },
+        "condition": {
+          "type": "ALL_OF",
+          "args": {
+            "nOf": {
+              "min": 1,
+              "max": 1
+            }
+          }
+        },
+        "action": {
+          "type": "REJECT",
+          "args": {
+            "score": {
+              "amount": 0
+            }
+          }
+        },
+        "avatarIndex": null
+      },
+      "ed196d2f-9500-4356-9d8d-484f5e89a63a": {
+        "name": "Нельзя сочетать серебро и золото",
+        "type": "CUSTOM",
+        "template": {
+          "type": "SET",
+          "uid": "d29054c2-48eb-4be4-8bfc-adfdfbacc7d1",
+          "data": {
+            "expressions": [
+              {
+                "type": "ALTERNATIVE",
+                "uid": "a0c3d0c6-8c7b-4b27-ab8c-d5cd85988273",
+                "data": {
+                  "expressions": [
+                    {
+                      "type": "SET",
+                      "uid": "4da4a4c5-8a72-43c2-965a-a021318620a2",
+                      "data": {
+                        "expressions": [
+                          {
+                            "type": "ITEM",
+                            "uid": "e1762e43-0376-42a6-8f1b-eec58fcfda01",
+                            "data": {
+                              "itemId": "725dfd5c-3897-43a2-9d2f-016a4acd244d"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "SET",
+                      "uid": "3176a369-4fef-4f96-8c33-5c0b1b2079ad",
+                      "data": {
+                        "expressions": [
+                          {
+                            "type": "ITEM",
+                            "uid": "1b234d47-7bed-4b70-9619-2739ae492575",
+                            "data": {
+                              "itemId": "4d2e49f6-692c-4c7f-84c0-a992fb633a94"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "ALTERNATIVE",
+                "uid": "2d6fa3d1-351c-4e28-976e-acff8d14ac59",
+                "data": {
+                  "expressions": [
+                    {
+                      "type": "SET",
+                      "uid": "51264e35-454e-42c1-be40-eca9a68cef9c",
+                      "data": {
+                        "expressions": [
+                          {
+                            "type": "ITEM",
+                            "uid": "8dda5be9-3f3a-4f79-8c1e-5c30c9d8aa0a",
+                            "data": {
+                              "itemId": "527a27a0-c9cb-44c6-b043-9afaa2434084"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "SET",
+                      "uid": "5e6584e3-f00f-4d41-b9ad-feff9b726e01",
+                      "data": {
+                        "expressions": [
+                          {
+                            "type": "ITEM",
+                            "uid": "a700a00b-998a-4df3-9492-5331126f705d",
+                            "data": {
+                              "itemId": "90995039-8380-428a-8c89-4674f8e0e855"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "condition": {
+          "type": "ALL_OF",
+          "args": {
+            "nOf": {
+              "min": 1,
+              "max": 1
+            }
+          }
+        },
+        "action": {
+          "type": "REJECT",
+          "args": {
+            "score": {
+              "amount": 0
+            }
+          }
+        },
+        "avatarIndex": null
+      },
+      "a60b976c-89b2-4ff9-8df7-64f21054161d": {
+        "name": "Score for Барсетка",
+        "type": "ITEM_SCORE",
+        "template": {
+          "type": "SET",
+          "uid": "208e9a3a-2492-4cd4-868b-24ffef1719ad",
+          "data": {
+            "expressions": [
+              {
+                "type": "ITEM",
+                "uid": "e4d7856d-7482-4b94-b947-620812a5c742",
+                "data": {
+                  "itemId": "2f3a0dd7-2c77-4620-b849-9425051072b0"
+                }
+              }
+            ]
+          }
+        },
+        "condition": {
+          "type": "ALL_OF",
+          "args": {
+            "nOf": {
+              "min": 1,
+              "max": 1
+            }
+          }
+        },
+        "action": {
+          "type": "SCORE",
+          "args": {
+            "score": {
+              "amount": -10
+            }
+          }
+        },
+        "avatarIndex": null
+      },
+      "00ddd74b-6ebc-4f1a-ad2d-8f73b11d6491": {
+        "name": "Score for Рюкзак",
+        "type": "ITEM_SCORE",
+        "template": {
+          "type": "SET",
+          "uid": "904cb758-b056-4796-ab91-86d594f89317",
+          "data": {
+            "expressions": [
+              {
+                "type": "ITEM",
+                "uid": "12bc64cc-f795-4011-86c7-74180cad0d62",
+                "data": {
+                  "itemId": "c72f4d7a-5573-4021-9a5a-2e74c7f277ac"
+                }
+              }
+            ]
+          }
+        },
+        "condition": {
+          "type": "ALL_OF",
+          "args": {
+            "nOf": {
+              "min": 1,
+              "max": 1
+            }
+          }
+        },
+        "action": {
+          "type": "SCORE",
+          "args": {
+            "score": {
+              "amount": -5
+            }
+          }
+        },
+        "avatarIndex": null
+      },
+      "c5f2924b-0959-46c5-86e7-69f0f83711d1": {
+        "name": "Score for Кроссовки",
+        "type": "ITEM_SCORE",
+        "template": {
+          "type": "SET",
+          "uid": "bc802e14-ad34-41ff-bcf6-57827d52ef6f",
+          "data": {
+            "expressions": [
+              {
+                "type": "ITEM",
+                "uid": "9e1e677b-22d4-4797-aa42-408c508ee9a7",
+                "data": {
+                  "itemId": "01f78d7a-218f-4470-9f4a-c4ead65a91ff"
+                }
+              }
+            ]
+          }
+        },
+        "condition": {
+          "type": "ALL_OF",
+          "args": {
+            "nOf": {
+              "min": 1,
+              "max": 1
+            }
+          }
+        },
+        "action": {
+          "type": "SCORE",
+          "args": {
+            "score": {
+              "amount": -5
+            }
+          }
+        },
+        "avatarIndex": null
+      },
+      "1fb7b60d-64a9-40fd-b7b3-bda2a96a3010": {
+        "name": "Score for Туфли на низком каблуке",
+        "type": "ITEM_SCORE",
+        "template": {
+          "type": "SET",
+          "uid": "45ea8411-6549-4cce-a8ab-371f91334271",
+          "data": {
+            "expressions": [
+              {
+                "type": "ITEM",
+                "uid": "b767a042-6e2d-42c4-8cfe-99fff985998d",
+                "data": {
+                  "itemId": "031d8dfb-8f36-4875-96cd-0b039ea80278"
+                }
+              }
+            ]
+          }
+        },
+        "condition": {
+          "type": "ALL_OF",
+          "args": {
+            "nOf": {
+              "min": 1,
+              "max": 1
+            }
+          }
+        },
+        "action": {
+          "type": "SCORE",
+          "args": {
+            "score": {
+              "amount": 5
+            }
+          }
+        },
+        "avatarIndex": null
+      },
+      "7d855892-97a8-491e-b26f-89c859bf59bd": {
+        "name": "Exclude Спортивки",
+        "type": "ITEM_MODE",
+        "template": {
+          "type": "SET",
+          "uid": "e7423389-ad57-4361-abf9-b6d684952e9a",
+          "data": {
+            "expressions": [
+              {
+                "type": "ITEM",
+                "uid": "ca61fe04-8145-4675-ad6c-06994aadf5c1",
+                "data": {
+                  "itemId": "0ba8b631-9a7c-4943-ac61-6a8eba69cc41"
+                }
+              }
+            ]
+          }
+        },
+        "condition": {
+          "type": "ALL_OF",
+          "args": {
+            "nOf": {
+              "min": 1,
+              "max": 1
+            }
+          }
+        },
+        "action": {
+          "type": "REJECT",
+          "args": {
+            "score": {
+              "amount": 0
+            }
+          }
+        },
+        "avatarIndex": null
+      },
+      "86867692-194a-462b-8a00-6dc381a80da0": {
+        "name": "Exclude Шорты",
+        "type": "ITEM_MODE",
+        "template": {
+          "type": "SET",
+          "uid": "cb508017-fd25-4ab6-8e86-25ba16034ef3",
+          "data": {
+            "expressions": [
+              {
+                "type": "ITEM",
+                "uid": "a39f6039-d47c-4182-8da7-94bded5140fd",
+                "data": {
+                  "itemId": "4fe526dc-ae2c-4181-ac7d-e8ec6c982906"
+                }
+              }
+            ]
+          }
+        },
+        "condition": {
+          "type": "ALL_OF",
+          "args": {
+            "nOf": {
+              "min": 1,
+              "max": 1
+            }
+          }
+        },
+        "action": {
+          "type": "REJECT",
+          "args": {
+            "score": {
+              "amount": 0
+            }
+          }
+        },
+        "avatarIndex": null
+      },
+      "6932cd18-8a0b-4f38-a03c-69f1cc1843ff": {
+        "name": "Два серебряных кольца красивее выглядят",
+        "type": "CUSTOM",
+        "template": {
+          "type": "SET",
+          "uid": "02de6721-92e6-4de0-83e9-5b5bee8cdd19",
+          "data": {
+            "expressions": [
+              {
+                "type": "ITEM",
+                "uid": "430038a6-2bc5-4f01-ac6e-1ec6e1beed42",
+                "data": {
+                  "itemId": "4d2e49f6-692c-4c7f-84c0-a992fb633a94"
+                }
+              },
+              {
+                "type": "ITEM",
+                "uid": "09a86cde-b054-40cc-b05e-822a665c40a3",
+                "data": {
+                  "itemId": "725dfd5c-3897-43a2-9d2f-016a4acd244d"
+                }
+              }
+            ]
+          }
+        },
+        "condition": {
+          "type": "ALL_OF",
+          "args": {
+            "nOf": {
+              "min": 1,
+              "max": 1
+            }
+          }
+        },
+        "action": {
+          "type": "SCORE",
+          "args": {
+            "score": {
+              "amount": 5
+            }
+          }
+        },
+        "avatarIndex": null
+      },
+      "53fa21b5-7d41-4e2a-9cf9-2838483d94ae": {
+        "name": "Score for Штаны",
+        "type": "ITEM_SCORE",
+        "template": {
+          "type": "SET",
+          "uid": "f25d91fe-ef8e-48ab-81ff-d314de65b74c",
+          "data": {
+            "expressions": [
+              {
+                "type": "ITEM",
+                "uid": "b25ca225-4849-4615-9526-bca1fc81adcb",
+                "data": {
+                  "itemId": "7e59751f-6a18-4f7e-886e-fd84b36c7912"
+                }
+              }
+            ]
+          }
+        },
+        "condition": {
+          "type": "ALL_OF",
+          "args": {
+            "nOf": {
+              "min": 1,
+              "max": 1
+            }
+          }
+        },
+        "action": {
+          "type": "SCORE",
+          "args": {
+            "score": {
+              "amount": 5
+            }
+          }
+        },
+        "avatarIndex": null
+      },
+      "26ad256a-bc73-42bc-b848-e4f9166f8281": {
+        "name": "Score for Длинная юбка",
+        "type": "ITEM_SCORE",
+        "template": {
+          "type": "SET",
+          "uid": "7be1b945-fbad-47ff-bbf3-434d3783f3c1",
+          "data": {
+            "expressions": [
+              {
+                "type": "ITEM",
+                "uid": "ec928473-5f0c-4592-b4b0-77ec886407d9",
+                "data": {
+                  "itemId": "629eeb40-dbc6-4ecb-8467-82f78e1c8863"
+                }
+              }
+            ]
+          }
+        },
+        "condition": {
+          "type": "ALL_OF",
+          "args": {
+            "nOf": {
+              "min": 1,
+              "max": 1
+            }
+          }
+        },
+        "action": {
+          "type": "SCORE",
+          "args": {
+            "score": {
+              "amount": 4
+            }
+          }
+        },
+        "avatarIndex": null
+      },
+      "1a46829f-b4ad-47da-bb92-50f794180fc1": {
+        "name": "Score for серебряное без камня",
+        "type": "ITEM_SCORE",
+        "template": {
+          "type": "SET",
+          "uid": "e3fa3496-5ead-4231-ac21-f866d10820f4",
+          "data": {
+            "expressions": [
+              {
+                "type": "ITEM",
+                "uid": "6f56e323-a1ce-4ec5-991b-a07711f05a51",
+                "data": {
+                  "itemId": "725dfd5c-3897-43a2-9d2f-016a4acd244d"
+                }
+              }
+            ]
+          }
+        },
+        "condition": {
+          "type": "ALL_OF",
+          "args": {
+            "nOf": {
+              "min": 1,
+              "max": 1
+            }
+          }
+        },
+        "action": {
+          "type": "SCORE",
+          "args": {
+            "score": {
+              "amount": 5
+            }
+          }
+        },
+        "avatarIndex": null
+      },
+      "7e08cb72-ba01-4b96-985c-37924a257b5f": {
+        "name": "Score for Пиджак",
+        "type": "ITEM_SCORE",
+        "template": {
+          "type": "SET",
+          "uid": "e0f8d59a-af24-4b33-ac7e-88d9f379e236",
+          "data": {
+            "expressions": [
+              {
+                "type": "ITEM",
+                "uid": "42362315-0ca8-4bf7-b9a6-ca19fe4bb58d",
+                "data": {
+                  "itemId": "38e1012f-bbe5-4167-a832-884b053d978c"
+                }
+              }
+            ]
+          }
+        },
+        "condition": {
+          "type": "ALL_OF",
+          "args": {
+            "nOf": {
+              "min": 1,
+              "max": 1
+            }
+          }
+        },
+        "action": {
+          "type": "SCORE",
+          "args": {
+            "score": {
+              "amount": 7
+            }
+          }
+        },
+        "avatarIndex": null
+      },
+      "68671242-12cc-43ae-9597-c3925d1979ae": {
+        "name": "Score for Сумочка",
+        "type": "ITEM_SCORE",
+        "template": {
+          "type": "SET",
+          "uid": "e6ad621a-eda1-4432-a8fb-f92a9596bbcf",
+          "data": {
+            "expressions": [
+              {
+                "type": "ITEM",
+                "uid": "5274d587-79f9-49c9-804a-ac64e5c6eedf",
+                "data": {
+                  "itemId": "a3825a86-d641-4d93-99b2-96c3d7d63a7a"
+                }
+              }
+            ]
+          }
+        },
+        "condition": {
+          "type": "ALL_OF",
+          "args": {
+            "nOf": {
+              "min": 1,
+              "max": 1
+            }
+          }
+        },
+        "action": {
+          "type": "SCORE",
+          "args": {
+            "score": {
+              "amount": 6
+            }
+          }
+        },
+        "avatarIndex": null
+      },
+      "3a6f46f8-37c7-4db0-a995-42966cd287c6": {
+        "name": "Score for Клатч",
+        "type": "ITEM_SCORE",
+        "template": {
+          "type": "SET",
+          "uid": "d850ddcd-4cdd-449b-b08f-8e3cbb800d26",
+          "data": {
+            "expressions": [
+              {
+                "type": "ITEM",
+                "uid": "fe54ddd3-40ea-40dd-a9ed-d0d37c10be3a",
+                "data": {
+                  "itemId": "1cc0ac02-0d7f-49a2-b8e1-6891ef152c7f"
+                }
+              }
+            ]
+          }
+        },
+        "condition": {
+          "type": "ALL_OF",
+          "args": {
+            "nOf": {
+              "min": 1,
+              "max": 1
+            }
+          }
+        },
+        "action": {
+          "type": "SCORE",
+          "args": {
+            "score": {
+              "amount": 5
+            }
+          }
+        },
+        "avatarIndex": null
+      }
+    },
+    "creationOrder": [
+      "62475b57-9745-4327-a1c3-4ec4b8acb7e7",
+      "6ea2f31d-444f-4287-bbe6-2fcc73dec22b",
+      "1f819ab2-d81b-4536-bc06-83334926b4b2",
+      "be60dc3a-97b8-4677-a3a0-66bb903ba60d",
+      "0c40a72d-9519-4d1e-81d2-3b9575f110cd",
+      "221ecf2d-b6b5-4b98-a9aa-7cc257aec63c",
+      "80ad0f25-beb3-49a7-9b15-0cf6167697ef",
+      "1828256e-1785-42dc-b0ee-e1e380a8cf3a",
+      "131a5f0e-864a-4e01-9f1c-017324182409",
+      "de8c642c-77e0-4e09-ab79-22e2408b7449",
+      "ed196d2f-9500-4356-9d8d-484f5e89a63a",
+      "a60b976c-89b2-4ff9-8df7-64f21054161d",
+      "00ddd74b-6ebc-4f1a-ad2d-8f73b11d6491",
+      "c5f2924b-0959-46c5-86e7-69f0f83711d1",
+      "1fb7b60d-64a9-40fd-b7b3-bda2a96a3010",
+      "7d855892-97a8-491e-b26f-89c859bf59bd",
+      "86867692-194a-462b-8a00-6dc381a80da0",
+      "6932cd18-8a0b-4f38-a03c-69f1cc1843ff",
+      "53fa21b5-7d41-4e2a-9cf9-2838483d94ae",
+      "26ad256a-bc73-42bc-b848-e4f9166f8281",
+      "1a46829f-b4ad-47da-bb92-50f794180fc1",
+      "7e08cb72-ba01-4b96-985c-37924a257b5f",
+      "68671242-12cc-43ae-9597-c3925d1979ae",
+      "3a6f46f8-37c7-4db0-a995-42966cd287c6"
+    ],
+    "groupsCounter": 9
+  }
+}

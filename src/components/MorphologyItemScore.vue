@@ -31,8 +31,9 @@ import { Fragment } from 'vue-fragment'
 
 import * as uuid from 'uuid';
 
-import * as rules from '@/logic/rules.js';
-import * as items from '@/logic/items.js';
+import * as rules from '@/logic/rules';
+import * as items from '@/logic/items';
+import * as templates from '@/logic/templates';
 
 import MorphologySwitch from "@/components/MorphologySwitch";
 
@@ -88,10 +89,10 @@ export default {
 
             else {
                 newRule = rules.rawCreateRule({type: rules.RULE_TYPE.ITEM_SCORE,
+                                               template: templates.createItemsSet({items: [this.itemId]}),
+                                               action: {type: rules.ACTION_TYPE.SCORE.key,
+                                                        args: {score: {amount: score}}},
                                                name: ruleName});
-                newRule.action.type = rules.ACTION_TYPE.SCORE.key;
-                newRule.action.args.score.amount = score;
-                newRule.template.items.push(this.itemId);
             }
 
             if (newRule == null && this.ruleId != null) {

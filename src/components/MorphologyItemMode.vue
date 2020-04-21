@@ -29,6 +29,7 @@ import * as uuid from 'uuid';
 
 import * as rules from '@/logic/rules.js';
 import * as items from '@/logic/items.js';
+import * as templates from '@/logic/templates.js';
 
 
 export default {
@@ -65,16 +66,16 @@ export default {
 
             if (items.ITEM_MODE.REQUIRED.is(mode)) {
                 newRule = rules.rawCreateRule({type: rules.RULE_TYPE.ITEM_MODE,
+                                               template: templates.createItemsSet({items: [this.itemId]}),
                                                name: ruleName});
                 newRule.action.type = rules.ACTION_TYPE.ACCEPT.key;
-                newRule.template.items.push(this.itemId);
             }
 
             if (items.ITEM_MODE.EXCLUDED.is(mode)) {
                 newRule = rules.rawCreateRule({type: rules.RULE_TYPE.ITEM_MODE,
+                                               template: templates.createItemsSet({items: [this.itemId]}),
                                                name: ruleName});
                 newRule.action.type = rules.ACTION_TYPE.REJECT.key;
-                newRule.template.items.push(this.itemId);
             }
 
             if (newRule == null && this.ruleId != null) {

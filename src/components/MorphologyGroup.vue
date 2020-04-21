@@ -23,7 +23,7 @@
       </template>
     </morphology-editable-toolbar>
 
-    <morphology-item v-for="itemId in rule.template.items"
+    <morphology-item v-for="itemId in items"
                      :key="itemId"
                      :item-id="itemId"/>
 
@@ -43,6 +43,7 @@
 <script>
 
 import * as avatars from "@/logic/avatars";
+import * as templates from "@/logic/templates";
 
 import MorphologyEditableToolbar from "@/components/MorphologyEditableToolbar";
 import MorphologyItem from "@/components/MorphologyItem";
@@ -68,6 +69,10 @@ export default {
     computed: {
         rule () {
             return this.$store.getters['rules/ruleById'](this.ruleId);
+        },
+
+        items () {
+            return templates.getItems({expression: this.rule.template});
         },
 
         avatar () {

@@ -25,6 +25,7 @@
 import * as uuid from 'uuid';
 
 import * as rules from '@/logic/rules.js';
+import * as templates from '@/logic/templates.js';
 
 
 export default {
@@ -47,7 +48,7 @@ export default {
 
         possibleCardinalities() {
             const minCardinality = 0;
-            const maxCardinality = this.rule.template.items.length;
+            const maxCardinality = [...templates.getItems({expression: this.rule.template})].length;
 
             const cardinalities = [];
 

@@ -181,8 +181,10 @@ export default {
                     continue;
                 }
 
-                for (let j in rule.template.items) {
-                    const item = this.$store.getters['items/activeItems'][rule.template.items[j]];
+                const items = [...templates.getItems({expression: rule.template})];
+
+                for (let j in items) {
+                    const item = this.$store.getters['items/activeItems'][items[j]];
 
                     if (item.text.toLowerCase().includes(template)) {
                         result.push(rules[i]);

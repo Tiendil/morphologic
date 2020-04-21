@@ -64,7 +64,8 @@
 
 import * as uuid from 'uuid';
 
-import * as rules from '@/logic/rules.js';
+import * as rules from '@/logic/rules';
+import * as templates from '@/logic/templates';
 
 import MorphologyItemsSet from "@/components/MorphologyItemsSet";
 import MorphologySolutionScore from "@/components/MorphologySolutionScore";
@@ -78,9 +79,7 @@ function sortItemsByGroup (store, items) {
     for (let i in rulesIds) {
         const rule = store.getters['rules/ruleById'](rulesIds[i]);
 
-        for (let j in rule.template.items) {
-            const itemId = rule.template.items[j];
-
+        for (let itemId of templates.getItems({expression: rule.template})) {
             if (items.indexOf(itemId) != -1) {
                 itemsIds.push(itemId);
             }

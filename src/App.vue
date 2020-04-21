@@ -73,6 +73,7 @@ import * as FileSaver from 'file-saver';
 
 import * as items from '@/logic/items.js';
 import * as rules from '@/logic/rules.js';
+import * as templates from '@/logic/templates.js';
 
 import MorphologyGroup from '@/components/MorphologyGroup';
 import MorphologyMainPanel from '@/components/MorphologyMainPanel';
@@ -139,10 +140,111 @@ export default {
             };
 
             reader.readAsText(file);
-        }
+        },
+
+ //        x() {
+ //            let y = {'data': {'expressions': [{'data': {'expressions': [{'data': {'expressions': [{'data': {'itemId': 'XXX'},
+ //          'type': 'ITEM',
+ //          'uid': 'bfeed36b-45a3-42ec-8d04-2fbde0459f28'}]},
+ //       'type': 'SET',
+ //       'uid': '66c8f048-494f-40de-a2bd-dd9f76b78e14'},
+ //      {'data': {'expressions': [{'data': {'expressions': [{'data': {'expressions': [{'data': {'itemId': 'XXX'},
+ //                'type': 'ITEM',
+ //                'uid': '4c052e74-d01c-4822-9a9d-6998e138dd36'},
+ //               {'data': {'itemId': 'XXX'},
+ //                'type': 'ITEM',
+ //                'uid': '9b23000e-e504-4bcd-b2e6-048a8f4c337c'},
+ //               {'data': {'itemId': 'XXX'},
+ //                'type': 'ITEM',
+ //                'uid': '742c805e-a5c7-4095-b092-446e31de1a89'}]},
+ //             'type': 'SET',
+ //             'uid': '370d4608-cf80-4b1f-a846-8e5838ca64ea'},
+ //            {'data': {'expressions': [{'data': {'itemId': 'XXX'},
+ //                'type': 'ITEM',
+ //                'uid': '7d9f9f18-084d-410d-a96c-d4831829b296'}]},
+ //             'type': 'SET',
+ //             'uid': '3cf84a84-f1f0-407d-ac99-f41466c480e2'},
+ //            {'data': {'expressions': [{'data': {'itemId': 'XXX'},
+ //                'type': 'ITEM',
+ //                'uid': '518b334b-2c0b-4f75-9ed8-a0ebbcd9dc43'},
+ //               {'data': {'expressions': [{'data': {'expressions': [{'data': {'itemId': 'XXX'},
+ //                      'type': 'ITEM',
+ //                      'uid': 'a7c33398-c0cf-4fd0-baf0-fb3ee09fa492'},
+ //                     {'data': {'expressions': [{'data': {'expressions': [{'data': {'itemId': 'XXX'},
+ //                            'type': 'ITEM',
+ //                            'uid': '5086ad25-0b8e-45a5-801f-abac8f1dc36e'}]},
+ //                         'type': 'SET',
+ //                         'uid': '0447684d-dbd9-4357-a1ac-674a49257cb9'},
+ //                        {'data': {'expressions': [{'data': {'itemId': 'XXX'},
+ //                            'type': 'ITEM',
+ //                            'uid': '57ae0db4-92ee-4137-8a1a-8f8fb551be66'}]},
+ //                         'type': 'SET',
+ //                         'uid': '92ec4538-3918-458d-ae29-732a5e3ee797'},
+ //                        {'data': {'expressions': [{'data': {'itemId': 'XXX'},
+ //                            'type': 'ITEM',
+ //                            'uid': 'cec341f0-aae2-4238-b74f-7216c09e511c'}]},
+ //                         'type': 'SET',
+ //                         'uid': '520e9e3a-7181-4e7d-8f9d-a9813b11c997'}]},
+ //                      'type': 'ALTERNATIVE',
+ //                      'uid': '0d92e51f-96ac-4420-9939-72aeb4b054c9'}]},
+ //                   'type': 'SET',
+ //                   'uid': '60fd3e5b-609c-46ff-b9d0-890a0304523d'},
+ //                  {'data': {'expressions': [{'data': {'expressions': [{'data': {'expressions': [{'data': {'itemId': 'XXX'},
+ //                            'type': 'ITEM',
+ //                            'uid': '52ca5311-137d-49c1-89df-6fb8e14b7718'}]},
+ //                         'type': 'SET',
+ //                         'uid': '187fd08b-41eb-4572-9a89-792588d2c17d'},
+ //                        {'data': {'expressions': [{'data': {'itemId': 'XXX'},
+ //                            'type': 'ITEM',
+ //                            'uid': '55ed48d5-2d21-4e43-94c1-4a37ee46da85'}]},
+ //                         'type': 'SET',
+ //                         'uid': '62c7a377-d33a-466b-97f4-e83d872e8a36'},
+ //                        {'data': {'expressions': [{'data': {'itemId': 'XXX'},
+ //                            'type': 'ITEM',
+ //                            'uid': '188c886f-7592-434f-b899-775e0e7e38f4'}]},
+ //                         'type': 'SET',
+ //                         'uid': '12398d8c-e85d-48b4-a910-59206f719e62'}]},
+ //                      'type': 'ALTERNATIVE',
+ //                      'uid': '233cc49e-b220-4b9c-aacf-8104ef62f0ff'}]},
+ //                   'type': 'SET',
+ //                   'uid': 'a73e9ba0-c405-4f12-8a8f-d6e7107ca28d'}]},
+ //                'type': 'ALTERNATIVE',
+ //                'uid': '4fd613fa-1c06-4d53-9944-35dca311a7e4'}]},
+ //             'type': 'SET',
+ //             'uid': '1e7fefdb-695c-4341-bad1-afd304ce76f1'}]},
+ //          'type': 'ALTERNATIVE',
+ //          'uid': '03dc394a-6338-4c4c-a191-151de41ae082'}]},
+ //       'type': 'SET',
+ //       'uid': '1be33b2f-05f1-43fa-9e7f-640070504956'},
+ //      {'data': {'expressions': [{'data': {'itemId': 'XXX'},
+ //          'type': 'ITEM',
+ //          'uid': 'b6428bba-4ab3-445d-881b-50bf4db6ca44'}]},
+ //       'type': 'SET',
+ //       'uid': '466a306d-8a43-4e37-94c7-19a0a52e1038'}]},
+ //    'type': 'ALTERNATIVE',
+ //    'uid': '91775a59-624c-4e51-afaa-e5ab1cb26b1b'},
+ //   {'data': {'itemId': 'XXX'},
+ //    'type': 'ITEM',
+ //    'uid': 'ab677537-f373-4501-bca4-0d0d470e0a72'}]},
+ // 'type': 'SET',
+ //                     'uid': '58bfb964-de1c-485a-852e-b8c81607d5c5'};
+
+ //            let yy = JSON.stringify(y);
+
+ //            let itemId = null;
+
+ //            for (itemId in this.$store.getters['items/activeItems']) {
+ //                break;
+ //            }
+
+ //            const yyy = yy.replace(/XXX/g, itemId);
+
+ //            return JSON.parse(yyy);
+ //        }
     },
 
     created: function() {
+
         const itemsIds = [];
 
         for (let i=0; i<8; i++) {
@@ -160,20 +262,37 @@ export default {
         this.$store.dispatch("createGroupRule", {name: "third group",
                                                  items: [itemsIds[5], itemsIds[6], itemsIds[7]]});
 
+        // temporary
+
+        // const template = templates.exprSet()
+
+        // const templateItem = templates.exprItem({itemId: itemsIds[0]});
+
+        // templates.addExpression({root: template,
+        //                          child: templateItem});
+
+        // const rule = rules.rawCreateRule({type: rules.RULE_TYPE.CUSTOM,
+        //                                   name: 'test rule',
+        //                                   template: this.x()});//template});
+
+        // this.$store.dispatch("setRule", {ruleId: uuid.v4(),
+        //                                  rule: rule});
+
+
         const scoreRule1 = rules.rawCreateRule({type: rules.RULE_TYPE.ITEM_SCORE,
+                                                template: templates.createItemsSet({items: [itemsIds[1]]}),
+                                                action: {type: rules.ACTION_TYPE.SCORE.key,
+                                                         args: {score: {amount: 10}}},
                                                 name: items.ruleNameForItemScore(this.$store.getters['items/activeItems'][itemsIds[1]])});
-        scoreRule1.action.type = rules.ACTION_TYPE.SCORE.key;
-        scoreRule1.action.args.score.amount = 10;
-        scoreRule1.template.items.push(itemsIds[1]);
 
         this.$store.dispatch("setRule", {ruleId: uuid.v4(),
                                          rule: scoreRule1});
 
         const scoreRule2 = rules.rawCreateRule({type: rules.RULE_TYPE.ITEM_SCORE,
+                                                template: templates.createItemsSet({items: [itemsIds[5]]}),
+                                                action: {type: rules.ACTION_TYPE.SCORE.key,
+                                                         args: {score: {amount: 3}}},
                                                 name: items.ruleNameForItemScore(this.$store.getters['items/activeItems'][itemsIds[5]])});
-        scoreRule2.action.type = rules.ACTION_TYPE.SCORE.key;
-        scoreRule2.action.args.score.amount = 3;
-        scoreRule2.template.items.push(itemsIds[5]);
 
         this.$store.dispatch("setRule", {ruleId: uuid.v4(),
                                          rule: scoreRule2});

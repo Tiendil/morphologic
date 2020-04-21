@@ -3,12 +3,15 @@ import Vuex from 'vuex'
 
 import * as uuid from 'uuid';
 
-import * as rules from '@/logic/rules.js';
+import * as s11n from '@/logic/s11n';
+import * as rules from '@/logic/rules';
+import * as templates from '@/logic/templates';
 
-import {Items} from './modules/items.js';
-import {Rules} from './modules/rules.js';
-import {Solutions} from './modules/solutions.js';
-import {Advices} from './modules/advices.js';
+import {Items} from './modules/items';
+import {Rules} from './modules/rules';
+import {Solutions} from './modules/solutions';
+import {Advices} from './modules/advices';
+
 
 
 Vue.use(Vuex)
@@ -23,9 +26,8 @@ export default new Vuex.Store({
 
     getters: {
         serialize(state, getters) {
-            return {varsion: 1,
-                    items: getters['items/serialize'],
-                    rules: getters['rules/serialize']};
+            return s11n.serialize({items: getters['items/serialize'],
+                                   rules: getters['rules/serialize']});
         }
     },
 
@@ -53,9 +55,20 @@ export default new Vuex.Store({
                 items.push(itemId);
             }
 
+            const template = templates.exprSet()
+
+            for (let i in items) {
+                const itemId = items[i];
+
+                const templateItem = templates.exprItem({itemId: itemId});
+
+                templates.addExpression({root: template,
+                                         child: templateItem});
+            }
+
             const rule = rules.rawCreateRule({type: rules.RULE_TYPE.GROUP,
                                               name: payload.name || '',
-                                              items: items,
+                                              template: template,
                                               condition: {type: rules.CONDITION_TYPE.CARDINALITY.key,
                                                           args: {nOf: {min: 1,
                                                                        max: 1}}}});
@@ -110,8 +123,10 @@ export default new Vuex.Store({
         importAll (context, payload) {
             context.dispatch('clearAll');
 
-            context.commit('items/importAll', {data: payload.data.items});
-            context.commit('rules/importAll', {data: payload.data.rules});
+            const data = s11n.actualizeFormat({data: payload.data});
+
+            context.commit('items/importAll', {data: data.items});
+            context.commit('rules/importAll', {data: data.rules});
 
             context.commit("updateTopologyVersion");
         }

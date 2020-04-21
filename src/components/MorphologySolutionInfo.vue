@@ -95,6 +95,7 @@
 
 <script>
 import * as rules from "@/logic/rules";
+import * as templates from "@/logic/templates";
 import * as solver from "@/logic/solver";
 import * as statistics from "@/logic/statistics";
 import * as advices from "@/logic/advices";
@@ -154,7 +155,7 @@ export default {
             for (let i in rulesIds) {
                 const rule = this.$store.getters['rules/ruleById'](rulesIds[i]);
 
-                space *= statistics.solutionSpaceEstimationForGroup(rule.template.items.length,
+                space *= statistics.solutionSpaceEstimationForGroup(templates.getItems({expression: rule.template}).size,
                                                                     rule.condition.args.nOf.min,
                                                                     rule.condition.args.nOf.max);
             }
@@ -180,7 +181,7 @@ export default {
                 for (let i in bestSolutionItems) {
                     const itemId = bestSolutionItems[i];
 
-                    if (groupRule.template.items.indexOf(itemId) != -1) {
+                    if (templates.hasItem({expression: groupRule.template, itemId: itemId})) {
                         groupInfo.items.push(itemId);
                     }
                 }

@@ -1,6 +1,8 @@
 
 import Enum from 'enum';
 
+import * as templates from '@/logic/templates.js';
+
 
 const RULE_TYPE = new Enum({CUSTOM: 0,
                             ITEM_MODE: 1,
@@ -69,16 +71,20 @@ function syncCardinality(rule) {
         return;
     }
 
-    rule.condition.args.nOf.min = Math.min(rule.condition.args.nOf.min, rule.template.items.length);
-    rule.condition.args.nOf.max = Math.min(rule.condition.args.nOf.max, rule.template.items.length);
+    rule.condition.args.nOf.min = Math.min(rule.condition.args.nOf.min, templates.getItems({expression: rule.template}).size);
+    rule.condition.args.nOf.max = Math.min(rule.condition.args.nOf.max, templates.getItems({expression: rule.template}).size);
 }
 
 
 function rawCreateRule(data) {
 
-    const name = data.name || ''
+    const name = data.name || '';
 
-    const template = {items: data.items || []};
+    let template = templates.exprSet();
+
+    if (data.template) {
+        template = data.template;
+    }
 
     let condition = data.condition;
 
@@ -88,8 +94,12 @@ function rawCreateRule(data) {
                                   max: 1}}};
     }
 
-    const action = {type: ACTION_TYPE.ACCEPT.key,
-                    args: {score: {amount: 0}}};
+    let action = data.action;
+
+    if (!action) {
+        action = {type: ACTION_TYPE.ACCEPT.key,
+                  args: {score: {amount: 0}}};
+    }
 
     const rule = {name: name,
                   type: data.type.key,
@@ -113,7 +123,7 @@ function ruleIdForTypeAndItem(rules, type, itemId) {
     for (let ruleId in rules) {
         const rule = rules[ruleId];
 
-        if (rule.template.items.indexOf(itemId) != -1 &&
+        if (templates.hasItem({expression: rule.template, itemId: itemId}) &&
             type.is(rule.type)) {
             return ruleId;
         }
@@ -140,25 +150,27 @@ function intersect(itemsA, itemsB) {
 
 class Checker {
 
-    constructor(ruleId, items, condition, action) {
+    constructor(ruleId, template, condition, action) {
         this.ruleId = ruleId;
-        this.items = items;
+        this.template = template;
         this.condition = condition;
         this.action = action;
     }
 
-    conditionAnswer(intersection) {
+    conditionAnswer(currentItems) {
+        const itemsSet = new Set(currentItems);
+
         if (CONDITION_TYPE.ALL_OF.is(this.condition.type)) {
-            return this.items.length == intersection.length;
+            return templates.checkAllOf(this.template, itemsSet);
         }
 
         if (CONDITION_TYPE.NONE_OF.is(this.condition.type)) {
-            return intersection.length == 0;
+            return templates.checkNoneOf(this.template, itemsSet);
         }
 
         if (CONDITION_TYPE.CARDINALITY.is(this.condition.type)) {
             const border = this.condition.args.nOf;
-            return (border.min <= intersection.length && intersection.length <= border.max);
+            return templates.checkCardinality(this.template, itemsSet, border.min, border.max);
         }
     }
 
@@ -171,10 +183,10 @@ class Checker {
             return true;
         }
 
-        const intersection = intersect([...searcher.items, item], this.items);
+        const currentItems = [...searcher.items, item];
 
         if (ACTION_TYPE.REJECT.is(this.action.type)) {
-            return !this.conditionAnswer(intersection);
+            return !this.conditionAnswer(currentItems);
         }
     }
 
@@ -183,14 +195,14 @@ class Checker {
             return true;
         }
 
-        const intersection = intersect(searcher.items.slice(), this.items);
+        const currentItems = searcher.items.slice();
 
         if (ACTION_TYPE.ACCEPT.is(this.action.type)) {
-            return this.conditionAnswer(intersection);
+            return this.conditionAnswer(currentItems);
         }
 
         if (ACTION_TYPE.REJECT.is(this.action.type)) {
-            return !this.conditionAnswer(intersection);
+            return !this.conditionAnswer(currentItems);
         }
     }
 
@@ -199,9 +211,9 @@ class Checker {
             return 0;
         }
 
-        const intersection = intersect(items.slice(), this.items);
+        const currentItems = items.slice();
 
-        if (!this.conditionAnswer(intersection)) {
+        if (!this.conditionAnswer(currentItems)) {
             return 0;
         }
 
@@ -212,7 +224,7 @@ class Checker {
 
 function getCheckers(ruleId, rule) {
     return [new Checker(ruleId,
-                        rule.template.items,
+                        rule.template,
                         rule.condition,
                         rule.action)];
 }

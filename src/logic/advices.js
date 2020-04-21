@@ -2,6 +2,7 @@
 import Enum from 'enum';
 
 import * as rules from '@/logic/rules.js';
+import * as templates from '@/logic/templates.js';
 
 
 const ADVICE_TYPE = new Enum({GROUP_HAS_NO_SCORED_ITEMS: 0,
@@ -35,8 +36,10 @@ function AdviceGroupHasNoScoredItems({currentRules, solutions}) {
 
         let scoredItemFound = false;
 
-        for (let i in rule.template.items) {
-            const itemId = rule.template.items[i];
+        const items = [...templates.getItems({expression: rule.template})];
+
+        for (let i in items) {
+            const itemId = items[i];
 
             const scoreRuleId = rules.ruleIdForTypeAndItem(currentRules,
                                                            rules.RULE_TYPE.ITEM_SCORE,

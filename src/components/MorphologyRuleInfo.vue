@@ -8,8 +8,18 @@
 
   <morphology-rule-condition-info :condition="rule.condition"/>
 
-  <morphology-rule-template-info :template="rule.template"
-                                 class="mt-4"/>
+  <div class="pt-4 pb-4"
+       style="overflow: auto;">
+
+    <morphology-rule-template :template="rule.template"
+                              :grow="false"
+                              mode="info"
+                              class="mt-4"/>
+  </div>
+
+  <p>
+    <strong>Expected sets</strong>: {{templateSetsNumber}}
+  </p>
 
 </v-sheet>
 
@@ -17,7 +27,9 @@
 
 <script>
 
-import MorphologyRuleTemplateInfo from "@/components/MorphologyRuleTemplateInfo";
+import * as templates from '@/logic/templates.js';
+
+import MorphologyRuleTemplate from "@/components/MorphologyRuleTemplate";
 import MorphologyRuleConditionInfo from "@/components/MorphologyRuleConditionInfo";
 import MorphologyRuleActionInfo from "@/components/MorphologyRuleActionInfo";
 
@@ -25,7 +37,7 @@ export default {
     name: "MorphologyRuleInfo",
 
     components: {
-        MorphologyRuleTemplateInfo,
+        MorphologyRuleTemplate,
         MorphologyRuleConditionInfo,
         MorphologyRuleActionInfo
     },
@@ -36,6 +48,9 @@ export default {
     props: ["rule"],
 
     computed: {
+        templateSetsNumber () {
+            return templates.combinationsNumber({expression: this.rule.template});
+        }
     },
 
     methods: {
