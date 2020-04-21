@@ -138,39 +138,63 @@ function detailedSolutionScore(items, checkers) {
 }
 
 
-function* search(searcher, items, checkers, nextItemIndex, statistics, counter) {
+function* search({searcher, items, checkers, statistics, breakEvery}) {
 
-    counter.steps += 1;
+    const indexses = [0];
 
-    if (counter.steps % counter.breakEvery == 0) {
-        yield null;
-    }
+    let index = 0;
 
-    statistics.checkedSolutions += 1;
+    const itemsLength = items.length;
 
-    if (checkLowerRestrictions(searcher, checkers)) {
-        statistics.scoredSolutions += 1;
+    let steps = 0;
 
-        searcher.acceptCurrentSolution(scoreSolution(searcher.items, checkers));
-    }
+    while (index >= 0) {
 
-    for (let i=nextItemIndex; i<items.length; i++) {
+        steps += 1;
 
-        const item = items[i];
-
-        if (!checkUpperRestrictions(searcher, checkers, item)) {
-            continue;
+        if (steps % breakEvery == 0) {
+            yield null;
         }
 
-        searcher.forward(item);
+        statistics.checkedSolutions += 1;
 
-        for (let _ of search(searcher, items, checkers, i + 1, statistics, counter)) {
-            yield null
+        if (checkLowerRestrictions(searcher, checkers)) {
+            statistics.scoredSolutions += 1;
+            searcher.acceptCurrentSolution(scoreSolution(searcher.items, checkers));
         }
 
-        searcher.backward();
+        let nextIndex = indexses[index] + 1;
+
+        while (index >= 0) {
+
+            let movedForward = false;
+
+            for (let i=nextIndex; i < itemsLength; i++) {
+                const item = items[i];
+
+                if (!checkUpperRestrictions(searcher, checkers, item)) {
+                    continue
+                }
+
+                indexses.push(i);
+                index += 1;
+
+                searcher.forward(item);
+
+                movedForward = true;
+                break;
+            }
+
+            if (movedForward) {
+                break;
+            }
+
+            searcher.backward();
+            nextIndex = indexses.pop() + 1;
+            index -= 1;
+        }
     }
-};
+}
 
 
 export {search,

@@ -221,8 +221,11 @@ export default {
 
             this.searcher = new solver.SolutionSearcher(bestSolutionsLimit);
 
-            this.currentSolver = solver.search(this.searcher, items, checkers, 0, this.currentStatistics, {steps: 1,
-                                                                                                           breakEvery: 1000});
+            this.currentSolver = solver.search({searcher: this.searcher,
+                                                items: items,
+                                                checkers: checkers,
+                                                statistics: this.currentStatistics,
+                                                breakEvery: 1000});
         },
 
         onSearchComplete () {
