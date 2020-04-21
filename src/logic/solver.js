@@ -138,7 +138,13 @@ function detailedSolutionScore(items, checkers) {
 }
 
 
-function search(searcher, items, checkers, nextItemIndex, statistics) {
+function* search(searcher, items, checkers, nextItemIndex, statistics, counter) {
+
+    counter.steps += 1;
+
+    if (counter.steps % counter.breakEvery == 0) {
+        yield null;
+    }
 
     statistics.checkedSolutions += 1;
 
@@ -149,6 +155,7 @@ function search(searcher, items, checkers, nextItemIndex, statistics) {
     }
 
     for (let i=nextItemIndex; i<items.length; i++) {
+
         const item = items[i];
 
         if (!checkUpperRestrictions(searcher, checkers, item)) {
@@ -157,28 +164,15 @@ function search(searcher, items, checkers, nextItemIndex, statistics) {
 
         searcher.forward(item);
 
-        search(searcher, items, checkers, i + 1, statistics);
+        for (let _ of search(searcher, items, checkers, i + 1, statistics, counter)) {
+            yield null
+        }
 
         searcher.backward();
     }
 };
 
 
-
-function solve(items, checkers, bestSolutionsLimit) {
-
-    const statistics = {checkedSolutions: 0,
-                        scoredSolutions: 0};
-
-    const searcher = new SolutionSearcher(bestSolutionsLimit);
-
-    search(searcher, items, checkers, 0, statistics);
-
-    return {'solutions': searcher.solutions,
-            'statistics': statistics};
-
-}
-
-
-export {solve,
+export {search,
+        SolutionSearcher,
         detailedSolutionScore};

@@ -13,6 +13,9 @@
                                maxDigits="5"
                                precision="2"
                                :class="textClasses"/>
+      <span v-if="suffix">
+        {{suffix}}
+      </span>
     </v-list-item-action-text>
 
     <v-list-item-action-text v-else>
@@ -40,7 +43,7 @@ export default {
     data: () => ({
     }),
 
-    props: ["caption", "value", "isChanged"],
+    props: ["caption", "value", "isChanged", "suffix"],
 
     computed: {
 

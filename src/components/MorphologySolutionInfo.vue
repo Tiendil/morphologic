@@ -2,6 +2,13 @@
 <v-card>
   <v-card-title>Solution Info</v-card-title>
 
+  <morphology-solver :searcher="currentSolver"
+                     :statistics="currentStatistics"
+                     :onComplete="onSearchComplete"
+                     :onCancel="onSearchCancel"
+                     :fullSolutionsSpace="fullSolutionsSpace"
+                     :solutionsSpaceEstimation="solutionsSpaceEstimation"/>
+
   <v-list>
     <v-list-item v-if="isTopologyChanged">
       <v-list-item-content>
@@ -18,21 +25,12 @@
     <v-divider></v-divider>
     <v-subheader>General</v-subheader>
 
-    <morphology-solution-statistics-record caption="Possible solutions"
-                                           :is-changed="isTopologyChanged"
-                                           :value="fullSolutionsSpace"/>
-
-    <morphology-solution-statistics-record caption="Expected solutions"
-                                           :is-changed="isTopologyChanged"
-                                           :value="solutionsSpaceEstimation"/>
-
-    <morphology-solution-statistics-record caption="Checked solutions"
-                                           :is-changed="isTopologyChanged"
-                                           :value="statistics && statistics.checkedSolutions"/>
-
-    <morphology-solution-statistics-record caption="Scored solutions"
-                                           :is-changed="isTopologyChanged"
-                                           :value="statistics && statistics.scoredSolutions"/>
+    <morphology-solution-statistics :fullSolutionsSpace="fullSolutionsSpace"
+                                    :solutionsSpaceEstimation="solutionsSpaceEstimation"
+                                    :checkedSolutions="statistics && statistics.checkedSolutions"
+                                    :scoredSolutions="statistics && statistics.scoredSolutions"
+                                    :searchTime="statistics && statistics.searchTime"
+                                    :isChanged="isTopologyChanged"/>
 
     <v-divider></v-divider>
 
@@ -100,19 +98,24 @@ import * as solver from "@/logic/solver";
 import * as statistics from "@/logic/statistics";
 import * as advices from "@/logic/advices";
 
-import MorphologySolutionStatisticsRecord from "@/components/MorphologySolutionStatisticsRecord";
+import MorphologySolutionStatistics from "@/components/MorphologySolutionStatistics";
+import MorphologySolver from "@/components/MorphologySolver";
 
 
 export default {
     name: "MorphologySolutionInfo",
 
     components: {
-        MorphologySolutionStatisticsRecord
+        MorphologySolver,
+        MorphologySolutionStatistics
     },
 
     data: () => ({
         statistics: null,
-        topologyVersion: null
+        searcher: null,
+        topologyVersion: null,
+        currentSolver: null,
+        currentStatistics: null
     }),
 
     props: [],
@@ -209,12 +212,29 @@ export default {
             }
 
             // solve
-            const info = solver.solve(items, checkers, 100);
+            this.currentStatistics = {checkedSolutions: 0,
+                                      scoredSolutions: 0,
+                                      searchStartAt: Date.now(),
+                                      searchTime: 0};
 
-            // process result
-            this.statistics = info.statistics;
+            const bestSolutionsLimit = 100;
 
-            this.$store.commit("solutions/rewriteSolutions", {solutions: info.solutions.solutions});
+            this.searcher = new solver.SolutionSearcher(bestSolutionsLimit);
+
+            this.currentSolver = solver.search(this.searcher, items, checkers, 0, this.currentStatistics, {steps: 1,
+                                                                                                           breakEvery: 1000});
+        },
+
+        onSearchComplete () {
+            this.currentSolver = null;
+
+            this.statistics = this.currentStatistics;
+
+            this.currentStatistics = null;
+
+            this.$store.commit("solutions/rewriteSolutions", {solutions: this.searcher.solutions.solutions});
+
+            this.searcher = null;
 
             // genereate advices
 
@@ -224,6 +244,11 @@ export default {
             this.$store.commit("advices/refreshAdvices", {advices: newAdvices});
 
             this.topologyVersion = this.$store.state.topologyVersion;
+        },
+
+        onSearchCancel () {
+            this.currentSolver = null;
+            this.searcher = null;
         }
     }
 }
