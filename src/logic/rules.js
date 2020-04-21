@@ -174,7 +174,7 @@ class Checker {
         }
     }
 
-    checkUpper(searcher, item) {
+    checkUpper(searcher) {
         if (ACTION_TYPE.SCORE.is(this.action.type)) {
             return true;
         }
@@ -183,10 +183,8 @@ class Checker {
             return true;
         }
 
-        const currentItems = [...searcher.items, item];
-
         if (ACTION_TYPE.REJECT.is(this.action.type)) {
-            return !this.conditionAnswer(currentItems);
+            return !this.conditionAnswer(searcher.items);
         }
     }
 
@@ -195,14 +193,12 @@ class Checker {
             return true;
         }
 
-        const currentItems = searcher.items.slice();
-
         if (ACTION_TYPE.ACCEPT.is(this.action.type)) {
-            return this.conditionAnswer(currentItems);
+            return this.conditionAnswer(searcher.items);
         }
 
         if (ACTION_TYPE.REJECT.is(this.action.type)) {
-            return !this.conditionAnswer(currentItems);
+            return !this.conditionAnswer(searcher.items);
         }
     }
 
@@ -211,9 +207,7 @@ class Checker {
             return 0;
         }
 
-        const currentItems = items.slice();
-
-        if (!this.conditionAnswer(currentItems)) {
+        if (!this.conditionAnswer(items)) {
             return 0;
         }
 

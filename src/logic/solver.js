@@ -84,10 +84,10 @@ class SolutionSearcher {
 }
 
 
-function checkUpperRestrictions(searcher, checkers, item) {
+function checkUpperRestrictions(searcher, checkers) {
 
     for (let i in checkers) {
-        if (!checkers[i].checkUpper(searcher, item)) {
+        if (!checkers[i].checkUpper(searcher)) {
             return false;
         }
     }
@@ -140,7 +140,7 @@ function detailedSolutionScore(items, checkers) {
 
 function* search({searcher, items, checkers, statistics, breakEvery}) {
 
-    const indexses = [0];
+    const indexes = [0];
 
     let index = 0;
 
@@ -150,49 +150,37 @@ function* search({searcher, items, checkers, statistics, breakEvery}) {
 
     while (index >= 0) {
 
+        if (itemsLength <= indexes[index]) {
+            indexes.pop();
+            index -= 1;
+            indexes[index] += 1;
+            searcher.backward();
+            continue
+        }
+
+        statistics.checkedSolutions += 1;
+
         steps += 1;
 
         if (steps % breakEvery == 0) {
             yield null;
         }
 
-        statistics.checkedSolutions += 1;
+        searcher.forward(items[indexes[index]]);
+
+        if (!checkUpperRestrictions(searcher, checkers)) {
+            searcher.backward();
+            indexes[index] += 1;
+            continue
+        }
 
         if (checkLowerRestrictions(searcher, checkers)) {
             statistics.scoredSolutions += 1;
             searcher.acceptCurrentSolution(scoreSolution(searcher.items, checkers));
         }
 
-        let nextIndex = indexses[index] + 1;
-
-        while (index >= 0) {
-
-            let movedForward = false;
-
-            for (let i=nextIndex; i < itemsLength; i++) {
-                const item = items[i];
-
-                if (!checkUpperRestrictions(searcher, checkers, item)) {
-                    continue
-                }
-
-                indexses.push(i);
-                index += 1;
-
-                searcher.forward(item);
-
-                movedForward = true;
-                break;
-            }
-
-            if (movedForward) {
-                break;
-            }
-
-            searcher.backward();
-            nextIndex = indexses.pop() + 1;
-            index -= 1;
-        }
+        indexes.push(indexes[index] + 1);
+        index += 1;
     }
 }
 
