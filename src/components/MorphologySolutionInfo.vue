@@ -146,7 +146,7 @@ export default {
         },
 
         fullSolutionsSpace() {
-            return statistics.factorial(Object.keys(this.items).length);
+            return Math.pow(2, Object.keys(this.items).length);
         },
 
         solutionsSpaceEstimation() {
