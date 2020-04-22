@@ -123,7 +123,7 @@ export default {
 
             order.reverse();
 
-            const rules = [];
+            const rulesObjects = [];
 
             for (let i in order) {
 
@@ -143,18 +143,32 @@ export default {
                     continue;
                 }
 
-                rules.push({ruleId: ruleId});
+                rulesObjects.push({ruleId: ruleId,
+                                   order: i,
+                                   type: rule.type});
             }
 
-            return rules;
-        },
+            rulesObjects.sort(function(a, b) {
+                if (rules.RULE_TYPE.CUSTOM.is(a.type) && !rules.RULE_TYPE.CUSTOM.is(b.type)) {
+                    return -1;
+                }
 
-        sortedRulesIds() {
-            const order = this.$store.getters['rules/rulesByCreationOrder'].slice();
+                if (rules.RULE_TYPE.CUSTOM.is(b.type) && !rules.RULE_TYPE.CUSTOM.is(a.type)) {
+                    return 1;
+                }
 
-            order.reverse();
+                if (a.order < b.order) {
+                    return -1;
+                }
 
-            return order;
+                if (b.order < a.order) {
+                    return 1;
+                }
+
+                return 0;
+            });
+
+            return rulesObjects;
         }
     },
 
