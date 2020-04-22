@@ -111,6 +111,12 @@ export default new Vuex.Store({
             context.commit("updateTopologyVersion");
         },
 
+        changeRuleCondition (context, payload) {
+            context.commit("rules/changeRuleCondition", {ruleId: payload.ruleId,
+                                                         condition: payload.condition});
+            context.commit("updateTopologyVersion");
+        },
+
         clearAll (context) {
             context.commit('items/clearAll');
             context.commit('rules/clearAll');

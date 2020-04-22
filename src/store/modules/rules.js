@@ -99,6 +99,10 @@ const Rules = {
                                      child: templates.exprItem({itemId: payload.itemId})});
         },
 
+        changeRuleCondition: function (state, payload) {
+            state.rules[payload.ruleId].condition = payload.condition;
+        },
+
         removeItemFromRules: function(state, payload) {
             const rulesToDelete = [];
 

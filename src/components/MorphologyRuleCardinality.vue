@@ -66,11 +66,9 @@ export default {
         setCardinality: function (borders) {
             const rule = this.$store.getters['rules/ruleCopyById'](this.ruleId);
 
-            rules.rawUpdateRule(rule, {condition: {type: rules.CONDITION_TYPE.CARDINALITY.key,
-                                                   args: {nOf: borders}}})
-
-            this.$store.dispatch("setRule", {ruleId: this.ruleId,
-                                             rule: rule});
+            this.$store.dispatch("changeRuleCondition", {ruleId: this.ruleId,
+                                                         condition: {type: rules.CONDITION_TYPE.CARDINALITY.key,
+                                                                     args: {nOf: borders}}});
         }
     }
 }
