@@ -1,0 +1,417 @@
+{
+  "version": 2,
+  "items": {
+    "items": {
+      "c0c73148-3b03-465f-9d55-f73dc61d58b2": {
+        "text": "Внутреннего сгорания"
+      },
+      "09c68503-1521-4d71-9d6c-4318cf77b54d": {
+        "text": "воздушный винт\t"
+      },
+      "1d256ce8-c62c-4c8c-8655-7bc858438a8e": {
+        "text": "на снег"
+      },
+      "8f5c03cf-cb6c-430a-aeb9-d675823da003": {
+        "text": "Газовая турбина"
+      },
+      "6ababef5-3e50-4e50-a953-264ef86e6c4b": {
+        "text": "Электродвигатель"
+      },
+      "5ca5d478-3062-4630-89d9-cbe8b489cbaf": {
+        "text": "Реактивный двигатель"
+      },
+      "d5b7a041-9990-4480-81b2-3c7dc13b5c9f": {
+        "text": "гусеницы"
+      },
+      "f38ecdd2-0e3e-4f4e-a37c-3f84839dca07": {
+        "text": "лыжи"
+      },
+      "302715b6-4f6a-45c3-affe-91b0d2a8da9c": {
+        "text": "снегомёт"
+      },
+      "eda5ebae-1ea2-460d-acdb-15e026d62824": {
+        "text": "шнеки"
+      },
+      "a73f574c-81ef-4ab1-bb26-06f4e161ba6d": {
+        "text": "на двигатель"
+      },
+      "539d1908-9668-439c-87ba-c33c85c59fa4": {
+        "text": "на движитель"
+      }
+    }
+  },
+  "rules": {
+    "rules": {
+      "fc7f0012-2808-4933-be0b-28e8838c50a8": {
+        "name": "Двигатель",
+        "type": "GROUP",
+        "template": {
+          "type": "SET",
+          "uid": "025b36a5-bb98-4dd2-958e-79ce2c84a306",
+          "data": {
+            "expressions": [
+              {
+                "type": "ITEM",
+                "uid": "a40e2b48-8ec8-4fcd-a571-aef0b7cd52c5",
+                "data": {
+                  "itemId": "c0c73148-3b03-465f-9d55-f73dc61d58b2"
+                }
+              },
+              {
+                "type": "ITEM",
+                "uid": "7ead0fdc-83d6-4bb4-9775-df48d22a1b02",
+                "data": {
+                  "itemId": "8f5c03cf-cb6c-430a-aeb9-d675823da003"
+                }
+              },
+              {
+                "type": "ITEM",
+                "uid": "d365e353-9f62-4c3e-b718-06302fc40634",
+                "data": {
+                  "itemId": "6ababef5-3e50-4e50-a953-264ef86e6c4b"
+                }
+              },
+              {
+                "type": "ITEM",
+                "uid": "5cf7867b-b430-449c-a830-9db23190a5fe",
+                "data": {
+                  "itemId": "5ca5d478-3062-4630-89d9-cbe8b489cbaf"
+                }
+              }
+            ]
+          }
+        },
+        "condition": {
+          "type": "CARDINALITY",
+          "args": {
+            "nOf": {
+              "min": 1,
+              "max": 2
+            }
+          }
+        },
+        "action": {
+          "type": "ACCEPT",
+          "args": {
+            "score": {
+              "amount": 0
+            }
+          }
+        },
+        "avatarIndex": 1
+      },
+      "7722a83e-94a0-4864-a263-d1207a888e10": {
+        "name": "Движитель",
+        "type": "GROUP",
+        "template": {
+          "type": "SET",
+          "uid": "7e39c76d-4a4d-4aa8-a9ee-dd51ebbe1490",
+          "data": {
+            "expressions": [
+              {
+                "type": "ITEM",
+                "uid": "2d997b9c-bdd8-4440-974d-42c03004ec41",
+                "data": {
+                  "itemId": "09c68503-1521-4d71-9d6c-4318cf77b54d"
+                }
+              },
+              {
+                "type": "ITEM",
+                "uid": "e7c42f30-8bad-4fd3-bc02-1c2bfbe42031",
+                "data": {
+                  "itemId": "d5b7a041-9990-4480-81b2-3c7dc13b5c9f"
+                }
+              },
+              {
+                "type": "ITEM",
+                "uid": "ecebdc66-9d69-4990-9a8f-3f9eced8137e",
+                "data": {
+                  "itemId": "f38ecdd2-0e3e-4f4e-a37c-3f84839dca07"
+                }
+              },
+              {
+                "type": "ITEM",
+                "uid": "1df3886c-0119-4a06-8382-803bf24bedf8",
+                "data": {
+                  "itemId": "302715b6-4f6a-45c3-affe-91b0d2a8da9c"
+                }
+              },
+              {
+                "type": "ITEM",
+                "uid": "47ba331d-0bae-436e-bdb5-f17c547b76fc",
+                "data": {
+                  "itemId": "eda5ebae-1ea2-460d-acdb-15e026d62824"
+                }
+              }
+            ]
+          }
+        },
+        "condition": {
+          "type": "CARDINALITY",
+          "args": {
+            "nOf": {
+              "min": 1,
+              "max": 1
+            }
+          }
+        },
+        "action": {
+          "type": "ACCEPT",
+          "args": {
+            "score": {
+              "amount": 0
+            }
+          }
+        },
+        "avatarIndex": 2
+      },
+      "21965239-5da9-4909-b859-f089314d0ac9": {
+        "name": "Опора ",
+        "type": "GROUP",
+        "template": {
+          "type": "SET",
+          "uid": "4c9dc0b7-7b84-47ef-9383-211cb0946bfe",
+          "data": {
+            "expressions": [
+              {
+                "type": "ITEM",
+                "uid": "08d8f69f-16a1-4557-b2e4-57fd33512a49",
+                "data": {
+                  "itemId": "1d256ce8-c62c-4c8c-8655-7bc858438a8e"
+                }
+              },
+              {
+                "type": "ITEM",
+                "uid": "401383d5-e29d-45cf-9ae9-8d72a3aa8706",
+                "data": {
+                  "itemId": "a73f574c-81ef-4ab1-bb26-06f4e161ba6d"
+                }
+              },
+              {
+                "type": "ITEM",
+                "uid": "c7991183-420e-4330-b713-84c1c2241f18",
+                "data": {
+                  "itemId": "539d1908-9668-439c-87ba-c33c85c59fa4"
+                }
+              }
+            ]
+          }
+        },
+        "condition": {
+          "type": "CARDINALITY",
+          "args": {
+            "nOf": {
+              "min": 1,
+              "max": 1
+            }
+          }
+        },
+        "action": {
+          "type": "ACCEPT",
+          "args": {
+            "score": {
+              "amount": 0
+            }
+          }
+        },
+        "avatarIndex": 3
+      },
+      "1f4cbb2d-4b48-4efc-b4cd-f76a845e7014": {
+        "name": "Require лыжи",
+        "type": "ITEM_MODE",
+        "template": {
+          "type": "SET",
+          "uid": "f4f2f12b-1c5a-4f4a-8445-66675097fc0a",
+          "data": {
+            "expressions": [
+              {
+                "type": "ITEM",
+                "uid": "dbf4fc63-bae8-4bc2-ac40-01a10cb80f76",
+                "data": {
+                  "itemId": "f38ecdd2-0e3e-4f4e-a37c-3f84839dca07"
+                }
+              }
+            ]
+          }
+        },
+        "condition": {
+          "type": "ALL_OF",
+          "args": {
+            "nOf": {
+              "min": 1,
+              "max": 1
+            }
+          }
+        },
+        "action": {
+          "type": "ACCEPT",
+          "args": {
+            "score": {
+              "amount": 0
+            }
+          }
+        },
+        "avatarIndex": null
+      },
+      "61e5bad0-ef88-4cf2-ab53-80dacfcff762": {
+        "name": "Exclude на снег",
+        "type": "ITEM_MODE",
+        "template": {
+          "type": "SET",
+          "uid": "c233e550-872b-49ae-b1d4-65d9c8b42f88",
+          "data": {
+            "expressions": [
+              {
+                "type": "ITEM",
+                "uid": "4a89e5e1-bfd1-4532-8f9a-2ea2d94dcf0f",
+                "data": {
+                  "itemId": "1d256ce8-c62c-4c8c-8655-7bc858438a8e"
+                }
+              }
+            ]
+          }
+        },
+        "condition": {
+          "type": "ALL_OF",
+          "args": {
+            "nOf": {
+              "min": 1,
+              "max": 1
+            }
+          }
+        },
+        "action": {
+          "type": "REJECT",
+          "args": {
+            "score": {
+              "amount": 0
+            }
+          }
+        },
+        "avatarIndex": null
+      },
+      "41f4c6f8-f658-4def-8c6d-b62aaced95cb": {
+        "name": "Score for Электродвигатель",
+        "type": "ITEM_SCORE",
+        "template": {
+          "type": "SET",
+          "uid": "ca706986-b530-4e70-98f3-818f85e27eb9",
+          "data": {
+            "expressions": [
+              {
+                "type": "ITEM",
+                "uid": "072981ad-06be-4d65-a612-67640c4a87a0",
+                "data": {
+                  "itemId": "6ababef5-3e50-4e50-a953-264ef86e6c4b"
+                }
+              }
+            ]
+          }
+        },
+        "condition": {
+          "type": "ALL_OF",
+          "args": {
+            "nOf": {
+              "min": 1,
+              "max": 1
+            }
+          }
+        },
+        "action": {
+          "type": "SCORE",
+          "args": {
+            "score": {
+              "amount": null
+            }
+          }
+        },
+        "avatarIndex": null
+      },
+      "537910b9-da35-457d-ac44-e9c639a1afd3": {
+        "name": "Score for Реактивный двигатель",
+        "type": "ITEM_SCORE",
+        "template": {
+          "type": "SET",
+          "uid": "bdd33717-f142-4092-b152-b2093963de53",
+          "data": {
+            "expressions": [
+              {
+                "type": "ITEM",
+                "uid": "fbaf12e7-91b1-400e-baeb-96c4805752fe",
+                "data": {
+                  "itemId": "5ca5d478-3062-4630-89d9-cbe8b489cbaf"
+                }
+              }
+            ]
+          }
+        },
+        "condition": {
+          "type": "ALL_OF",
+          "args": {
+            "nOf": {
+              "min": 1,
+              "max": 1
+            }
+          }
+        },
+        "action": {
+          "type": "SCORE",
+          "args": {
+            "score": {
+              "amount": 1
+            }
+          }
+        },
+        "avatarIndex": null
+      },
+      "a6785b4e-fc41-43f3-8149-18a08f5aa41f": {
+        "name": "Score for Газовая турбина",
+        "type": "ITEM_SCORE",
+        "template": {
+          "type": "SET",
+          "uid": "b10a8207-4b7c-40af-ba51-c5bfc823c077",
+          "data": {
+            "expressions": [
+              {
+                "type": "ITEM",
+                "uid": "4f1a1043-9dc1-48f4-bfe2-ae6b6b85b9c3",
+                "data": {
+                  "itemId": "8f5c03cf-cb6c-430a-aeb9-d675823da003"
+                }
+              }
+            ]
+          }
+        },
+        "condition": {
+          "type": "ALL_OF",
+          "args": {
+            "nOf": {
+              "min": 1,
+              "max": 1
+            }
+          }
+        },
+        "action": {
+          "type": "SCORE",
+          "args": {
+            "score": {
+              "amount": 1
+            }
+          }
+        },
+        "avatarIndex": null
+      }
+    },
+    "creationOrder": [
+      "fc7f0012-2808-4933-be0b-28e8838c50a8",
+      "7722a83e-94a0-4864-a263-d1207a888e10",
+      "21965239-5da9-4909-b859-f089314d0ac9",
+      "1f4cbb2d-4b48-4efc-b4cd-f76a845e7014",
+      "61e5bad0-ef88-4cf2-ab53-80dacfcff762",
+      "41f4c6f8-f658-4def-8c6d-b62aaced95cb",
+      "537910b9-da35-457d-ac44-e9c639a1afd3",
+      "a6785b4e-fc41-43f3-8149-18a08f5aa41f"
+    ],
+    "groupsCounter": 3
+  }
+}

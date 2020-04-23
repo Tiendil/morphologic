@@ -53,6 +53,26 @@
 
                 <v-btn color="error" @click="onClear" class="ml-1">Clear</v-btn>
 
+                <v-menu offset-y>
+                  <template v-slot:activator="{ on }">
+                    <v-btn color="warning"
+                           dark
+                           v-on="on"
+                           class="ml-1">
+                      Examples
+                      <v-icon right>mdi-chevron-down</v-icon>
+                    </v-btn>
+                  </template>
+
+                  <v-list>
+                    <v-list-item v-for="(example, index) in examples"
+                                 :key="index"
+                                 @click="loadExample(example)">
+                      <v-list-item-title>{{ example.name }}</v-list-item-title>
+                    </v-list-item>
+                  </v-list>
+                </v-menu>
+
               </v-toolbar>
 
             </v-col>
@@ -78,6 +98,9 @@ import * as templates from '@/logic/templates.js';
 import MorphologyGroup from '@/components/MorphologyGroup';
 import MorphologyMainPanel from '@/components/MorphologyMainPanel';
 
+import exampleDress from '@/../examples/dress/dress_5.json'
+import exampleSnowmobile from '@/../examples/snowmobile/snowmobile_1.json'
+
 export default {
     name: 'App',
 
@@ -87,6 +110,8 @@ export default {
     },
 
     data: () => ({
+        examples: [{name: 'Выбор одежды', data: exampleDress},
+                   {name: 'Снегоход (из википедии)', data: exampleSnowmobile}]
     }),
 
     computed: {
@@ -140,6 +165,10 @@ export default {
             };
 
             reader.readAsText(file);
+        },
+
+        loadExample(example) {
+            this.$store.dispatch('importAll', {data: example.data});
         },
 
  //        x() {
