@@ -7,5 +7,5 @@ module.exports = {
         "vuetify"
     ],
 
-    "publicPath": process.env.NODE_ENV === 'production' ? '/morphologyc/' : '/'
+    "publicPath": process.env.NODE_ENV === 'production' ? '/morphologic/' : '/'
 }
