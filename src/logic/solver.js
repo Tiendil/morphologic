@@ -30,7 +30,7 @@ class Solutions {
 
     registerSolution(items, score) {
 
-        if (this.solutions.length >= this.size && this.solutions[-1].score > score) {
+        if (this.solutions.length >= this.size && this.solutions[this.solutions.length-1].score > score) {
             return false;
         }
 
@@ -38,7 +38,7 @@ class Solutions {
 
         this.solutions.sort(solutionSorter);
 
-        if (this.solutions.length >= this.size) {
+        if (this.solutions.length > this.size) {
             this.solutions.pop();
         }
     }
