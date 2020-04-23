@@ -259,7 +259,7 @@ export default {
     },
 
     data: function() {
-        return {show: (localStorage.showHelp === 'true')};
+        return {show: (localStorage.getItem('showHelp') === null || localStorage.showHelp === 'true')};
     },
 
     props: [],
