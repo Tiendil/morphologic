@@ -33,6 +33,7 @@ export default {
     methods: {
         createGroupRule: function () {
             this.$store.dispatch("createGroupRule", {"createFirstItem": true});
+            this.$gtag.event('create_group_rule', {});
         },
     }
 }

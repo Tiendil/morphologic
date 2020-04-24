@@ -105,7 +105,6 @@ export default {
 
         advicesFilter (advices, search) {
             return advices;
-
         },
 
         unhideAll() {

@@ -180,6 +180,8 @@ export default {
 
             this.$store.dispatch("setRule", {ruleId: uuid.v4(),
                                              rule: rules.rawCreateRule({type: rules.RULE_TYPE.CUSTOM})});
+
+            this.$gtag.event('create_rule', {});
         },
 
         rulesFilter (rules, search) {

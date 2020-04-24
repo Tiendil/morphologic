@@ -165,9 +165,12 @@ export default {
             }
 
             this.captionMode = 'show';
+
+            this.$gtag.event('change_caption_item', {event_label: value});
         },
 
         remove: function() {
+            this.$gtag.event('remove_item', {event_label: this.item.text});
             this.$store.dispatch("removeItem", {itemId: this.itemId});
         }
     }

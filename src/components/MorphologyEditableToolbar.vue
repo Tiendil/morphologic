@@ -87,6 +87,8 @@ export default {
 
             this.changeCaption(value)
             this.captionMode = "show";
+
+            this.$gtag.event('change_caption', {event_label: value});
         }
     }
 }

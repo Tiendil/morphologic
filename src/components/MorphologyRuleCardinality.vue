@@ -69,6 +69,8 @@ export default {
             this.$store.dispatch("changeRuleCondition", {ruleId: this.ruleId,
                                                          condition: {type: rules.CONDITION_TYPE.CARDINALITY.key,
                                                                      args: {nOf: borders}}});
+
+            this.$gtag.event('set_cardinality', {});
         }
     }
 }

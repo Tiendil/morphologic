@@ -272,6 +272,13 @@ export default {
 
     watch: {
         show(newShow) {
+            if (newShow) {
+                this.$gtag.event('show_help', {});
+            }
+            else {
+                this.$gtag.event('hide_help', {});
+            }
+
             localStorage.showHelp = newShow;
         }
     }

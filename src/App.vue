@@ -178,6 +178,7 @@ export default {
         },
 
         loadExample(example) {
+            this.$gtag.event('load_example', { event_category: example.name });
             this.$store.dispatch('importAll', {data: example.data});
         },
 

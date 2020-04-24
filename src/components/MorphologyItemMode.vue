@@ -89,6 +89,9 @@ export default {
 
             this.$store.dispatch("setRule", {ruleId: this.ruleId || uuid.v4(),
                                              rule: newRule});
+
+            this.$gtag.event('change_item_mode', {event_label: this.item.text,
+                                                  event_category: mode.key});
         }
     }
 }

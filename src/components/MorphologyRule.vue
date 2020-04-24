@@ -83,9 +83,14 @@ export default {
         changeCaption: function (value) {
             this.$store.commit("rules/changeRuleName", {ruleId: this.ruleId,
                                                         name: value});
+
+            this.$gtag.event('change_caption_rule', {event_label: value});
         },
 
         remove: function() {
+            const rule = this.$store.getters['rules/ruleCopyById'](this.ruleId);
+            this.$gtag.event('remove_rule', {event_label: rule.name});
+
             this.$store.dispatch("removeRule", {ruleId: this.ruleId});
         },
 
@@ -104,6 +109,8 @@ export default {
             this.$store.dispatch("setRule", {ruleId: this.ruleId,
                                              rule: rule});
             this.bodyMode = 'show';
+
+            this.$gtag.event('save_rule', {event_label: rule.name});
         },
 
         cancelEdit: function() {

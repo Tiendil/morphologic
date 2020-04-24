@@ -36,10 +36,12 @@ export default {
     methods: {
         hide: function() {
             this.$store.commit('advices/hideAdvice', {'adviceUid': this.advice.uid});
+            this.$gtag.event('hide_advice', {});
         },
 
         show: function() {
             this.$store.commit('advices/showAdvice', {'adviceUid': this.advice.uid});
+            this.$gtag.event('show_advice', {});
         },
     }
 }

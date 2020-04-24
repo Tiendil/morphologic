@@ -226,6 +226,8 @@ export default {
                                                 checkers: checkers,
                                                 statistics: this.currentStatistics,
                                                 breakEvery: 10000});
+
+            this.$gtag.event('solution_search_start', {});
         },
 
         onSearchComplete () {
@@ -247,11 +249,15 @@ export default {
             this.$store.commit("advices/refreshAdvices", {advices: newAdvices});
 
             this.topologyVersion = this.$store.state.topologyVersion;
+
+            this.$gtag.event('solution_search_completed', {value: parseInt(this.statistics.searchTime)});
         },
 
         onSearchCancel () {
             this.currentSolver = null;
             this.searcher = null;
+
+            this.$gtag.event('solution_search_canceled', {});
         }
     }
 }

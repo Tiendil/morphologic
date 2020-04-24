@@ -84,14 +84,17 @@ export default {
         changeCaption: function (value) {
             this.$store.commit("rules/changeRuleName", {ruleId: this.ruleId,
                                                         name: value});
+            this.$gtag.event('change_caption_group', {event_label: value});
         },
 
         remove: function() {
+            this.$gtag.event('remove_rule', {event_label: this.rule.name});
             this.$store.dispatch("removeRule", {ruleId: this.ruleId});
         },
 
         createItem: function () {
             this.$store.dispatch("createItem", {ruleId: this.ruleId});
+            this.$gtag.event('create_item', {});
         },
     }
 }
