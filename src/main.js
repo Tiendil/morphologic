@@ -6,15 +6,10 @@ import vuetify from './plugins/vuetify';
 import VueGtag from "vue-gtag";
 
 
-if (process.env.NODE_ENV  == 'production') {
-
-    Vue.use(VueGtag, {
-        config: { id: "UA-10915391-7" },
-        appName: 'Morphologic',
-        pageTrackerScreenviewEnabled: true
-    }, router);
-}
-
+Vue.use(VueGtag, {config: { id: "UA-10915391-7" },
+                  appName: 'Morphologic',
+                  pageTrackerScreenviewEnabled: true,
+                  enabled: (process.env.NODE_ENV  == 'production')}, router);
 
 Vue.config.productionTip = false
 
