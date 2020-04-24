@@ -7,7 +7,7 @@
     </v-toolbar-title>
 
     <v-toolbar-title class="ml-8">
-      Телеграм: <a class="white--text" href="https://t.me/joinchat/HA7ACB09k1-CXOuSSog4Vg">@Morphology</a>
+      Телеграм: <a class="white--text" href="https://t.me/joinchat/HA7ACB09k1-CXOuSSog4Vg">@Morphologic</a>
     </v-toolbar-title>
 
   </v-app-bar>
