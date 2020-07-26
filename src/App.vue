@@ -128,8 +128,8 @@ export default {
     },
 
     data: () => ({
-        examples: [{name: 'Выбор одежды', data: exampleDress},
-                   {name: 'Снегоход (из википедии)', data: exampleSnowmobile}]
+        examples: [{name: 'Снегоход (из википедии)', data: exampleSnowmobile},
+                   {name: 'Выбор одежды', data: exampleDress}]
     }),
 
     computed: {
@@ -190,44 +190,50 @@ export default {
             this.$store.dispatch('importAll', {data: example.data});
         },
 
-    },
+        prepairDeveloperEnvironment() {
+            const itemsIds = [];
 
-    created: function() {
+            for (let i=0; i<8; i++) {
+                const itemId = uuid.v4();
+                this.$store.dispatch("createItem", {itemId: itemId, text: `property ${i}`});
+                itemsIds.push(itemId);
+            }
 
-        const itemsIds = [];
+            this.$store.dispatch("createGroupRule", {name: "Group A",
+                                                     items: [itemsIds[0], itemsIds[1], itemsIds[4]]});
 
-        for (let i=0; i<8; i++) {
-            const itemId = uuid.v4();
-            this.$store.dispatch("createItem", {itemId: itemId, text: `property ${i}`});
-            itemsIds.push(itemId);
-        }
+            this.$store.dispatch("createGroupRule", {name: "Group B",
+                                                     items: [itemsIds[2], itemsIds[3]]});
 
-        this.$store.dispatch("createGroupRule", {name: "Group A",
-                                                 items: [itemsIds[0], itemsIds[1], itemsIds[4]]});
+            this.$store.dispatch("createGroupRule", {name: "Group C",
+                                                     items: [itemsIds[5], itemsIds[6], itemsIds[7]]});
 
-        this.$store.dispatch("createGroupRule", {name: "Group B",
-                                                 items: [itemsIds[2], itemsIds[3]]});
+            const scoreRule1 = rules.rawCreateRule({type: rules.RULE_TYPE.ITEM_SCORE,
+                                                    template: templates.createItemsSet({items: [itemsIds[1]]}),
+                                                    action: {type: rules.ACTION_TYPE.SCORE.key,
+                                                             args: {score: {amount: 10}}},
+                                                    name: items.ruleNameForItemScore(this.$store.getters['items/activeItems'][itemsIds[1]])});
 
-        this.$store.dispatch("createGroupRule", {name: "Group C",
-                                                 items: [itemsIds[5], itemsIds[6], itemsIds[7]]});
+            this.$store.dispatch("setRule", {ruleId: uuid.v4(),
+                                             rule: scoreRule1});
 
-        const scoreRule1 = rules.rawCreateRule({type: rules.RULE_TYPE.ITEM_SCORE,
-                                                template: templates.createItemsSet({items: [itemsIds[1]]}),
-                                                action: {type: rules.ACTION_TYPE.SCORE.key,
-                                                         args: {score: {amount: 10}}},
-                                                name: items.ruleNameForItemScore(this.$store.getters['items/activeItems'][itemsIds[1]])});
-
-        this.$store.dispatch("setRule", {ruleId: uuid.v4(),
-                                         rule: scoreRule1});
-
-        const scoreRule2 = rules.rawCreateRule({type: rules.RULE_TYPE.ITEM_SCORE,
-                                                template: templates.createItemsSet({items: [itemsIds[5]]}),
-                                                action: {type: rules.ACTION_TYPE.SCORE.key,
+            const scoreRule2 = rules.rawCreateRule({type: rules.RULE_TYPE.ITEM_SCORE,
+                                                    template: templates.createItemsSet({items: [itemsIds[5]]}),
+                                                    action: {type: rules.ACTION_TYPE.SCORE.key,
                                                          args: {score: {amount: 3}}},
                                                 name: items.ruleNameForItemScore(this.$store.getters['items/activeItems'][itemsIds[5]])});
 
-        this.$store.dispatch("setRule", {ruleId: uuid.v4(),
-                                         rule: scoreRule2});
+            this.$store.dispatch("setRule", {ruleId: uuid.v4(),
+                                             rule: scoreRule2});
+
+        }
+
+    },
+
+    created: function() {
+        this.loadExample(this.examples[0]);
+
+        // this.prepairDeveloperEnvironment();
     }
 };
 </script>
