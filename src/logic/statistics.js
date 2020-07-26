@@ -22,4 +22,5 @@ function solutionSpaceEstimationForGroup(n, kMin, kMax) {
     return total
 }
 
-export {solutionSpaceEstimationForGroup}
+export {factorial,
+        solutionSpaceEstimationForGroup}

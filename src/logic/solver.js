@@ -1,98 +1,93 @@
+
+
+class Solution {
+
+    constructor(items, score) {
+        this.items = items;
+        this.score = score;
+    }
+}
+
+
+function solutionSorter(a, b) {
+    if (a.score > b.score) {
+        return -1;
+    }
+
+    if (a.score < b.score) {
+        return 1;
+    }
+
+    return 0;
+}
+
+
+class Solutions {
+    constructor(size) {
+        this.size = size;
+        this.solutions = [];
+    }
+
+    registerSolution(items, score) {
+
+        if (this.solutions.length >= this.size && this.solutions[this.solutions.length-1].score > score) {
+            return false;
+        }
+
+        this.solutions.push(new Solution(items, score));
+
+        this.solutions.sort(solutionSorter);
+
+        if (this.solutions.length > this.size) {
+            this.solutions.pop();
+        }
+    }
+
+    bestSolution() {
+        if (this.solutions.length == 0) {
+            return null;
+        }
+
+        return this.solutions[0];
+    }
+}
+
+
+
 ///////////////////////////////////////////
 // Ideomatic, but highly unoptimised solver
 ///////////////////////////////////////////
-
 
 class SolutionSearcher {
 
     constructor(bestSolutionsLimit) {
         this.items = [];
-        this.rulesMeta = {};
-        this.bestSolutions = [];
-        this.bestSolutionsLimit = bestSolutionsLimit;
+        this.solutions = new Solutions(bestSolutionsLimit)
     }
 
     depth() {
         return this.items.length;
     }
 
-    getMeta(key, defaultValue) {
-        if (!(key in this.rulesMeta)) {
-            return defaultValue;
-        }
-
-        if (this.rulesMeta[key].length == 0) {
-            return defaultValue;
-        }
-
-        return this.rulesMeta[key][this.rulesMeta[key].length - 1].data;
-    }
-
-    setMeta(key, data) {
-        if (!(key in this.rulesMeta)) {
-            this.rulesMeta[key] = [];
-        }
-        this.rulesMeta[key].push({'depth': this.depth(),
-                                  'data': data});
-    }
-
-    forward(item, metas) {
+    forward(item) {
         this.items.push(item)
-
-        for (let key in metas) {
-            this.setMeta(key, metas[key]);
-        }
     }
 
     backward() {
-        for (let key in this.rulesMeta) {
-            const metas = this.rulesMeta[key];
-
-            if (!metas || metas.length == 0) {
-                continue;
-            }
-
-            const lastMeta = metas[metas.length - 1];
-
-            if (lastMeta.depth != this.depth()) {
-                continue;
-            }
-
-            metas.pop();
-        }
-
         this.items.pop();
     }
 
-    worstBestSolution() {
-        return this.bestSolutions[this.bestSolutions.length-1];
-    }
-
-    bestSolution() {
-        return this.bestSolutions[0];
-    }
-
     acceptCurrentSolution(cost) {
-
-        while (this.bestSolutions.length && this.worstBestSolution().cost < cost) {
-            this.bestSolutions.pop();
-        }
-
-        if (this.bestSolutions.length == this.bestSolutionsLimit) {
-            return;
-        }
-
-        this.bestSolutions.push({'cost': cost,
-                                 'items': this.items.slice()});
+        this.solutions.registerSolution(this.items.slice(), cost);
     }
 
 }
 
 
-function checkUpperRestrictions(searcher, restrictions, item) {
+function checkUpperRestrictions(searcher, checkers) {
 
-    for (let i in restrictions) {
-        if (!restrictions[i].checkUpper(searcher, item)) {
+    for (let i in checkers) {
+        if (!checkers[i].checkUpper(searcher)) {
             return false;
         }
     }
@@ -101,10 +96,10 @@ function checkUpperRestrictions(searcher, restrictions, item) {
 }
 
 
-function checkLowerRestrictions(searcher, restrictions) {
+function checkLowerRestrictions(searcher, checkers) {
 
-    for (let i in restrictions) {
-        if (!restrictions[i].checkLower(searcher)) {
+    for (let i in checkers) {
+        if (!checkers[i].checkLower(searcher)) {
             return false;
         }
     }
@@ -113,68 +108,83 @@ function checkLowerRestrictions(searcher, restrictions) {
 }
 
 
-function getRestrictionsMetas(searcher, item, restrictions) {
+function scoreSolution(items, checkers) {
 
-    let metas = {};
+    let score = 0;
 
-    for (let i in restrictions) {
-        const meta = restrictions[i].nextMetaFor(searcher, item);
-
-        if (!meta) {
-            continue;
-        }
-
-        metas[restrictions[i].key] = meta;
+    for (let i in checkers) {
+        score += checkers[i].score(items);
     }
 
-    return metas;
+    return score;
 }
 
 
-function search(searcher, items, restrictions, nextItemIndex, statistics) {
+function detailedSolutionScore(items, checkers) {
 
-    statistics.checkedSolutions += 1;
+    let scores = [];
 
-    if (checkLowerRestrictions(searcher, restrictions)) {
-        statistics.ratedSolutions += 1;
+    for (let i in checkers) {
+        const checker = checkers[i];
+        const score = checker.score(items);
 
-        searcher.acceptCurrentSolution(searcher.depth());
-    }
-
-    for (let i=nextItemIndex; i<items.length; i++) {
-        const item = items[i];
-
-        if (!checkUpperRestrictions(searcher, restrictions, item)) {
-            continue;
+        if (score != 0) {
+            scores.push({ruleId: checker.ruleId,
+                         score: score});
         }
-
-        const metas = getRestrictionsMetas(searcher, item, restrictions);
-
-        searcher.forward(item, metas);
-
-        search(searcher, items, restrictions, i + 1, statistics);
-
-        searcher.backward();
     }
-};
 
-
-
-function solve(items, checkers) {
-
-    const statistics = {checkedSolutions: 0,
-                        ratedSolutions: 0};
-
-    const searcher = new SolutionSearcher(3);
-
-    search(searcher, items, checkers, 0, statistics);
-
-    const bestSolution = searcher.bestSolution();
-
-    return {'bestSolution': bestSolution ? bestSolution.items : null,
-            'statistics': statistics};
-
+    return scores;
 }
 
 
-export {solve};
+function* search({searcher, items, checkers, statistics, breakEvery}) {
+
+    const indexes = [0];
+
+    let index = 0;
+
+    const itemsLength = items.length;
+
+    let steps = 0;
+
+    while (index >= 0) {
+
+        if (itemsLength <= indexes[index]) {
+            indexes.pop();
+            index -= 1;
+            indexes[index] += 1;
+            searcher.backward();
+            continue
+        }
+
+        statistics.checkedSolutions += 1;
+
+        steps += 1;
+
+        if (steps % breakEvery == 0) {
+            yield null;
+        }
+
+        searcher.forward(items[indexes[index]]);
+
+        if (!checkUpperRestrictions(searcher, checkers)) {
+            searcher.backward();
+            indexes[index] += 1;
+            continue
+        }
+
+        if (checkLowerRestrictions(searcher, checkers)) {
+            statistics.scoredSolutions += 1;
+            searcher.acceptCurrentSolution(scoreSolution(searcher.items, checkers));
+        }
+
+        indexes.push(indexes[index] + 1);
+        index += 1;
+    }
+}
+
+
+export {search,
+        SolutionSearcher,
+        detailedSolutionScore};

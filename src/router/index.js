@@ -2,23 +2,27 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import Groups from '@/views/Groups.vue'
-import Restrictions from '@/views/Restrictions.vue'
+import Rules from '@/views/Rules.vue'
+import Solutions from '@/views/Solutions.vue'
+import Advices from '@/views/Advices.vue'
 
 Vue.use(VueRouter)
 
-const routes = [
-  {
-    path: '/',
-    name: 'Groups',
-    component: Groups
-  },
+const routes = [{path: '/',
+                 name: 'Groups',
+                 component: Groups},
 
-  {
-    path: '/restrictions',
-    name: 'Restrictions',
-    component: Restrictions
-  }
-]
+                {path: '/rules',
+                 name: 'Rules',
+                 component: Rules},
+
+                {path: '/solutions',
+                 name: 'Solutions',
+                 component: Solutions},
+
+                {path: '/advices',
+                 name: 'Advices',
+                 component: Advices}]
 
 const router = new VueRouter({
   routes

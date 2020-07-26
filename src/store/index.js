@@ -3,11 +3,15 @@ import Vuex from 'vuex'
 
 import * as uuid from 'uuid';
 
-import Groups from './modules/groups.js';
-import {Items} from './modules/items.js';
-import {Restrictions} from './modules/restrictions.js';
+import * as s11n from '@/logic/s11n';
+import * as rules from '@/logic/rules';
+import * as templates from '@/logic/templates';
 
-import * as GroupCardinality from '@/logic/restrictions/GroupCardinality.js';
+import {Items} from './modules/items';
+import {Rules} from './modules/rules';
+import {Solutions} from './modules/solutions';
+import {Advices} from './modules/advices';
+
 
 
 Vue.use(Vuex)
@@ -19,46 +23,58 @@ export default new Vuex.Store({
     state: {
         topologyVersion: uuid.v4()
     },
+
+    getters: {
+        serialize(state, getters) {
+            return s11n.serialize({items: getters['items/serialize'],
+                                   rules: getters['rules/serialize']});
+        }
+    },
+
     mutations: {
         updateTopologyVersion(state) {
             state.topologyVersion = uuid.v4()
         }
     },
+
     actions: {
 
-        createGroup (context, payload) {
-            let groupId = payload.groupId || uuid.v4();
+        createGroupRule (context, payload) {
 
-            context.commit("groups/createGroup", {groupId: groupId});
+            let items = [];
 
-            if (payload.name) {
-                context.commit("groups/changeGroupName", {groupId: groupId, name: payload.name});
+            if (payload.items) {
+                items = payload.items.slice()
             }
-
-            let cardinality = null;
 
             if (payload.createFirstItem) {
-                context.dispatch('createItem', {groupId: groupId});
-                cardinality = new GroupCardinality.Restriction(groupId, 1, 1);
-            }
-            else {
-                cardinality = new GroupCardinality.Restriction(groupId, 0, 0);
-            }
+                const itemId = uuid.v4();
 
-            context.dispatch('setRestriction', {restrictionId: uuid.v4(),
-                                                restriction: cardinality});
+                context.dispatch("createItem", {itemId: itemId, text: ''});
 
-            context.commit("updateTopologyVersion");
-        },
-
-        removeGroup (context, payload) {
-            const itemsToRemove = context.getters['groups/activeGroups'][payload.groupId].items.slice();
-
-            for (let i in itemsToRemove) {
-                context.commit("groups/removeItemFromGroups", {itemId: itemsToRemove[i]});
+                items.push(itemId);
             }
 
-            context.commit("groups/removeGroup", {groupId: payload.groupId});
+            const template = templates.exprSet()
+
+            for (let i in items) {
+                const itemId = items[i];
+
+                const templateItem = templates.exprItem({itemId: itemId});
+
+                templates.addExpression({root: template,
+                                         child: templateItem});
+            }
+
+            const rule = rules.rawCreateRule({type: rules.RULE_TYPE.GROUP,
+                                              name: payload.name || '',
+                                              template: template,
+                                              condition: {type: rules.CONDITION_TYPE.CARDINALITY.key,
+                                                          args: {nOf: {min: 1,
+                                                                       max: 1}}}});
+
+            context.dispatch("setRule", {ruleId: uuid.v4(),
+                                         rule: rule});
 
             context.commit("updateTopologyVersion");
         },
@@ -66,22 +82,12 @@ export default new Vuex.Store({
         createItem (context, payload) {
             let itemId = payload.itemId || uuid.v4();
 
-            context.commit("items/createItem", {itemId: itemId});
-            context.commit("groups/addtemToGroup", {groupId: payload.groupId,
-                                                    itemId: itemId});
+            context.commit("items/createItem", {itemId: itemId,
+                                                text: payload.text});
 
-            if (payload.text) {
-                context.commit("items/changeItemText", {itemId: itemId, text: payload.text});
-            }
-
-            if (context.getters['groups/activeGroups'][payload.groupId].items.length == 1) {
-                const restrictionId = context.getters['restrictions/restrictionIdForGroup'](GroupCardinality.TYPE,
-                                                                                            payload.groupId);
-
-                const restriction = new GroupCardinality.Restriction(payload.groupId, 1, 1);
-
-                context.dispatch('setRestriction', {'restrictionId': restrictionId,
-                                                    'restriction': restriction});
+            if (payload.ruleId) {
+                context.commit("rules/addItemToRule", {ruleId: payload.ruleId,
+                                                       itemId: itemId});
             }
 
             context.commit("updateTopologyVersion");
@@ -89,23 +95,53 @@ export default new Vuex.Store({
 
         removeItem (context, payload) {
             context.commit("items/removeItem", {itemId: payload.itemId});
-            context.commit("groups/removeItemFromGroups", {itemId: payload.itemId});
-
-            context.dispatch("restrictions/syncWithGroups", {"groups": context.store.getters['groups/activeGroups']});
+            context.commit("rules/removeItemFromRules", {itemId: payload.itemId});
 
             context.commit("updateTopologyVersion");
         },
 
-        setRestriction (context, payload) {
-            context.commit("restrictions/setRestriction", {restrictionId: payload.restrictionId,
-                                                           restriction: payload.restriction});
+        setRule (context, payload) {
+            context.commit("rules/setRule", {ruleId: payload.ruleId,
+                                             rule: payload.rule});
+            context.commit("updateTopologyVersion");
+        },
+
+        removeRule (context, payload) {
+            context.commit("rules/removeRule", {ruleId: payload.ruleId});
+            context.commit("updateTopologyVersion");
+        },
+
+        changeRuleCondition (context, payload) {
+            context.commit("rules/changeRuleCondition", {ruleId: payload.ruleId,
+                                                         condition: payload.condition});
+            context.commit("updateTopologyVersion");
+        },
+
+        clearAll (context) {
+            context.commit('items/clearAll');
+            context.commit('rules/clearAll');
+            context.commit('solutions/clearAll');
+            context.commit('advices/clearAll');
+
+            context.commit("updateTopologyVersion");
+        },
+
+        importAll (context, payload) {
+            context.dispatch('clearAll');
+
+            const data = s11n.actualizeFormat({data: payload.data});
+
+            context.commit('items/importAll', {data: data.items});
+            context.commit('rules/importAll', {data: data.rules});
 
             context.commit("updateTopologyVersion");
         }
     },
+
     modules: {
-        groups: Groups,
         items: Items,
-        restrictions: Restrictions
+        rules: Rules,
+        solutions: Solutions,
+        advices: Advices
     }
 })

@@ -1,45 +1,60 @@
 <template>
 
-<v-list-item>
+<v-list-item  :class="itemClasses">
+  <morphology-switch :modes="['edit', 'show']"
+                     v-model="captionMode">
 
-  <template v-if="textEditMode">
-    <v-list-item-content>
-      <v-text-field label="item text"
-                    autofocus
-                    dense
-                    single-line
-                    :value="item.text"
-                    v-on:blur="turnOffTextEditMode"
-                    v-on:change="confirmTextChange"/>
-    </v-list-item-content>
-  </template>
+    <template v-slot:edit>
+      <v-list-item-content>
+        <v-text-field label="item text"
+                      autofocus
+                      dense
+                      single-line
+                      :value="item.text"
+                      v-on:blur="captionMode = 'show'"
+                      v-on:change="confirmCaptionChange"/>
+      </v-list-item-content>
+    </template>
 
-  <template v-else>
-    <v-list-item-content v-if="item.text">
-      <v-list-item-title :class="itemTextClasses">{{item.text}}</v-list-item-title>
-    </v-list-item-content>
+    <template v-slot:show>
+      <v-list-item-content>
 
-    <v-list-item-content v-else class="font-weight-light">
-      <v-list-item-title>Enter description</v-list-item-title>
-    </v-list-item-content>
+        <v-list-item-title  v-if="item.text"
+                            :class="itemTextClasses">
 
-    <v-list-item-action>
-      <morphology-restriction-item-mode :item-id="itemId"
-                                        :restriction-id="itemModeRestrictionId"/>
-    </v-list-item-action>
+          <!-- <v-icon v-if="partOfBestSolution" -->
+          <!--         style="color: blue;">mdi-star-outline</v-icon> -->
 
-    <v-list-item-action>
-      <v-btn icon x-small v-on:click="turnOnTextEditMode">
-        <v-icon>mdi-lead-pencil</v-icon>
+          {{item.text}}
+        </v-list-item-title>
+
+        <v-list-item-title v-else>Enter description</v-list-item-title>
+
+        <v-list-item-subtitle>
+          <morphology-item-score :item-id="itemId"
+                                 :textClasses="itemTextClasses"/>
+        </v-list-item-subtitle>
+
+      </v-list-item-content>
+
+      <v-list-item-action>
+        <morphology-item-mode :item-id="itemId"/>
+      </v-list-item-action>
+
+      <v-list-item-action>
+        <v-btn icon x-small v-on:click="captionMode = 'edit'">
+          <v-icon>mdi-lead-pencil</v-icon>
+        </v-btn>
+      </v-list-item-action>
+
+      <v-list-item-action class="ml-0">
+        <v-btn icon x-small v-on:click="remove">
+          <v-icon>mdi-close</v-icon>
       </v-btn>
     </v-list-item-action>
-
-    <v-list-item-action class="ml-0">
-      <v-btn icon x-small v-on:click="remove">
-        <v-icon>mdi-close</v-icon>
-      </v-btn>
-    </v-list-item-action>
   </template>
+
+</morphology-switch>
 
 </v-list-item>
 
@@ -47,20 +62,26 @@
 
 <script>
 
-import * as ItemMode from '@/logic/restrictions/ItemMode.js';
+import * as items from '@/logic/items.js';
+import * as rules from '@/logic/rules.js';
 
-import MorphologyRestrictionItemMode from "@/components/restrictions/MorphologyRestrictionItemMode";
+import MorphologySwitch from "@/components/MorphologySwitch";
+
+import MorphologyItemMode from "@/components/MorphologyItemMode";
+import MorphologyItemScore from "@/components/MorphologyItemScore";
 
 
 export default {
     name: 'MorphologyItem',
 
     components: {
-        MorphologyRestrictionItemMode
+        MorphologySwitch,
+        MorphologyItemMode,
+        MorphologyItemScore
     },
 
     data: () => ({
-        textEditMode: false
+        captionMode: "show"
     }),
 
     props: ["itemId"],
@@ -70,48 +91,86 @@ export default {
             return this.$store.getters['items/activeItems'][this.itemId];
         },
 
-        itemModeRestrictionId() {
-            return this.$store.getters['restrictions/restrictionIdForItem'](ItemMode.TYPE,
-                                                                            this.itemId);
+        itemModeRuleId() {
+            return this.$store.getters['rules/ruleIdForTypeAndItem'](rules.RULE_TYPE.ITEM_MODE, this.itemId);
+        },
+
+        itemScoreRuleId() {
+            return this.$store.getters['rules/ruleIdForTypeAndItem'](rules.RULE_TYPE.ITEM_SCORE, this.itemId);
         },
 
         itemTextClasses() {
-            if (this.itemModeRestrictionId == null) {
+            if (this.itemModeRuleId == null) {
                 return '';
             }
 
-            const restriction = this.$store.getters['restrictions/restrictionById'](this.itemModeRestrictionId);
+            const rule = this.$store.getters['rules/ruleById'](this.itemModeRuleId);
 
-            if (ItemMode.ITEM_MODE.OPTIONAL.is(restriction.mode)) {
+            const itemMode = items.itemModeByRule(rule);
+
+            if (items.ITEM_MODE.OPTIONAL.is(itemMode)) {
                 return '';
             }
 
-            if (ItemMode.ITEM_MODE.REQUIRED.is(restriction.mode)) {
+            if (items.ITEM_MODE.REQUIRED.is(itemMode)) {
                 return 'success--text font-weight-medium';
             }
 
-            if (ItemMode.ITEM_MODE.EXCLUDED.is(restriction.mode)) {
+            if (items.ITEM_MODE.EXCLUDED.is(itemMode)) {
                 return 'warning--text font-weight-medium';
             }
+
+            return '';
+        },
+
+        partOfBestSolution () {
+            const items = this.$store.getters['solutions/bestSolutionItems'];
+
+            if (items == null) {
+                return false;
+            }
+
+            return items.indexOf(this.itemId) != -1;
+        },
+
+        itemClasses () {
+            if (!this.partOfBestSolution) {
+                return '';
+            }
+
+            return 'light-blue lighten-5'
         }
     },
 
     methods: {
-        turnOnTextEditMode: function () {
-            this.textEditMode = true;
-        },
 
-        turnOffTextEditMode: function () {
-            this.textEditMode = false;
-        },
-
-        confirmTextChange: function (value) {
+        confirmCaptionChange: function (value) {
             this.$store.commit("items/changeItemText", {itemId: this.itemId,
                                                         text: value});
-            this.turnOffTextEditMode();
+
+            if (this.itemModeRuleId) {
+                const rule = this.$store.getters['rules/ruleById'](this.itemModeRuleId);
+
+                const itemMode = items.itemModeByRule(rule)
+
+                this.$store.commit("rules/changeRuleName", {ruleId: this.itemModeRuleId,
+                                                            name: items.ruleNameForItemMode(this.item, itemMode)});
+            }
+
+            if (this.itemScoreRuleId) {
+                const rule = this.$store.getters['rules/ruleById'](this.itemScoreRuleId);
+
+                this.$store.commit("rules/changeRuleName", {ruleId: this.itemScoreRuleId,
+                                                            name: items.ruleNameForItemScore(this.item)});
+            }
+
+            this.captionMode = 'show';
+
+            this.$gtag.event('change_caption_item', {event_label: value});
         },
 
         remove: function() {
+            this.$gtag.event('remove_item', {event_label: this.item.text});
             this.$store.dispatch("removeItem", {itemId: this.itemId});
         }
     }

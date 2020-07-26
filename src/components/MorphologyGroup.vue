@@ -1,45 +1,29 @@
 <template>
 <v-col cols="3">
   <v-card elevation="1">
-    <v-toolbar>
 
-      <template v-if="nameEditMode">
-        <v-text-field label="Group name"
-                      autofocus
-                      dense
-                      single-line
-                      :value="group.name"
-                      v-on:blur="turnOffNameEditMode"
-                      v-on:change="confirmNameChange"/>
+    <morphology-editable-toolbar :changeCaption="changeCaption"
+                                 :caption="rule.name"
+                                 emptyFiller="Enter caption">
+
+      <template v-slot:before_title>
+        <v-btn icon>
+          <morphology-rule-avatar :avatar="avatar"/>
+        </v-btn>
       </template>
 
-      <template v-else>
-        <v-toolbar-title v-if="group.name">
-          {{group.name}}
-        </v-toolbar-title>
+      <template v-slot:before_edit_button>
+        <morphology-rule-cardinality :rule-id="ruleId"/>
+      </template>
 
-        <v-toolbar-title v-else class="font-weight-light">
-          Enter name
-        </v-toolbar-title>
-
-        <v-spacer/>
-
-        <morphology-restriction-group-cardinality :group-id="groupId"
-                                                  :restriction-id="groupCardinalityRestrictionId"/>
-
-        <v-btn icon v-on:click="turnOnNameEditMode">
-          <v-icon>mdi-lead-pencil</v-icon>
-        </v-btn>
-
+      <template v-slot:after_edit_button>
         <v-btn icon v-on:click="remove">
           <v-icon>mdi-delete</v-icon>
         </v-btn>
-
       </template>
+    </morphology-editable-toolbar>
 
-    </v-toolbar>
-
-    <morphology-item v-for="itemId in group.items"
+    <morphology-item v-for="itemId in items"
                      :key="itemId"
                      :item-id="itemId"/>
 
@@ -57,60 +41,60 @@
 </template>
 
 <script>
-import * as GroupCardinality from '@/logic/restrictions/GroupCardinality.js';
 
+import * as avatars from "@/logic/avatars";
+import * as templates from "@/logic/templates";
 
+import MorphologyEditableToolbar from "@/components/MorphologyEditableToolbar";
 import MorphologyItem from "@/components/MorphologyItem";
-import MorphologyRestrictionGroupCardinality from "@/components/restrictions/MorphologyRestrictionGroupCardinality";
+import MorphologyRuleAvatar from "@/components/MorphologyRuleAvatar";
+import MorphologyRuleCardinality from "@/components/MorphologyRuleCardinality";
 
 
 export default {
     name: "MorphologyGroup",
 
     components: {
+        MorphologyEditableToolbar,
         MorphologyItem,
-        MorphologyRestrictionGroupCardinality
+        MorphologyRuleAvatar,
+        MorphologyRuleCardinality
     },
 
     data: () => ({
-        nameEditMode: false
     }),
 
-    props: ["groupId"],
+    props: ["ruleId"],
 
     computed: {
-        group () {
-            return this.$store.getters['groups/activeGroups'][this.groupId];
+        rule () {
+            return this.$store.getters['rules/ruleById'](this.ruleId);
         },
 
-        groupCardinalityRestrictionId() {
-            return this.$store.getters['restrictions/restrictionIdForGroup'](GroupCardinality.TYPE,
-                                                                             this.groupId);
+        items () {
+            return templates.getItems({expression: this.rule.template});
+        },
+
+        avatar () {
+            return avatars.constructAvatar(this.rule.avatarIndex);
         }
     },
 
     methods: {
-        turnOnNameEditMode: function () {
-            this.nameEditMode = true;
-        },
-
-        turnOffNameEditMode: function () {
-            this.nameEditMode = false;
-        },
-
-        confirmNameChange: function (value) {
-            this.$store.commit("groups/changeGroupName", {groupId: this.groupId,
-                                                          name: value});
-
-            this.turnOffNameEditMode();
+        changeCaption: function (value) {
+            this.$store.commit("rules/changeRuleName", {ruleId: this.ruleId,
+                                                        name: value});
+            this.$gtag.event('change_caption_group', {event_label: value});
         },
 
         remove: function() {
-            this.$store.dispatch("removeGroup", {groupId: this.groupId});
+            this.$gtag.event('remove_rule', {event_label: this.rule.name});
+            this.$store.dispatch("removeRule", {ruleId: this.ruleId});
         },
 
         createItem: function () {
-            this.$store.dispatch("createItem", {groupId: this.groupId});
+            this.$store.dispatch("createItem", {ruleId: this.ruleId});
+            this.$gtag.event('create_item', {});
         },
     }
 }

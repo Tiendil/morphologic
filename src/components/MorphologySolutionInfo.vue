@@ -2,6 +2,13 @@
 <v-card>
   <v-card-title>Solution Info</v-card-title>
 
+  <morphology-solver :searcher="currentSolver"
+                     :statistics="currentStatistics"
+                     :onComplete="onSearchComplete"
+                     :onCancel="onSearchCancel"
+                     :fullSolutionsSpace="fullSolutionsSpace"
+                     :solutionsSpaceEstimation="solutionsSpaceEstimation"/>
+
   <v-list>
     <v-list-item v-if="isTopologyChanged">
       <v-list-item-content>
@@ -18,75 +25,24 @@
     <v-divider></v-divider>
     <v-subheader>General</v-subheader>
 
-    <v-list-item>
-
-      <v-list-item-content>
-        <v-list-item-title>Expected solutions:</v-list-item-title>
-      </v-list-item-content>
-
-      <v-list-item-action>
-        <v-list-item-action-text>
-          {{solutionSpaceEstimation}}
-        </v-list-item-action-text>
-      </v-list-item-action>
-
-    </v-list-item>
-
-    <v-list-item>
-
-      <v-list-item-content>
-        <v-list-item-title>Checked solutions:</v-list-item-title>
-      </v-list-item-content>
-
-      <v-list-item-action>
-
-        <v-list-item-action-text v-if="statistics">
-          <span :class="textClasses">
-            {{statistics.checkedSolutions}}
-          </span>
-        </v-list-item-action-text>
-
-        <v-list-item-action-text v-else>
-          —
-        </v-list-item-action-text>
-
-      </v-list-item-action>
-
-    </v-list-item>
-
-    <v-list-item>
-
-      <v-list-item-content>
-        <v-list-item-title>Rated solutions:</v-list-item-title>
-      </v-list-item-content>
-
-      <v-list-item-action>
-
-        <v-list-item-action-text v-if="statistics">
-          <span :class="textClasses">
-            {{statistics.ratedSolutions}}
-          </span>
-        </v-list-item-action-text>
-
-        <v-list-item-action-text v-else>
-          —
-        </v-list-item-action-text>
-
-      </v-list-item-action>
-
-    </v-list-item>
+    <morphology-solution-statistics :fullSolutionsSpace="fullSolutionsSpace"
+                                    :solutionsSpaceEstimation="solutionsSpaceEstimation"
+                                    :checkedSolutions="statistics && statistics.checkedSolutions"
+                                    :scoredSolutions="statistics && statistics.scoredSolutions"
+                                    :searchTime="statistics && statistics.searchTime"
+                                    :isChanged="isTopologyChanged"/>
 
     <v-divider></v-divider>
 
     <v-subheader>Best Solution</v-subheader>
 
-    <template v-if="solution">
-      <v-list-item  v-for="groupInfo in solution"
+    <template v-if="solutionDescription">
+      <v-list-item  v-for="groupInfo in solutionDescription"
                     :key="groupInfo.grupId">
 
         <v-list-item-content>
-          <v-list-item-title v-if="groups[groupInfo.groupId].name">
-            {{groups[groupInfo.groupId].name}}
+          <v-list-item-title v-if="rules[groupInfo.ruleId].name">
+            {{rules[groupInfo.ruleId].name}}
           </v-list-item-title>
 
           <v-list-item-title v-else>
@@ -136,35 +92,42 @@
 </template>
 
 <script>
+import * as rules from "@/logic/rules";
+import * as templates from "@/logic/templates";
 import * as solver from "@/logic/solver";
 import * as statistics from "@/logic/statistics";
+import * as advices from "@/logic/advices";
 
-import * as GroupCardinaltiy from '@/logic/restrictions/GroupCardinality.js';
+import MorphologySolutionStatistics from "@/components/MorphologySolutionStatistics";
+import MorphologySolver from "@/components/MorphologySolver";
 
-// import {MODE as ITEM_MODE} from '@/store/modules/items.js';
 
 export default {
     name: "MorphologySolutionInfo",
 
     components: {
+        MorphologySolver,
+        MorphologySolutionStatistics
     },
 
     data: () => ({
         statistics: null,
-        solution: null,
-        topologyVersion: null
+        searcher: null,
+        topologyVersion: null,
+        currentSolver: null,
+        currentStatistics: null
     }),
 
     props: [],
 
     computed: {
 
-        groups() {
-            return this.$store.getters['groups/activeGroups'];
-        },
-
         items() {
             return this.$store.getters['items/activeItems'];
+        },
+
+        rules() {
+            return this.$store.getters['rules/activeRules'];
         },
 
         isTopologyChanged() {
@@ -182,23 +145,54 @@ export default {
             return '';
         },
 
-        solutionSpaceEstimation() {
+        fullSolutionsSpace() {
+            return Math.pow(2, Object.keys(this.items).length);
+        },
+
+        solutionsSpaceEstimation() {
+
+            const rulesIds = this.$store.getters['rules/groupRulesIds'];
 
             let space = 1;
 
-            for (let groupId in this.groups) {
-                const group = this.groups[groupId];
+            for (let i in rulesIds) {
+                const rule = this.$store.getters['rules/ruleById'](rulesIds[i]);
 
-                const restrictionId = this.$store.getters["restrictions/restrictionIdForGroup"](GroupCardinaltiy.TYPE,
-                                                                                                groupId);
-                const restriction = this.$store.getters["restrictions/restrictionById"](restrictionId);
-
-                space *= statistics.solutionSpaceEstimationForGroup(group.items.length,
-                                                                    restriction.minCardinality,
-                                                                    restriction.maxCardinality);
+                space *= statistics.solutionSpaceEstimationForGroup(templates.getItems({expression: rule.template}).size,
+                                                                    rule.condition.args.nOf.min,
+                                                                    rule.condition.args.nOf.max);
             }
 
             return space;
+        },
+
+        solutionDescription() {
+            const bestSolutionItems = this.$store.getters['solutions/bestSolutionItems'];
+
+            const solutionDescription = [];
+
+            const groupRulesIds = this.$store.getters['rules/groupRulesIds'];
+
+            for (let i in groupRulesIds) {
+                const ruleId = groupRulesIds[i];
+
+                const groupRule = this.rules[ruleId];
+
+                const groupInfo = {'ruleId': ruleId,
+                                   'items': []};
+
+                for (let i in bestSolutionItems) {
+                    const itemId = bestSolutionItems[i];
+
+                    if (templates.hasItem({expression: groupRule.template, itemId: itemId})) {
+                        groupInfo.items.push(itemId);
+                    }
+                }
+
+                solutionDescription.push(groupInfo);
+            }
+
+            return solutionDescription;
         }
 
     },
@@ -206,50 +200,64 @@ export default {
     methods: {
 
         runSolver() {
-            const items = [];
-
-            for (let itemId in this.$store.getters['items/activeItems']) {
-                items.push(itemId);
-            }
+            // get checkers
+            const items = Object.keys(this.$store.getters['items/activeItems']);
 
             let checkers = [];
 
-            const allRestrictions = this.$store.getters['restrictions/allRestrictions'];
+            for (let ruleId in this.rules) {
+                const rule = JSON.parse(JSON.stringify(this.rules[ruleId]));
 
-            for (let i in allRestrictions) {
-                const restriction = allRestrictions[i];
-
-                checkers.push(...restriction.getChekes(this.$store.getters['groups/activeGroups'],
-                                                       this.$store.getters['items/activeItems']));
+                checkers.push(...rules.getCheckers(ruleId, rule));
             }
 
             // solve
-            const info = solver.solve(items,
-                                      checkers);
+            this.currentStatistics = {checkedSolutions: 0,
+                                      scoredSolutions: 0,
+                                      searchStartAt: Date.now(),
+                                      searchTime: 0};
 
-            this.statistics = info.statistics;
+            const bestSolutionsLimit = 100;
 
-            let solution = [];
+            this.searcher = new solver.SolutionSearcher(bestSolutionsLimit);
 
-            for (let groupId in this.groups) {
+            this.currentSolver = solver.search({searcher: this.searcher,
+                                                items: items,
+                                                checkers: checkers,
+                                                statistics: this.currentStatistics,
+                                                breakEvery: 10000});
 
-                const groupInfo = {'groupId': groupId,
-                                   'items': []};
+            this.$gtag.event('solution_search_start', {});
+        },
 
-                for (let i in info.bestSolution) {
-                    const itemId = info.bestSolution[i];
+        onSearchComplete () {
+            this.currentSolver = null;
 
-                    if (this.groups[groupId].items.indexOf(itemId) != -1) {
-                        groupInfo.items.push(itemId);
-                    }
-                }
+            this.statistics = this.currentStatistics;
 
-                solution.push(groupInfo);
-            }
+            this.currentStatistics = null;
 
-            this.solution = solution;
+            this.$store.commit("solutions/rewriteSolutions", {solutions: this.searcher.solutions.solutions});
+
+            this.searcher = null;
+
+            // genereate advices
+
+            const newAdvices = advices.generateAdvices({currentRules: this.$store.getters['rules/activeRules'],
+                                                        solutions: this.$store.getters['solutions/currentSolutions']})
+
+            this.$store.commit("advices/refreshAdvices", {advices: newAdvices});
 
             this.topologyVersion = this.$store.state.topologyVersion;
+
+            this.$gtag.event('solution_search_completed', {value: parseInt(this.statistics.searchTime)});
+        },
+
+        onSearchCancel () {
+            this.currentSolver = null;
+            this.searcher = null;
+
+            this.$gtag.event('solution_search_canceled', {});
         }
     }
 }
