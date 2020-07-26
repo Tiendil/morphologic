@@ -7,7 +7,15 @@
     </v-toolbar-title>
 
     <v-toolbar-title class="ml-8">
-      Телеграм: <a class="white--text" href="https://t.me/joinchat/HA7ACB09k1-CXOuSSog4Vg">@Morphologic</a>
+      Telegram: <a class="white--text" href="https://t.me/joinchat/HA7ACB09k1-CXOuSSog4Vg" target="blank_">@Morphologic</a>
+    </v-toolbar-title>
+
+    <v-toolbar-title class="ml-8">
+      GitHub: <a class="white--text" href="https://github.com/Tiendil/morphologic/" target="blank_">Tiendil/morphologic</a>
+    </v-toolbar-title>
+
+    <v-toolbar-title class="ml-8">
+      Blog: <a class="white--text" href="https://tiendil.org" target="blank_">tiendil.org</a>
     </v-toolbar-title>
 
   </v-app-bar>
